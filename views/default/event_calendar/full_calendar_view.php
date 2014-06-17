@@ -2,6 +2,7 @@
 
 elgg_load_js('elgg.full_calendar');
 
+$timeformat = elgg_get_plugin_setting('timeformat', 'event_calendar') == 24 ? 'H(:mm)' : 'h(:mm)t';
 // TODO: is there an easy way to avoid embedding JS?
 ?>
 <script>
@@ -149,25 +150,58 @@ handleViewDisplay = function(view) {
 	//$(".fc-widget-content[data-date='20120105']")
 }
 
-$(document).ready(function() {
-	$('#calendar').fullCalendar({
-		header: {
-			left: 'prev,next today',
-			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
-		},
-		month: <?php echo date('n',strtotime($vars['start_date']))-1; ?>,
-		ignoreTimezone: true,
-		editable: true,
-		slotMinutes: 15,
-		eventRender: handleEventRender,
-		eventDrop: handleEventDrop,
-		eventClick: handleEventClick,
-		dayClick: handleDayClick,
-		events: handleGetEvents,
-		viewDisplay: handleViewDisplay
+fullcalendarInit = function() {
+	var loadFullCalendar = function() {
+		var locale = $.datepicker.regional[elgg.get_language()];
+
+		if (!locale) {
+			locale = $.datepicker.regional[''];
+		}
+
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			month: <?php echo date('n', strtotime($vars['start_date'])) - 1; ?>,
+			ignoreTimezone: true,
+			editable: true,
+			slotMinutes: 15,
+			eventRender: handleEventRender,
+			eventDrop: handleEventDrop,
+			eventClick: handleEventClick,
+			dayClick: handleDayClick,
+			events: handleGetEvents,
+			viewDisplay: handleViewDisplay,
+
+			isRTL:  locale.isRTL,
+			firstDay: locale.firstDay,
+			monthNames: locale.monthNames,
+			monthNamesShort: locale.monthNamesShort,
+			dayNames: locale.dayNames,
+			dayNamesShort: locale.dayNamesShort,
+			buttonText: {
+				today: locale.currentText,
+				month: elgg.echo('event_calendar:month_label'),
+				week: elgg.echo('event_calendar:week_label'),
+				day: elgg.echo('event_calendar:day_label')
+			},
+			timeFormat: "<?php echo $timeformat; ?>",
+		});
+	}
+
+	elgg.get({
+		url: '/vendors/jquery/i18n/jquery.ui.datepicker-' + elgg.get_language() + '.js',
+		dataType: "script",
+		cache: true,
+		success: loadFullCalendar,
+		error: loadFullCalendar, // english language is already loaded
 	});
-});
+}
+
+elgg.register_hook_handler('init', 'system', fullcalendarInit);
+
 </script>
 <div id='calendar'></div>
 <input type="hidden" id="event-calendar-selected-date" />
