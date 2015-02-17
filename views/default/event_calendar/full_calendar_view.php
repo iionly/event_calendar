@@ -15,7 +15,7 @@ handleEventClick = function(event) {
         	window.location.href = event.url;
         } else {
         	//window.location.href = event.url;
-        	$.fancybox({'href':event.url});
+        	$.colorbox({'href':event.url});
         }
         return false;
     }
