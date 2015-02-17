@@ -11,9 +11,9 @@
  * 
  */
 if ($vars['group_guid']) {
-	$link_bit = $vars['url']."event_calendar/group/{$vars['group_guid']}/%s/{$vars['mode']}";
+	$link_bit = elgg_get_site_url() . "event_calendar/group/{$vars['group_guid']}/%s/{$vars['mode']}";
 } else {
-	$link_bit = $vars['url']."event_calendar/list/%s/{$vars['mode']}/{$vars['filter']}";
+	$link_bit = elgg_get_site_url() . "event_calendar/list/%s/{$vars['mode']}/{$vars['filter']}";
 }
 
 if ($vars['mode'] == 'week') {

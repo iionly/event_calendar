@@ -8,7 +8,7 @@ $tokens = "&__elgg_ts=$elgg_ts&__elgg_token=$elgg_token";
 <script type="text/javascript">
 function event_calendar_personal_toggle(event_id,user_id) {
 	
-	var link = "<?php echo $vars['url']; ?>action/event_calendar/toggle_personal_calendar?";
+	var link = "<?php echo elgg_get_site_url(); ?>action/event_calendar/toggle_personal_calendar?";
 	link += "user_id="+user_id+"&event_id="+event_id+"&other=true";
 	link += "<?php echo $tokens; ?>";
 	$.get(link,

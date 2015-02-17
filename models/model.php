@@ -1565,7 +1565,7 @@ function event_calendar_get_page_content_list($page_type,$container_guid,$start_
 
 	$params = event_calendar_generate_listing_params($page_type,$container_guid,$start_date,$display_mode,$filter,$region);
 
-	$url = full_url();
+	$url = current_page_url();
 	if (substr_count($url, '?')) {
 		$url .= "&view=ical";
 	} else {

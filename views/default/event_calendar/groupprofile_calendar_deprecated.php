@@ -30,7 +30,7 @@ if (event_calendar_activated_for_group($page_owner_entity)) {
 		foreach($events as $event) {
 			echo elgg_view("object/event_calendar",array('entity' => $event));
 		}
-		echo '<div class="forum_latest"><a href="'.$vars['url'].'pg/event_calendar/group/'.page_owner().'">'.elgg_echo('event_calendar:view_calendar').'</a></div>';
+		echo '<div class="forum_latest"><a href="' . elgg_get_site_url() . 'pg/event_calendar/group/'.page_owner().'">'.elgg_echo('event_calendar:view_calendar').'</a></div>';
 		echo "</div>";
 			
     } else if (elgg_get_plugin_setting('group_always_display', 'event_calendar') == 'yes') {

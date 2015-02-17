@@ -7,9 +7,9 @@ if ($vars['mode']) {
 
 # event_calendar/list/<start_date>/<display_mode>/<filter_context>/<region>
 if ($vars['group_guid']) {
-	$link_bit = $vars['url']."event_calendar/group/{$vars['group_guid']}/{$vars['original_start_date']}/%s";
+	$link_bit = elgg_get_site_url() . "event_calendar/group/{$vars['group_guid']}/{$vars['original_start_date']}/%s";
 } else {
-	$link_bit = $vars['url']."event_calendar/list/{$vars['original_start_date']}/%s/{$vars['filter']}";
+	$link_bit = elgg_get_site_url() . "event_calendar/list/{$vars['original_start_date']}/%s/{$vars['filter']}";
 }
 
 #$link_bit = "event_calendar/show_events.php?start_date='.$vars['original_start_date'].'&group_guid='.$vars['group_guid'].'&filter='.$vars['filter'].'&mode=';

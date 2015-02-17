@@ -24,7 +24,7 @@ foreach($vars['requests'] as $request) {
 			'class' => "elgg-button elgg-button-submit",
 			'is_action' => TRUE,
 		));
-		//$url = elgg_add_action_tokens_to_url("{$vars['url']}action/event_calendar/addtocalendar?user_guid={$request->guid}&event_guid={$vars['entity']->guid}");
+		//$url = elgg_add_action_tokens_to_url("{elgg_get_site_url()}action/event_calendar/addtocalendar?user_guid={$request->guid}&event_guid={$vars['entity']->guid}");
 		echo elgg_view_image_block($icon,$info);
 	}
 }

@@ -50,10 +50,10 @@ td.ui-datepicker-unselectable {
 }
 
 .river_object_event_calendar_create {
-	background: url(<?php echo $vars['url']; ?>mod/event_calendar/images/river_icon_event.gif) no-repeat left -1px;
+	background: url(<?php echo elgg_get_site_url(); ?>mod/event_calendar/images/river_icon_event.gif) no-repeat left -1px;
 }
 .river_object_event_calendar_update {
-	background: url(<?php echo $vars['url']; ?>mod/event_calendar/images/river_icon_event.gif) no-repeat left -1px;
+	background: url(<?php echo elgg_get_site_url(); ?>mod/event_calendar/images/river_icon_event.gif) no-repeat left -1px;
 }
 #event_list {
 	width:510px;

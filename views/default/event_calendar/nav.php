@@ -11,7 +11,7 @@ switch($vars['filter']) {
 					break;
 }
 
-$url_start = $vars['url'].'mod/event_calendar/show_events.php?group_guid='.$vars['group_guid'].'&amp;mode='.$vars['mod'].'&amp;start_date='.$vars['start_date'];
+$url_start = elgg_get_site_url() . 'mod/event_calendar/show_events.php?group_guid='.$vars['group_guid'].'&amp;mode='.$vars['mod'].'&amp;start_date='.$vars['start_date'];
 
 ?>
 <div id="elgg_horizontal_tabbed_nav">
