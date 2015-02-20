@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Elgg ICAL output pageshell
  *
