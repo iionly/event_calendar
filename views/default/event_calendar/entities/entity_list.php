@@ -1,4 +1,5 @@
 <?php
+
 /**
  * View a list of entities
  *
@@ -13,7 +14,7 @@ $offset = $vars['offset'];
 $entities = $vars['entities'];
 $limit = $vars['limit'];
 $count = $vars['count'];
-$baseurl = $vars['baseurl'];
+$base_url = $vars['base_url'];
 $context = $vars['context'];
 $viewtype = $vars['viewtype'];
 $pagination = $vars['pagination'];
@@ -30,7 +31,7 @@ if (isset($vars['viewtypetoggle'])) {
 
 if ($context == "search" && $count > 0 && $viewtypetoggle) {
 	$nav .= elgg_view('navigation/viewtype', array(
-		'baseurl' => $baseurl,
+		'base_url' => $base_url,
 		'offset' => $offset,
 		'count' => $count,
 		'viewtype' => $viewtype,
@@ -38,8 +39,8 @@ if ($context == "search" && $count > 0 && $viewtypetoggle) {
 }
 
 if ($pagination) {
-	$nav .= elgg_view('navigation/pagination',array(
-		'baseurl' => $baseurl,
+	$nav .= elgg_view('navigation/pagination', array(
+		'base_url' => $base_url,
 		'offset' => $offset,
 		'count' => $count,
 		'limit' => $limit,

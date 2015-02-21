@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Elgg gallery view
  *
@@ -25,7 +26,7 @@ if (is_array($entities) && sizeof($entities) > 0) {
 
 		}
 		echo "<td class=\"entity_gallery_item\">";
-		echo elgg_view('event_calendar/entities/gallery_item',array('entity'=>$entity));
+		echo elgg_view('event_calendar/entities/gallery_item', array('entity' => $entity));
 		echo "</td>";
 		$col++;
 		if ($col > 3) {

@@ -1,4 +1,5 @@
 <?php
+
 elgg_load_js('elgg.full_calendar');
 elgg_load_js('lightbox');
 elgg_load_css('lightbox');
@@ -10,15 +11,15 @@ elgg_load_css('lightbox');
 var goToDateFlag = 0;
 
 handleEventClick = function(event) {
-    if (event.url) {
-        if (event.is_event_poll) {
+	if (event.url) {
+		if (event.is_event_poll) {
         	window.location.href = event.url;
-        } else {
-        	//window.location.href = event.url;
-        	$.fancybox({'href':event.url});
-        }
-        return false;
-    }
+		} else {
+			//window.location.href = event.url;
+			$.fancybox({'href':event.url});
+		}
+		return false;
+	}
 };
 
 handleDayClick = function(date,allDay,jsEvent,view) {
@@ -58,35 +59,35 @@ handleDayClick = function(date,allDay,jsEvent,view) {
 handleEventDrop = function(event,dayDelta,minuteDelta,allDay,revertFunc) {
 
 	if (!event.is_event_poll && !confirm("<?php echo elgg_echo('event_calendar:are_you_sure'); ?>")) {
-        revertFunc();
-    } else {
-        if (event.is_event_poll) {
-            if (confirm("<?php echo elgg_echo('event_calendar:resend_poll_invitation'); ?>")) {
-            	var resend = 1;
-	        } else {
-	            resend = 0;
-	        }
-        	var data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minuteDelta: minuteDelta, resend: resend, minutes: event.minutes, iso_date: event.iso_date};
-        } else {
-        	data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minuteDelta: minuteDelta};
-        }
-    	elgg.action('event_calendar/modify_full_calendar',
-    		{
-    			data: data,
-    			success: function (res) {
-    				var success = res.success;
-    				var msg = res.message;
-    				if (!success) {
-    					elgg.register_error(msg,2000);
-    					revertFunc()
-    				} else {
-        				event.minutes = res.minutes;
-        				event.iso_date = res.iso_date;
-    				}
-    			}
-    		}
-    	);
-    }
+		revertFunc();
+	} else {
+		if (event.is_event_poll) {
+			if (confirm("<?php echo elgg_echo('event_calendar:resend_poll_invitation'); ?>")) {
+				var resend = 1;
+			} else {
+				resend = 0;
+			}
+			var data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minuteDelta: minuteDelta, resend: resend, minutes: event.minutes, iso_date: event.iso_date};
+		} else {
+			data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minuteDelta: minuteDelta};
+		}
+		elgg.action('event_calendar/modify_full_calendar',
+			{
+				data: data,
+				success: function (res) {
+					var success = res.success;
+					var msg = res.message;
+					if (!success) {
+						elgg.register_error(msg,2000);
+						revertFunc()
+					} else {
+						event.minutes = res.minutes;
+						event.iso_date = res.iso_date;
+					}
+				}
+			}
+		);
+	}
 };
 
 getISODate = function(d) {
@@ -110,7 +111,7 @@ handleGetEvents = function(start, end, callback) {
 	var url = "event_calendar/get_fullcalendar_events/"+start_date+"/"+end_date+"/<?php echo $vars['filter']; ?>/<?php echo $vars['group_guid']; ?>";
 	elgg.getJSON(url, {success:
 		function(events) {
-		  //alert(JSON.stringify(events));
+			//alert(JSON.stringify(events));
 			callback(events);
 		}
 	});
