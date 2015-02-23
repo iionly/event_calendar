@@ -1,6 +1,6 @@
 <?php
 
-	$english = array(
+$english = array(
 
 	'item:object:event_calendar' => "Event calendar",
 	'tag_names:event_tags' => "Tags",
@@ -32,7 +32,7 @@
 	'event_calendar:fees_description'	=> "The cost of this event, if any.",
 	'event_calendar:contact_label' => "Contact",
 	'event_calendar:contact_description'	=> "The person to contact for more information, "
-			."preferably with a telephone number or email address.",
+		."preferably with a telephone number or email address.",
 	'event_calendar:organiser_label' => "Organiser",
 	'event_calendar:organiser_description'	=> "The individual or organisation responsible for this event.",
 	'event_calendar:event_tags_label' => "Tags",
@@ -42,7 +42,7 @@
 	'event_calendar:manage_event_response' => "Your event has been saved.",
 	'event_calendar:add_event_response' => "Your event has been added.",
 	'event_calendar:manage_event_error' => "Error: There was an error in saving your event. "
-			."Please make sure that you have provided the required fields.",
+		."Please make sure that you have provided the required fields.",
 	'event_calendar:error_nosuchevent' => "Error: there is no such event.",
 	'event_calendar:show_events_title' => "Event calendar",
 	'event_calendar:day_label' => "Day",
@@ -69,7 +69,7 @@
 	'event_calendar:remove_from_my_calendar' => "Remove from my calendar",
 	'event_calendar:add_to_my_calendar_response' => "This event has been added to your personal calendar.",
 	'event_calendar:add_to_my_calendar_error' => "This event could not added to your personal calendar. "
-				."(Perhaps the event is full or is scheduled at the same time as another event in your personal calendar?)",
+		."(Perhaps the event is full or is scheduled at the same time as another event in your personal calendar?)",
 	'event_calendar:remove_from_my_calendar_response' => "This event has been removed from your personal calendar.",
 	'event_calendar:add_to_the_calendar' => "Add to calendar",
 	'event_calendar:remove_from_the_calendar' => "Remove",
@@ -80,7 +80,7 @@
 	'event_calendar:removed_from_the_calendar' => "Removed calendar",
 	'event_calendar:add_to_the_calendar_response' => "Event added to this person's calendar.",
 	'event_calendar:add_to_the_calendar_error' => "This event could not added to this person's calendar. "
-				."(Perhaps the event is full or is scheduled at the same time as another event in this person's calendar?)",
+		."(Perhaps the event is full or is scheduled at the same time as another event in this person's calendar?)",
 	'event_calendar:remove_from_the_calendar_response' => "Event removed from this person's calendar.",
 
 	'event_calendar:users_for_event_menu_title' => "People listing this event on their personal calendars",
@@ -142,7 +142,7 @@
 	'event_calendar:paged:column:venue' => "Location",
 	'event_calendar:paged:column:calendar' => "Calendar",
 	'event_calendar:settings:spots_display:title' => "Add a spots field for each "
-			."event to allow you to limit the number of people who can add the event to their calendar",
+		."event to allow you to limit the number of people who can add the event to their calendar",
 	'event_calendar:settings:no_collisions:title' => "Collision detection: prevent people from adding two events at the same time to their personal calendar",
 	'event_calendar:settings:collision_length:title' => "How long (in seconds) should an event be assumed to last if no end date or time is specified "
 		."(used for collision detection). Defaults to 3600 seconds = 1 hour.",
@@ -162,9 +162,9 @@
 
 	'event_calendar:settings:personal_manage:title' => "Calendar permissions",
 	'event_calendar:settings:personal_manage:description' => "Determines whether people can add events to their personal calendars (open), "
-			."need to request the event creator to do so (closed), have no option at all (private), or allow event creators to determine this for each event (by event). "
-			."Note if you set this to private you should probably activate the option above to allow event creators and site admins to "
-			."add their events to other personal calendars.",
+		."need to request the event creator to do so (closed), have no option at all (private), or allow event creators to determine this for each event (by event). "
+		."Note if you set this to private you should probably activate the option above to allow event creators and site admins to "
+		."add their events to other personal calendars.",
 	'event_calendar:strapline' => "Posted %s by %s",
 
 	'event_calendar:request_event_response' => "Your request to be added to this event has been sent.",
@@ -226,7 +226,6 @@ You can manage calendar requests for this event here:
 	'event_calendar:show_open' => "Show open",
 	'event_calendar:show_mine' => "My calendar",
 	'event_calendar:show_friends' => "My friends' calendars",
-	'event_calendar:show_only' => "Show only those on:",
 
 	'event_calendar:listing_title:all' => "All events",
 	'event_calendar:listing_title:open' => "Open events",
@@ -252,7 +251,7 @@ You can manage calendar requests for this event here:
 	'event_calendar:personal_manage:by_event' => "by event",
 	'event_calendar:personal_manage:label' => "Personal calendars",
 	'event_calendar:personal_manage:description' => "Determines whether people can add this event to their calendars (open), "
-			."need to apply to do so (closed) or have no option at all (private - so only you or a site admin can add the event to calendars).",
+		."need to apply to do so (closed) or have no option at all (private - so only you or a site admin can add the event to calendars).",
 	'event_calendar:personal_manage:by_event:open' => "Open. People can freely add this event to their personal calendars.",
 	'event_calendar:personal_manage:by_event:closed' => "Closed. People can request to add this event to their personal calendars. You can review and approve requests.",
 	'event_calendar:personal_manage:by_event:private' => "Private. You or another event administrator must add this event to personal calendars. There is no way for other users to add or request this event.",
@@ -322,7 +321,7 @@ takes place at
 
 You can visit the event page here:
 %s
-	",
+",
 
 	/**
 	 * BBB support
@@ -343,22 +342,16 @@ You can visit the event page here:
 	 * Event calendar river
 	 **/
 
-	//generic terms to use
-
 	'river:update:object:event_calendar' => "%s updated the event %s",
 	'river:create:object:event_calendar' => "%s added the event %s",
 	'river:comment:object:event_calendar' => '%s commented on the event %s',
-    'event_calendar:river:created' => "%s added",
-    'event_calendar:river:updated' => "%s updated",
-    'event_calendar:river:annotated1' => "%s added",
+	'event_calendar:river:created' => "%s added",
+	'event_calendar:river:updated' => "%s updated",
+	'event_calendar:river:annotated1' => "%s added",
 	'event_calendar:river:annotated2' => "to his/her personal calendar.",
+	'event_calendar:river:create' => "a new event titled",
+	'event_calendar:river:the_event' => "an event titled",
 
-	//these get inserted into the river links to take the user to the entity
-    'event_calendar:river:create' => "a new event titled",
-    'event_calendar:river:the_event' => "an event titled",
+);
 
-	);
-
-	add_translation("en",$english);
-
-?>
+add_translation("en",$english);

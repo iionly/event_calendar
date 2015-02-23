@@ -1,4 +1,5 @@
 <?php
+
 // generate a list of filter tabs
 $group_guid = $vars['group_guid'];
 $filter_context = $vars['filter'];
@@ -30,9 +31,6 @@ if (elgg_is_logged_in()) {
 		'selected' => ($filter_context == 'friends'),
 		'priority' => 400,
 	);
-	$text_bit = '<li class="event-calendar-filter-menu-show-only">'.elgg_echo('event_calendar:show_only').'</li>';
-} else {
-	$text_bit = '';
 }
 
 $tab_rendered = array();
@@ -56,17 +54,12 @@ foreach ($tabs as $name => $tab) {
 		$state_selected = '';
 	}
 	$tab_rendered[$name] = '<li'.$state_selected.'><a href="'.elgg_normalize_url($tab['href']).'">'.$tab['text'].'</a></li>';
-	
-	//elgg_register_menu_item('filter', $tab);
 }
-
-//echo elgg_view_menu('filter', array('sort_by' => 'priority', 'class' => 'elgg-menu-hz'));
 
 $menu = <<<__MENU
 <ul class="elgg-menu elgg-menu-filter elgg-menu-hz elgg-menu-filter-default">
 	{$tab_rendered['open']}
 	{$tab_rendered['all']}
-	$text_bit
 	{$tab_rendered['mine']}
 	{$tab_rendered['friend']}
 </ul>
@@ -78,5 +71,5 @@ $event_calendar_region_display = elgg_get_plugin_setting('region_display', 'even
 if ($event_calendar_region_display == 'yes') {
 	elgg_load_js("elgg.event_calendar");
 	$url_start .= "/$filter_context";
-	echo elgg_view('event_calendar/region_select',array('url_start'=>$url_start,'region'=>$vars['region']));
+	echo elgg_view('event_calendar/region_select', array('url_start' => $url_start, 'region' => $vars['region']));
 }
