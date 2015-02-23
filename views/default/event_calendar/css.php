@@ -1,6 +1,4 @@
 <?php
-//$background_colour = '#EBF1EB';
-//$highlight_colour = '#478787';
 
 $background_colour = '#F5F5F5';
 $highlight_colour = '#3874B7';
@@ -287,6 +285,6 @@ li.event-calendar-filter-menu-show-only {
 }
 
 .event-calendar-repeat-section {
-  padding-top: 15px;
-  clear: both;
+	padding-top: 15px;
+	clear: both;
 }
