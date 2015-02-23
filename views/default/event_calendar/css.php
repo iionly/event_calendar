@@ -179,6 +179,7 @@ li.event-calendar-filter-menu-show-only {
 	margin-top: 5px;
 }
 
+.event-calendar-edit-form-other-block .mceLayout,
 .event-calendar-edit-form-other-block .mce-tinymce  {
 	float:none;
 	clear:both;
