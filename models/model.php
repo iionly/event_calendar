@@ -284,8 +284,6 @@ function event_calendar_merge_repeating_events($events, $repeating_events) {
 		}
 	}
 
-	error_log ("non repeating: " . print_r($non_repeating_events, true));
-
 	return array_merge($non_repeating_events, $repeating_events);
 }
 
