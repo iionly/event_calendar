@@ -1187,12 +1187,6 @@ function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_
 	}
 }
 
-function event_calendar_security_fields() {
-	$ts = time();
-	$token = generate_action_token($ts);
-	return "__elgg_token=$token&__elgg_ts=$ts";
-}
-
 function event_calendar_get_events_for_group($group_guid, $limit = 0) {
 	$options = array(
 		'type' => 'object',
