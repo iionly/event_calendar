@@ -179,12 +179,11 @@ li.event-calendar-filter-menu-show-only {
 	margin-top: 5px;
 }
 
-.event-calendar-long-text {
-	width: 500px !important;
-}
-
-.event-calendar-edit-form-other-block .mceLayout  {
-	width: 500px !important;
+.event-calendar-edit-form-other-block .mceLayout,
+.event-calendar-edit-form-other-block .mce-tinymce  {
+	float:none;
+	clear:both;
+	width: 100% !important;
 }
 
 .event-calendar-edit-form {
@@ -192,7 +191,7 @@ li.event-calendar-filter-menu-show-only {
 }
 
 .event-calendar-edit-form-block {
-	width: 90%;
+	width: 98%;
 	background-color: #DDDDDD;
 	border-width:1px;
 	border-style:solid;
