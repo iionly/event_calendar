@@ -1,8 +1,6 @@
 <?php
 
 elgg_load_js('elgg.full_calendar');
-elgg_load_js('lightbox');
-elgg_load_css('lightbox');
 
 // TODO: is there an easy way to avoid embedding JS?
 ?>

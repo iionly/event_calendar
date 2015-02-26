@@ -1910,7 +1910,7 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 	return $params;
 }
 
-function event_calendar_get_page_content_view($event_guid, $light_box = false) {
+function event_calendar_get_page_content_view($event_guid) {
 	// add personal calendar button and links
 	elgg_push_context('event_calendar:view');
 	$event = get_entity($event_guid);
@@ -1934,22 +1934,18 @@ function event_calendar_get_page_content_view($event_guid, $light_box = false) {
 		}
 
 		elgg_push_breadcrumb($event->title);
-		$content = elgg_view_entity($event, array('full_view' => true, 'light_box'=>$light_box));
+		$content = elgg_view_entity($event, array('full_view' => true));
 		//check to see if comment are on - TODO - add this feature to all events
 		if ($event->comments_on != 'Off') {
 			$content .= elgg_view_comments($event);
 		}
 	}
 
-	if ($light_box) {
-		return '<div class="event-calendar-lightbox">'.elgg_view_title($title).$content.'</div>';
-	} else {
-		$params = array('title' => $title, 'content' => $content,'filter' => '');
+	$params = array('title' => $title, 'content' => $content,'filter' => '');
 
-		$body = elgg_view_layout("content", $params);
+	$body = elgg_view_layout("content", $params);
 
-		return elgg_view_page($title,$body);
-	}
+	return elgg_view_page($title,$body);
 }
 
 function event_calendar_get_page_content_display_users($event_guid) {
