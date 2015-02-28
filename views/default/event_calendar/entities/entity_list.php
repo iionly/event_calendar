@@ -18,18 +18,18 @@ $base_url = $vars['base_url'];
 $context = $vars['context'];
 $viewtype = $vars['viewtype'];
 $pagination = $vars['pagination'];
-$fullview = $vars['fullview'];
+$full_view = $vars['full_view'];
 
 $html = "";
 $nav = "";
 
-if (isset($vars['viewtypetoggle'])) {
-	$viewtypetoggle = $vars['viewtypetoggle'];
+if (isset($vars['list_type_toggle'])) {
+	$list_type_toggle = $vars['list_type_toggle'];
 } else {
-	$viewtypetoggle = true;
+	$list_type_toggle = true;
 }
 
-if ($context == "search" && $count > 0 && $viewtypetoggle) {
+if ($context == "search" && $count > 0 && $list_type_toggle) {
 	$nav .= elgg_view('navigation/viewtype', array(
 		'base_url' => $base_url,
 		'offset' => $offset,
@@ -51,7 +51,7 @@ $html .= $nav;
 if ($viewtype == 'list') {
 	if (is_array($entities) && sizeof($entities) > 0) {
 		foreach($entities as $entity) {
-			$html .= elgg_view_entity($entity, $fullview);
+			$html .= elgg_view_entity($entity, $full_view);
 		}
 	}
 } else {
