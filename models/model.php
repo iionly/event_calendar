@@ -294,7 +294,7 @@ function event_calendar_get_repeating_events_between($start_date, $end_date, $co
 		$options = array(
 			'type' => 'object',
 			'subtype' => 'event_calendar',
-			'limit' => 0,
+			'limit' => false,
 			'metadata_name_value_pairs' => array(
 												array(
 													'name' => 'start_date',
@@ -431,7 +431,7 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 		$options = array(
 			'type' => 'object',
 			'subtype' => 'event_calendar',
-			'limit' => 0,
+			'limit' => false,
 			'metadata_name_value_pairs' => array(
 												array(
 													'name' => 'start_date',
@@ -528,7 +528,7 @@ function event_calendar_get_events_for_user_between2($start_date, $end_date, $is
 }
 
 function event_calendar_get_repeating_events_for_user_between($user_guid, $start_date, $end_date, $container_guid, $region) {
-	$options = 	array(
+	$options = array(
 			'type' => 'object',
 			'subtype' => 'event_calendar',
 			'relationship' => 'personal_event',
@@ -1094,7 +1094,7 @@ function event_calendar_add_personal_events_from_group($event_guid, $group_guid)
 function event_calendar_remove_personal_event($event_guid, $user_guid) {
 	remove_entity_relationship($user_guid, 'personal_event', $event_guid);
 	// also use old method for now
-	$annotations = 	elgg_get_annotations(array(
+	$annotations = elgg_get_annotations(array(
 		'guid' => $event_guid,
 		'type' => "object",
 		'subtype' => "event_calendar",
@@ -1115,7 +1115,7 @@ function event_calendar_get_personal_events_for_user($user_guid, $limit) {
 		'subtype' => 'event_calendar',
 		'annotation_names' => 'personal_event',
 		'annotation_value' => $user_guid,
-		'limit' => 0,
+		'limit' => false,
 	));
 
 	$events_new_way = elgg_get_entities_from_relationship(array(
@@ -1123,7 +1123,7 @@ function event_calendar_get_personal_events_for_user($user_guid, $limit) {
 		'subtype' => 'event_calendar',
 		'relationship' => 'personal_event',
 		'relationship_guid' => $user_guid,
-		'limit' => 0,
+		'limit' => false,
 	));
 
 	$events = array_merge($events_old_way, $events_new_way);
@@ -1152,7 +1152,7 @@ function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_
 		'relationship' => 'personal_event',
 		'relationship_guid' => $event_guid,
 		'inverse_relationship' => true,
-		'limit' => 0,
+		'limit' => false,
 	);
 	if ($is_count) {
 		$count_old_way = elgg_get_annotations(array(
@@ -1447,7 +1447,7 @@ function event_calendar_get_end_time($event) {
 }
 
 // a version to allow for some customised options
-function event_calendar_view_entity_list($entities, $count, $offset, $limit, $fullview = true, $viewtypetoggle = true, $pagination = true) {
+function event_calendar_view_entity_list($entities, $count, $offset, $limit, $full_view = true, $list_type_toggle = true, $pagination = true) {
 	$count = (int) $count;
 	$limit = (int) $limit;
 
@@ -1464,9 +1464,9 @@ function event_calendar_view_entity_list($entities, $count, $offset, $limit, $fu
 		'offset' => $offset,
 		'limit' => $limit,
 		'base_url' => $_SERVER['REQUEST_URI'],
-		'fullview' => $fullview,
+		'full_view' => $full_view,
 		'context' => $context,
-		'viewtypetoggle' => $viewtypetoggle,
+		'list_type_toggle' => $list_type_toggle,
 		'viewtype' => get_input('search_viewtype','list'),
 		'pagination' => $pagination
 	));
@@ -2085,7 +2085,7 @@ function event_calendar_get_page_content_review_requests($event_guid) {
 				'relationship' => 'event_calendar_request',
 				'relationship_guid' => $event_guid,
 				'inverse_relationship' => true,
-				'limit' => 0)
+				'limit' => false)
 			);
 			if ($requests) {
 				$content = elgg_view('event_calendar/review_requests', array('requests' => $requests, 'entity' => $event));
@@ -2273,7 +2273,7 @@ function event_calendar_queue_reminders() {
 				array('name' => 'send_reminder', 'value' => 1),
 				array('name' => 'start_date', 'value' => $now + 60*24*60*60, 'operand' => '>='),
 			),
-			'limit' => 0,
+			'limit' => false,
 		);
 		$events = elgg_get_entities_from_metadata($options);
 		*/
