@@ -7,6 +7,10 @@
 - Updated to version 1.6.4 of FullCalendar jQuery plugin
 - No longer use lightbox popup for detailed event view in full calendar view (wasn't correctly working anyway)
 - Correctly display html editor (Tinymce) for longtext input fields both with the bundled Tinymce editor plugin and a Tinymce plugin that uses version 4.X of the Tinymce editor
+- It's now possible to translate the calendar UI
+- Uses default userpicker instead of custom one
+- Adds Finnish translations
+- Adds Japanese translations
 
 === 0.85 ===
 
