@@ -8,7 +8,7 @@ foreach($users as $user) {
 }
 
 // TODO: if the event container is a group need to restrict user picker to the members of the group?
-$content = elgg_view('input/userpicker_plus', array('value' => $guids));
+$content = elgg_view('input/userpicker', array('value' => $guids));
 $content .= '<br /><br />';
 $content .= elgg_view('input/hidden', array('name' => 'event_guid', 'value' => $event->guid));
 $content .= elgg_view('input/submit', array('value' => elgg_echo('submit'),'name' => 'submit_manage_subscribers', 'id' => 'submit-manage-subscribers'));
