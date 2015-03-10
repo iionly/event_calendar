@@ -11,18 +11,6 @@
  *
  */
 
-function event_calendar_get_event_for_edit($event_id) {
-	if ($event_id && $event = get_entity($event_id)) {
-		if ($event->canEdit()) {
-			return $event;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
-	}
-}
-
 // converts to time in minutes since midnight
 function event_calendar_convert_to_time($hour, $minute, $meridian) {
 	if ($meridian) {
