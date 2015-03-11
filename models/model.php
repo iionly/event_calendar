@@ -779,9 +779,9 @@ function event_calendar_get_entities_from_metadata_between($meta_start_name, $me
 	foreach ($where as $w) {
 		$query .= " $w and ";
 	}
-	$query .= get_access_sql_suffix("e"); // Add access controls
-	$query .= ' and ' . get_access_sql_suffix("m"); // Add access controls
-	$query .= ' and ' . get_access_sql_suffix("m2"); // Add access controls
+	$query .= _elgg_get_access_where_sql(array('table_alias' => "e")); // Add access controls
+	$query .= ' and ' . _elgg_get_access_where_sql(array('table_alias' => "m")); // Add access controls
+	$query .= ' and ' . _elgg_get_access_where_sql(array('table_alias' => "m2")); // Add access controls
 
 	if (!$count) {
 		$query .= " order by $order_by";
@@ -998,9 +998,9 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 	foreach ($where as $w) {
 		$query .= " $w AND ";
 	}
-	$query .= get_access_sql_suffix("e"); // Add access controls
-	$query .= ' AND ' . get_access_sql_suffix("m"); // Add access controls
-	$query .= ' AND ' . get_access_sql_suffix("m2"); // Add access controls
+	$query .= _elgg_get_access_where_sql(array('table_alias' => "e")); // Add access controls
+	$query .= ' AND ' . _elgg_get_access_where_sql(array('table_alias' => "m")); // Add access controls
+	$query .= ' AND ' . _elgg_get_access_where_sql(array('table_alias' => "m2")); // Add access controls
 
 	if (!$count) {
 		$query .= " order by $order_by";
