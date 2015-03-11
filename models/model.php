@@ -1505,7 +1505,7 @@ function event_calendar_get_page_content_list($page_type, $container_guid, $star
 				'name' => 'add',
 				'href' => "event_calendar/add/".$container_guid,
 				'text' => elgg_echo('event_calendar:add'),
-				'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+				'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 			));
 		}
 	} else {
@@ -1516,7 +1516,7 @@ function event_calendar_get_page_content_list($page_type, $container_guid, $star
 				'name' => 'add',
 				'href' => "event_calendar/add",
 				'text' => elgg_echo('event_calendar:add'),
-				'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+				'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 			));
 		}
 	}
@@ -1992,13 +1992,13 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 					'name' => 'remove_from_group_members',
 					'href' => elgg_add_action_tokens_to_url('action/event_calendar/remove_from_group_members?event_guid='.$event_guid),
 					'text' => elgg_echo('event_calendar:remove_from_group_members:button'),
-					'class' => 'elgg-button elgg-button-action',
+					'link_class' => 'elgg-button elgg-button-action',
 				));
 				elgg_register_menu_item('title', array(
 					'name' => 'add_to_group_members',
 					'href' => elgg_add_action_tokens_to_url('action/event_calendar/add_to_group_members?event_guid='.$event_guid),
 					'text' => elgg_echo('event_calendar:add_to_group_members:button'),
-					'class' => 'elgg-button elgg-button-action',
+					'link_class' => 'elgg-button elgg-button-action',
 				));
 				$users = $event_container->getMembers($limit, $offset);
 				$count = $event_container->getMembers($limit, $offset, true);
