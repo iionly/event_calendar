@@ -17,12 +17,10 @@ function event_calendar_init() {
 	elgg_register_library('elgg:event_calendar', elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 	elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
+	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
 
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('event_calendar', 'event_calendar_page_handler');
-
-	// Register URL handler
-	elgg_register_entity_url_handler('object', 'event_calendar', 'event_calendar_url');
 
 	// Register granular notification for this type
 	register_notification_object('object', 'event_calendar', elgg_echo('event_calendar:new_event'));
@@ -127,7 +125,22 @@ function event_calendar_owner_block_menu($hook, $type, $return, $params) {
 	return $return;
 }
 
-function event_calendar_url($entity) {
+/**
+ * Set url for event_calendar objects
+ *
+ * @param string $hook   entity:url
+ * @param string $type   object
+ * @param string $url    Current URL
+ * @param array  $params Hook parameters
+ * @return string The URL
+ */
+function event_calendar_url($hook, $type, $url, $params) {
+	$entity = $params['entity'];
+
+	if (!elgg_instanceof($entity, 'object', 'event_calendar')) {
+		return $url;
+	}
+
 	$friendly_title = elgg_get_friendly_title($entity->title);
 	return "event_calendar/view/{$entity->guid}/$friendly_title";
 }
