@@ -379,8 +379,8 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 	$annotation_name = 'personal_event';
 	$joins = array();
 	$wheres = array();
-	$meta_max_n = get_metastring_id($meta_max);
-	$ann_n = get_metastring_id($annotation_name);
+	$meta_max_n = elgg_get_metastring_id($meta_max);
+	$ann_n = elgg_get_metastring_id($annotation_name);
 	if (!$meta_max_n || !$ann_n) {
 		if ($count) {
 			return 0;
@@ -676,11 +676,11 @@ function event_calendar_get_entities_from_metadata_between($meta_start_name, $me
 		return false;
 	}
 
-	$meta_start_n = get_metastring_id($meta_start_name);
-	$meta_end_n = get_metastring_id($meta_end_name);
+	$meta_start_n = elgg_get_metastring_id($meta_start_name);
+	$meta_end_n = elgg_get_metastring_id($meta_end_name);
 	if ($region && $region != '-') {
-		$region_n = get_metastring_id('region');
-		$region_value_n = get_metastring_id($region);
+		$region_n = elgg_get_metastring_id('region');
+		$region_value_n = elgg_get_metastring_id($region);
 		if (!$region_n || !$region_value_n) {
 			if ($count) {
 				return 0;
@@ -875,11 +875,11 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 		return false;
 	}
 
-	$meta_start_n = get_metastring_id($meta_start_name);
-	$meta_end_n = get_metastring_id($meta_end_name);
+	$meta_start_n = elgg_get_metastring_id($meta_start_name);
+	$meta_end_n = elgg_get_metastring_id($meta_end_name);
 	if ($region && $region != '-') {
-		$region_n = get_metastring_id('region');
-		$region_value_n = get_metastring_id($region);
+		$region_n = elgg_get_metastring_id('region');
+		$region_value_n = elgg_get_metastring_id($region);
 		if (!$region_n || !$region_value_n) {
 			if ($count) {
 				return 0;
@@ -977,8 +977,8 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 		// This groups events for which the meta max name is defined
 		// perhaps this should be a left join and accept null values?
 		// so it would return groups with no spots defined as well
-		$meta_max_n = get_metastring_id($meta_max);
-		$ann_n = get_metastring_id($annotation_name);
+		$meta_max_n = elgg_get_metastring_id($meta_max);
+		$ann_n = elgg_get_metastring_id($annotation_name);
 		if (!$meta_max_n || !$ann_n) {
 			if ($count) {
 				return 0;
