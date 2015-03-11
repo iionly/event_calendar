@@ -217,27 +217,6 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 		if ($group_guid && (elgg_get_plugin_setting('autogroup', 'event_calendar') == 'yes')) {
 			event_calendar_add_personal_events_from_group($event->guid, $group_guid);
 		}
-		if (elgg_get_plugin_setting('add_users', 'event_calendar') == 'yes') {
-			if (function_exists('autocomplete_member_to_user')) {
-				$addusers = get_input('adduser', array());
-				foreach($addusers as $adduser) {
-					if ($adduser) {
-						$user = autocomplete_member_to_user($adduser);
-						$user_id = $user->guid;
-						event_calendar_add_personal_event($event->guid, $user_id);
-						if (elgg_get_plugin_setting('add_users_notify', 'event_calendar') == 'yes') {
-							notify_user($user_id, elgg_get_site_entity()->guid, elgg_echo('event_calendar:add_users_notify:subject'),
-								elgg_echo('event_calendar:add_users_notify:body', array(
-									$user->name,
-									$event->title,
-									$event->getURL()
-								))
-							);
-						}
-					}
-				}
-			}
-		}
 	}
 	return $event;
 }
