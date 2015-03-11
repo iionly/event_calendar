@@ -119,5 +119,14 @@ $spanish = array (
 	'event_calendar:river:annotated2' => 'a su calendario personal.',
 	'event_calendar:river:create' => 'un nuevo evento titulado',
 	'event_calendar:river:the_event' => 'un evento titulado',
+
+	// Notifications
+	'event_calendar:notify:subject' => 'New event: %s',
+	'event_calendar:notify:body' => '%s has created a new event: %s
+
+%s
+
+%s',
+	'event_calendar:notify:summary' => 'New event: %s',
 );
 add_translation("es", $spanish);

@@ -352,6 +352,14 @@ You can visit the event page here:
 	'event_calendar:river:create' => "a new event titled",
 	'event_calendar:river:the_event' => "an event titled",
 
+	// Notifications
+	'event_calendar:notify:subject' => 'New event: %s',
+	'event_calendar:notify:body' => '%s has created a new event: %s
+
+%s
+
+%s',
+	'event_calendar:notify:summary' => 'New event: %s',
 );
 
 add_translation("en",$english);

@@ -352,6 +352,14 @@ You can visit the event page here:
 	'event_calendar:river:create' => "tapahtuman",
 	'event_calendar:river:the_event' => "tapahtuman",
 
+	// Notifications
+	'event_calendar:notify:subject' => 'Uusi tapahtuma: %s',
+	'event_calendar:notify:body' => '%s lisäsi uuden tapahtuman: %s
+
+%s
+
+%s',
+	'event_calendar:notify:summary' => 'Uusi tapahtuma: %s',
 );
 
 add_translation("fi", $finnish);

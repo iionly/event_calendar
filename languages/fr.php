@@ -120,5 +120,14 @@ $french = array (
 	'event_calendar:river:annotated2' => 'à son agenda personnel.',
 	'event_calendar:river:create' => 'un nouvel événement intitulé',
 	'event_calendar:river:the_event' => 'un événement intitulé',
+
+	// Notifications
+	'event_calendar:notify:subject' => 'New event: %s',
+	'event_calendar:notify:body' => '%s has created a new event: %s
+
+%s
+
+%s',
+	'event_calendar:notify:summary' => 'New event: %s',
 );
 add_translation("fr", $french);

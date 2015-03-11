@@ -18,12 +18,13 @@ function event_calendar_init() {
 
 	elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
 	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
+	elgg_register_plugin_hook_handler('prepare', 'notification:create:object:event_calendar', 'event_calendar_prepare_notification');
 
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('event_calendar', 'event_calendar_page_handler');
 
-	// Register granular notification for this type
-	register_notification_object('object', 'event_calendar', elgg_echo('event_calendar:new_event'));
+	// Register granular notification
+	elgg_register_notification_event('object', 'event_calendar', array('create'));
 
 	// Set up site menu
 	$site_calendar = elgg_get_plugin_setting('site_calendar', 'event_calendar');
@@ -419,6 +420,37 @@ function event_calendar_invalidate_cache($hook, $type, $return, $params){
   if(isset($params["plugin"]) && ($params["plugin"]->getID() == "event_calendar")){
     elgg_invalidate_simplecache();
   }
+}
+
+/**
+ * Prepare a notification message about a new event
+ *
+ * @param string $hook         Hook name
+ * @param string $type         Hook type
+ * @param object $notification The notification to prepare
+ * @param array  $params       Hook parameters
+ * @return object Modified notification
+ */
+function event_calendar_prepare_notification($hook, $type, $notification, $params) {
+    $entity = $params['event']->getObject();
+    $owner = $params['event']->getActor();
+    $language = $params['language'];
+
+    // Title for the notification
+    $notification->subject = elgg_echo('event_calendar:notify:subject', array($entity->title), $language);
+
+    // Message body for the notification
+    $notification->body = elgg_echo('event_calendar:notify:body', array(
+        $owner->name,
+        $entity->title,
+        $entity->description,
+        $entity->getURL()
+    ), $language);
+
+    // The summary text is used e.g. by the site_notifications plugin
+    $notification->summary = elgg_echo('event_calendar:notify:summary', array($entity->title), $language);
+
+    return $notification;
 }
 
 elgg_register_plugin_hook_handler("setting", "plugin", "event_calendar_invalidate_cache");
