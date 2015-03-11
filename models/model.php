@@ -2360,9 +2360,6 @@ function event_calendar_bbb_api($api_function, $params=null) {
 	    // close curl resource to free up system resources
 	    curl_close($ch);
 
-	    error_log("BBB api call: ".$api_function);
-	    error_log(print_r($params, true));
-	    error_log("BBB response: \n".$output);
 		return $output;
 	} else {
 		return false;
