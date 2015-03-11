@@ -25,16 +25,26 @@ if ($event) {
 	elgg_clear_sticky_form('event_calendar');
 	$user_guid = elgg_get_logged_in_user_guid();
 	if ($event_guid) {
-		add_to_river('river/object/event_calendar/update', 'update', $user_guid, $event_guid);
+		$action = 'update';
+
 		system_message(elgg_echo('event_calendar:manage_event_response'));
 	} else {
+		$action = 'create';
+
 		$event_calendar_autopersonal = elgg_get_plugin_setting('autopersonal', 'event_calendar');
 		if (!$event_calendar_autopersonal || ($event_calendar_autopersonal == 'yes')) {
 			event_calendar_add_personal_event($event->guid, $user_guid);
 		}
-		add_to_river('river/object/event_calendar/create', 'create', $user_guid, $event->guid);
+
 		system_message(elgg_echo('event_calendar:add_event_response'));
 	}
+
+	elgg_create_river_item(array(
+		'view' => "river/object/event_calendar/$action",
+		'action_type' => $action,
+		'subject_guid' => $user_guid,
+		'object_guid' => $event->guid,
+	));
 
 	if ($event->schedule_type == 'poll') {
 		forward('event_poll/add/'.$event->guid);
