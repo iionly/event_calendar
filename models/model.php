@@ -11,18 +11,6 @@
  *
  */
 
-function event_calendar_get_event_for_edit($event_id) {
-	if ($event_id && $event = get_entity($event_id)) {
-		if ($event->canEdit()) {
-			return $event;
-		} else {
-			return false;
-		}
-	} else {
-		return false;
-	}
-}
-
 // converts to time in minutes since midnight
 function event_calendar_convert_to_time($hour, $minute, $meridian) {
 	if ($meridian) {
@@ -228,27 +216,6 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 		}
 		if ($group_guid && (elgg_get_plugin_setting('autogroup', 'event_calendar') == 'yes')) {
 			event_calendar_add_personal_events_from_group($event->guid, $group_guid);
-		}
-		if (elgg_get_plugin_setting('add_users', 'event_calendar') == 'yes') {
-			if (function_exists('autocomplete_member_to_user')) {
-				$addusers = get_input('adduser', array());
-				foreach($addusers as $adduser) {
-					if ($adduser) {
-						$user = autocomplete_member_to_user($adduser);
-						$user_id = $user->guid;
-						event_calendar_add_personal_event($event->guid, $user_id);
-						if (elgg_get_plugin_setting('add_users_notify', 'event_calendar') == 'yes') {
-							notify_user($user_id, elgg_get_site_entity()->guid, elgg_echo('event_calendar:add_users_notify:subject'),
-								elgg_echo('event_calendar:add_users_notify:body', array(
-									$user->name,
-									$event->title,
-									$event->getURL()
-								))
-							);
-						}
-					}
-				}
-			}
 		}
 	}
 	return $event;
@@ -2255,55 +2222,62 @@ function event_calendar_flatten_event_structure($events) {
 	return $flattened;
 }
 
+/**
+ * Notify users before an event if the message_queue plugin is installed
+ *
+ * Game plan - get all events up to 60 days ahead with no reminder sent compute
+ * reminder period if <= current time, set reminder_queued flag and queue the
+ * notification message using the message_queue plugin.
+ */
 function event_calendar_queue_reminders() {
-	// game plan - get all events up to 60 days ahead
-	// with no reminder sent
-	// compute reminder period
-	// if <= current time, set reminder_queued flag and queue the
-	// notification message using the message_queue plugin
-	if (elgg_plugin_exists('message_queue')) {
-		$now = time();
-		// oops - this does not work for repeated events
-		// need extra stuff for that
-		/*$options = array(
-			'type' => 'object',
-			'subtype' => 'event_calendar',
-			'metadata_name_value_pairs' => array(
-				array('name' => 'reminder_queued', 'value' => 'no'),
-				array('name' => 'send_reminder', 'value' => 1),
-				array('name' => 'start_date', 'value' => $now + 60*24*60*60, 'operand' => '>='),
-			),
-			'limit' => false,
-		);
-		$events = elgg_get_entities_from_metadata($options);
-		*/
-		$event_list = event_calendar_get_events_between($now, $now + 60*24*60*60, false, 0);
+	if (!elgg_plugin_exists('message_queue')) {
+		return;
+	}
 
-		foreach($event_list as $es) {
-			$e = $es['event'];
-			if ($e->send_reminder) {
-				$reminder_period = 60*$e->reminder_interval*$e->reminder_number;
-				if ($e->repeats) {
-					// repeated events require more complex handing
-					foreach($es['data'] as $d) {
-						// if event falls in the reminder period
-						if ($d->start_time - $reminder_period >= $now) {
-							// and the reminder has not already been queued
-							if (!event_calendar_repeat_reminder_logged($e, $d->start_time)) {
-								// set the reminder queued flag
-								event_calendar_repeat_reminder_log($e, $d->start_time);
-								// queue the reminder for sending
-								event_calendar_queue_reminder($e);
-							}
-							break;
+	$now = time();
+
+	// TODO Add support for repeated events
+	/*
+	$options = array(
+		'type' => 'object',
+		'subtype' => 'event_calendar',
+		'metadata_name_value_pairs' => array(
+			array('name' => 'reminder_queued', 'value' => 'no'),
+			array('name' => 'send_reminder', 'value' => 1),
+			array('name' => 'start_date', 'value' => $now + 60*24*60*60, 'operand' => '>='),
+		),
+		'limit' => false,
+	);
+	$events = elgg_get_entities_from_metadata($options);
+	*/
+
+	$event_list = event_calendar_get_events_between($now, $now + 60*24*60*60, false, 0);
+
+	foreach($event_list as $es) {
+		$e = $es['event'];
+		if ($e->send_reminder) {
+			$reminder_period = 60 * $e->reminder_interval * $e->reminder_number;
+
+			if ($e->repeats) {
+				// repeated events require more complex handing
+				foreach($es['data'] as $d) {
+					// if event falls in the reminder period
+					if ($d->start_time - $reminder_period >= $now) {
+						// and the reminder has not already been queued
+						if (!event_calendar_repeat_reminder_logged($e, $d->start_time)) {
+							// set the reminder queued flag
+							event_calendar_repeat_reminder_log($e, $d->start_time);
+							// queue the reminder for sending
+							event_calendar_queue_reminder($e);
 						}
+						break;
 					}
-				} else {
-					// if this is just a normal non-repeated event, then we just need to set a flag and queue the reminder
-					if (($e->reminder_queued != 'yes') && ($e->start_date - $now <= $reminder_period)) {
-						$e->reminder_queued = 'yes';
-						event_calendar_queue_reminder($e);
-					}
+				}
+			} else {
+				// if this is just a normal non-repeated event, then we just need to set a flag and queue the reminder
+				if (($e->reminder_queued != 'yes') && ($e->start_date - $now <= $reminder_period)) {
+					$e->reminder_queued = 'yes';
+					event_calendar_queue_reminder($e);
 				}
 			}
 		}
