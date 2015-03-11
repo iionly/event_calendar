@@ -570,7 +570,10 @@ function event_calendar_get_repeating_events_for_friends_between($user_guid, $fr
 
 function event_calendar_get_events_for_friends_between($start_date, $end_date, $is_count, $limit=10, $offset=0, $user_guid, $container_guid=0, $region='-') {
 	if ($user_guid) {
-		$friends = get_user_friends($user_guid, "", 5000);
+		$user = get_user($user_guid);
+
+		$friends = $user->getFriends(array('limit' => false));
+
 		if ($friends) {
 			$friend_guids = array();
 			foreach($friends as $friend) {
