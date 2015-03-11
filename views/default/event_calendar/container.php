@@ -9,7 +9,9 @@ if (($site_calendar != 'no') && ($admin || !$site_calendar || ($site_calendar ==
 	$containers[0] = elgg_echo('event_calendar:site_calendar');
 }
 $user = elgg_get_logged_in_user_entity();
-$groups = $user->getGroups('', 0, 0);
+
+$groups = $user->getGroups(array('limit' => false));
+
 foreach ($groups as $group) {
 	if (event_calendar_activated_for_group($group)) {
 		if ($admin || !$group_calendar || $group_calendar == 'members') {
