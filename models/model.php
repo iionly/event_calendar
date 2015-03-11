@@ -1054,10 +1054,12 @@ function event_calendar_add_personal_event($event_guid, $user_guid) {
 }
 
 function event_calendar_add_personal_events_from_group($event_guid, $group_guid) {
-	$members = get_group_members($group_guid, 100000);
+	$group = get_entity($group_guid);
+
+	$members->getMembers(array('limit' => false));
+
 	foreach($members as $member) {
-		$member_id = $member->getGUID();
-		event_calendar_add_personal_event($event_guid, $member_id);
+		event_calendar_add_personal_event($event_guid, $member->guid);
 	}
 }
 
