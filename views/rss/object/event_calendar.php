@@ -10,7 +10,7 @@
  */
 
 	$title = $vars['entity']->title;
-	
+
 	$event_items = event_calendar_get_formatted_full_items($vars['entity']);
 	$items = array();
 	foreach($event_items as $item) {
@@ -18,11 +18,11 @@
 			$items[] = '<b>'.$item->title.'</b>: '.$item->value;
 		}
 	}
-	
+
 	$description = '<p>'.implode('<br />',$items).'</p>';
 
 	if ($vars['entity']->long_description) {
-		$description .= '<p>'.autop($vars['entity']->long_description).'</p>';
+		$description .= '<p>'.elgg_autop($vars['entity']->long_description).'</p>';
 	} else {
 		$description .=  '<p>'.$vars['entity']->description.'</p>';
 	}
