@@ -11,12 +11,7 @@ var goToDateFlag = 0;
 
 handleEventClick = function(event) {
 	if (event.url) {
-		if (event.is_event_poll) {
-			window.location.href = event.url;
-		} else {
-			//window.location.href = event.url;
-			$.colorbox({'href':event.url});
-		}
+		window.location.href = event.url;
 		return false;
 	}
 };
