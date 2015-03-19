@@ -16,7 +16,7 @@ elgg_load_library('elgg:event_calendar');
 $page_owner_entity = elgg_get_page_owner_entity();
 
 if (event_calendar_activated_for_group($page_owner_entity)) {
-	$num = 5;
+	$num = 4;
 	// Get the upcoming events
 	$start_date = time(); // now
 	$end_date = $start_date + 60*60*24*365*2; // maximum is two years from now
