@@ -52,11 +52,7 @@ function event_calendar_init() {
 	if (!$group_calendar || $group_calendar != 'no') {
 		elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'event_calendar_owner_block_menu');
 		$group_profile_display = elgg_get_plugin_setting('group_profile_display', 'event_calendar');
-		if (!$group_profile_display || $group_profile_display == 'right') {
-			elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
-		} else if ($group_profile_display == 'left') {
-			elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
-		}
+		elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
 	}
 
 	//add to the css
@@ -71,7 +67,16 @@ function event_calendar_init() {
 	}
 
 	//add a widget
-	elgg_register_widget_type('event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), 'all,groups');
+	elgg_register_widget_type('event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'));
+
+	// Index page and group profile page widgets and widget title urls if Widget Manager plugin is available
+	if (elgg_is_active_plugin('widget_manager')) {
+		//add index widget for Widget Manager plugin
+		elgg_register_widget_type('index_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), "index");
+		elgg_register_widget_type('groups_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), "groups");
+		//register title urls for widgets
+		elgg_register_plugin_hook_handler('widget_url', 'widget_manager', "event_calendar_widget_urls", 498);
+	}
 
 	// add the event calendar group tool option
 	$event_calendar_group_default = elgg_get_plugin_setting('group_default', 'event_calendar');
@@ -371,6 +376,32 @@ function event_calendar_entity_menu_prepare($hook, $type, $return, $params) {
 	}
 
 	return $return;
+}
+
+function event_calendar_widget_urls($hook_name, $entity_type, $return_value, $params){
+	$result = $return_value;
+	$widget = $params["entity"];
+
+	if(empty($result) && ($widget instanceof ElggWidget)) {
+		$owner = $widget->getOwnerEntity();
+
+		switch($widget->handler) {
+			case "event_calendar":
+				$result = "/event_calendar/owner/" . $owner->username;
+				break;
+			case "index_event_calendar":
+				$result = "/event_calendar/list";
+				break;
+			case "groups_event_calendar":
+				if($owner instanceof ElggGroup){
+					$result = "/event_calendar/group/" . $owner->guid;
+				} else {
+					$result = "/event_calendar/list";
+				}
+				break;
+		}
+	}
+	return $result;
 }
 
 function event_calendar_handle_join($event, $object_type, $object) {
