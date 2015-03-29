@@ -14,4 +14,16 @@
 		<type>elgg_release</type>
 		<version>1.8</version>
 	</requires>
+	<suggests>
+		<type>plugin</type>
+		<name>event_poll</name>
+	</suggests>
+	<suggests>
+		<type>plugin</type>
+		<name>message_queue</name>
+	</suggests>
+	<suggests>
+		<type>plugin</type>
+		<name>widget_manager</name>
+	</suggests>
 </plugin_manifest>
