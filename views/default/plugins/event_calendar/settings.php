@@ -255,7 +255,9 @@ if (!$event_calendar_personal_manage && $personal_manage == 'yes') {
 $body .= elgg_echo('event_calendar:settings:personal_manage:title');
 $body .= '<br />';
 $body .= elgg_view('input/radio', array('name' => 'params[personal_manage]', 'value' => $event_calendar_personal_manage, 'options' => $membership_options));
-$body .= '<p>'.elgg_echo('event_calendar:settings:personal_manage:description').'</p>';
+$body .= '<p class="elgg-subtext">'.elgg_echo('event_calendar:settings:personal_manage:description').'</p>';
+
+$body .= '<br />';
 
 $event_calendar_spots_display = elgg_get_plugin_setting('spots_display', 'event_calendar');
 if (!$event_calendar_spots_display) {
@@ -310,7 +312,7 @@ $body .= elgg_echo('event_calendar:settings:region_list:title');
 $body .= '<br />';
 $body .= elgg_view('input/plaintext', array('name' => 'params[region_list]', 'value' => $event_calendar_region_list));
 
-$body .= '<br />';
+$body .= '<br /><br />';
 
 $event_calendar_region_list_handles = elgg_get_plugin_setting('region_list_handles', 'event_calendar');
 if (!$event_calendar_region_list_handles) {
@@ -342,7 +344,7 @@ if (!$event_calendar_type_list) {
 $body .= elgg_echo('event_calendar:settings:type_list:title');
 $body .= '<br />';
 $body .= elgg_view('input/plaintext', array('name' => 'params[type_list]', 'value' => $event_calendar_type_list));
-$body .= '<p class="elgg-text-help">';
+$body .= '<p class="elgg-subtext">';
 $body .= elgg_echo('event_calendar:settings:type_list:desc');
 $body .= '</p>';
 
