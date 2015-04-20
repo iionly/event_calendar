@@ -1765,17 +1765,17 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 
 		if ($mode == "day") {
 			$end_ts = strtotime($end_date)+$day-1;
-			$subtitle = elgg_echo('event_calendar:day_label').': '.date('j F Y',strtotime($start_date));
+			$subtitle = elgg_echo('event_calendar:day_label_with_separator', array(date('j',strtotime($start_date)), elgg_echo("event_calendar:month:".date('m', strtotime($start_date))), date('Y',strtotime($start_date))));
 		} else if ($mode == "week") {
 			// KJ - fix for end date bug
 			//$end_ts = $start_ts + 6*$day;
 			$end_ts = $start_ts + 7*$day;
-			$subtitle = elgg_echo('event_calendar:week_label').': '.date('j F',$start_ts) . ' - '.date('j F Y',$end_ts);
+			$subtitle = elgg_echo('event_calendar:week_label_with_separator', array(date('j',$start_ts), elgg_echo("event_calendar:month:".date('m', $start_ts)), date('j',$end_ts), elgg_echo("event_calendar:month:".date('m', $end_ts)), date('Y',$end_ts)));
 		} else {
 			// KJ - fix for end date bug
 			//$end_ts = strtotime($end_date);
 			$end_ts = strtotime($end_date)+24*60*60-1;
-			$subtitle = date('F Y',$start_ts);
+			$subtitle = elgg_echo("event_calendar:month_label_with_separator", array(elgg_echo("event_calendar:month:".date('m', $start_ts)), date('Y', $start_ts)));
 		}
 	}
 
@@ -1797,12 +1797,12 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 				$user_guid = $container_guid;
 				$group_guid = 0;
 			} else {
-				register_error('event_calendar:owner:permissions_error');
+				register_error(elgg_echo('event_calendar:owner:permissions_error'));
 				forward();
 				exit;
 			}
 		} else {
-			register_error('event_calendar:owner:permissions_error');
+			register_error(elgg_echo('event_calendar:owner:permissions_error'));
 			forward();
 			exit;
 		}

@@ -10,11 +10,14 @@ $nav = elgg_view('navigation/pagination',array(
 $event_calendar_times = elgg_get_plugin_setting('times', 'event_calendar');
 $events = $vars['events'];
 $html = '';
-$date_format = 'j M Y';
+$date_format_day = 'j';
+$date_format_month = 'm';
+$date_format_year = 'Y';
 $current_date = '';
+
 if ($events) {
 	foreach($events as $event) {
-		$date = date($date_format, $event->start_date);
+		$date = date($date_format_day, $event->start_date) . ". " . elgg_echo("event_calendar:month:".date($date_format_month, $event->start_date)) . " " . date($date_format_year, $event->start_date);
 		if ($date != $current_date) {
 			if ($html) {
 				$html .= elgg_view('event_calendar/agenda_footer');
