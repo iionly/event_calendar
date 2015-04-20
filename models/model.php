@@ -245,13 +245,23 @@ function event_calendar_get_events_between($start_date, $end_date, $is_count=fal
 
 function event_calendar_merge_repeating_events($events, $repeating_events) {
 	$non_repeating_events = array();
-	foreach($events as $e) {
-		if ($e->repeats != 'yes') {
-			$non_repeating_events[] = array('event' => $e,'data' => array(array('start_time' => $e->start_date, 'end_time' => $e->real_end_time)));
+	if (is_array($events) && count($events) > 0) {
+		foreach($events as $e) {
+			if ($e->repeats != 'yes') {
+				$non_repeating_events[] = array('event' => $e,'data' => array(array('start_time' => $e->start_date, 'end_time' => $e->real_end_time)));
+			}
 		}
+		if (is_array($repeating_events) && count($repeating_events) > 0) {
+			if (count($non_repeating_events) > 0) {
+				return array_merge($non_repeating_events, $repeating_events);
+			} else {
+				return $repeating_events;
+			}
+		}
+	} else if (is_array($repeating_events) && count($repeating_events) > 0) {
+		return $repeating_events;
 	}
-
-	return array_merge($non_repeating_events, $repeating_events);
+	return $non_repeating_events;
 }
 
 function event_calendar_get_repeating_events_between($start_date, $end_date, $container_guid, $region) {
@@ -358,14 +368,12 @@ function event_calendar_get_repeating_event_structure($events, $start_date, $end
 	return $repeating_events;
 }
 
-function event_calendar_get_open_events_between($start_date, $end_date, $is_count, $limit=10, $offset=0, $container_guid=0, $region='-', $meta_max = 'spots', $annotation_name = 'personal_event') {
+function event_calendar_get_open_events_between($start_date, $end_date, $is_count=false, $limit=10, $offset=0, $container_guid=0, $region='-', $meta_max = 'spots', $relationship_name = 'personal_event') {
 	if ($is_count) {
-		$count = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date',
-		$start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, true, $region, $meta_max, $annotation_name);
+		$count = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, true, $region, $meta_max, $relationship_name);
 		return $count;
 	} else {
-		$events = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date',
-		$start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, false, $region, $meta_max, $annotation_name);
+		$events = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, false, $region, $meta_max, $relationship_name);
 		//return event_calendar_vsort($events,'start_date');
 		$repeating_events = event_calendar_get_open_repeating_events_between($start_date, $end_date, $container_guid, $region);
 		$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
@@ -376,12 +384,11 @@ function event_calendar_get_open_events_between($start_date, $end_date, $is_coun
 function event_calendar_get_open_repeating_events_between($start_date, $end_date, $container_guid, $region) {
 	$db_prefix = elgg_get_config('dbprefix');
 	$meta_max = 'spots';
-	$annotation_name = 'personal_event';
+	$relationship_name = 'personal_event';
 	$joins = array();
 	$wheres = array();
 	$meta_max_n = get_metastring_id($meta_max);
-	$ann_n = get_metastring_id($annotation_name);
-	if (!$meta_max_n || !$ann_n) {
+	if (!$meta_max_n) {
 		if ($count) {
 			return 0;
 		} else {
@@ -389,9 +396,9 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 		}
 	}
 
-	$joins[] = "LEFT JOIN {$dbprefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name_id=$meta_max_n) ";
-	$joins[] = "LEFT JOIN {$dbprefix}metastrings ms4 ON (m4.value_id = ms4.id) ";
-	$wheres[] = "((ms4.string is null) OR (ms4.string = \"\") OR (CONVERT(ms4.string,SIGNED) > (SELECT count(id) FROM {$dbprefix}annotations ann WHERE ann.entity_guid = e.guid AND name_id = $ann_n GROUP BY entity_guid)))";
+	$joins[] = "LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name_id = $meta_max_n) ";
+	$joins[] = "LEFT JOIN {$db_prefix}metastrings ms4 ON (m4.value_id = ms4.id) ";
+	$wheres[] = "((ms4.string is null) OR (ms4.string = \"\") OR (CONVERT(ms4.string,SIGNED) > (SELECT count(id) FROM {$db_prefix}entity_relationships rela WHERE rela.guid_two = e.guid AND rela.relationship = \"{$relationship_name}\" GROUP BY rela.guid_two)))";
 
 	// sanity check
 	if ($start_date <= $end_date) {
@@ -861,14 +868,14 @@ function event_calendar_get_entities_from_metadata_between_related($meta_start_n
  * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
  * @param boolean $filter Filter by events in personal calendar if true
  * @param true|false $count If set to true, returns the total number of entities rather than a list. (Default: false)
- * @param string $meta_max metadata name containing maximum annotation count
- * @param string $annotation_name annotation name to count
+ * @param string $meta_max metadata name containing maximum relationship count
+ * @param string $relationship_name relationship name to count
  *
  * @return int|array A list of entities, or a count if $count is set to true
  *
  * TODO: see if the new API is robust enough to avoid this custom query
  */
-function event_calendar_get_entities_from_metadata_between2($meta_start_name, $meta_end_name, $meta_start_value, $meta_end_value, $entity_type="", $entity_subtype="", $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $order_by="", $site_guid=0, $filter=false, $count=false, $region='-', $meta_max='', $annotation_name='') {
+function event_calendar_get_entities_from_metadata_between2($meta_start_name, $meta_end_name, $meta_start_value, $meta_end_value, $entity_type="", $entity_subtype="", $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $order_by="", $site_guid=0, $filter=false, $count=false, $region='-', $meta_max='', $relationship_name='') {
 
 	// This should not be possible, but a sanity check just in case
 	if (!is_numeric($meta_start_value) || !is_numeric($meta_end_value)) {
@@ -973,23 +980,21 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 	if ($region && $region != '-') {
 		$query .= "JOIN {$db_prefix}metadata m3 ON (e.guid = m3.entity_guid) ";
 	}
-	if ($meta_max && $annotation_name) {
+	if ($meta_max && $relationship_name) {
 		// This groups events for which the meta max name is defined
 		// perhaps this should be a left join and accept null values?
 		// so it would return groups with no spots defined as well
 		$meta_max_n = get_metastring_id($meta_max);
-		$ann_n = get_metastring_id($annotation_name);
-		if (!$meta_max_n || !$ann_n) {
+		if (!$meta_max_n) {
 			if ($count) {
 				return 0;
 			} else {
 				return false;
 			}
 		}
-
-		$query .= " LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name_id=$meta_max_n) ";
+		$query .= " LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name_id = $meta_max_n) ";
 		$query .= " LEFT JOIN {$db_prefix}metastrings ms4 ON (m4.value_id = ms4.id) ";
-		$where[] = "((ms4.string is null) OR (ms4.string = \"\") OR (CONVERT(ms4.string,SIGNED) > (SELECT count(id) FROM {$db_prefix}annotations ann WHERE ann.entity_guid = e.guid AND name_id = $ann_n GROUP BY entity_guid)))";
+		$where[] = "((ms4.string is null) OR (ms4.string = \"\") OR (CONVERT(ms4.string,SIGNED) > (SELECT count(id) FROM {$db_prefix}entity_relationships rela WHERE rela.guid_two = e.guid AND rela.relationship = \"{$relationship_name}\" GROUP BY rela.guid_two)))";
 	}
 	$query .= "JOIN {$db_prefix}metastrings v on v.id = m.value_id JOIN {$db_prefix}metastrings v2 on v2.id = m2.value_id where";
 	foreach ($where as $w) {
@@ -1814,14 +1819,8 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 	$offset = get_input('offset');
 	$limit = get_input('limit',15);
 
-	if ($event_calendar_spots_display == 'yes') {
-		if (!$filter) {
-			$filter = 'open';
-		}
-	} else {
-		if (!$filter) {
+	if (!$filter) {
 			$filter = 'all';
-		}
 	}
 
 	if ($filter == 'all') {
