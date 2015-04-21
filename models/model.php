@@ -243,25 +243,32 @@ function event_calendar_get_events_between($start_date, $end_date, $is_count=fal
 	}
 }
 
+// Merge non-repeating events found within a period of time with repeating events found within that time
+// but do not return duplicates event entries.
+// It also has to be taken care of that there might be no (non-repeating) events within that time but repeating events or
+// that there might be events but no repeating events or that there are neither events nor repeating events in the corresponding
+// function parameter variables.
 function event_calendar_merge_repeating_events($events, $repeating_events) {
-	$non_repeating_events = array();
-	if (is_array($events) && count($events) > 0) {
+	$non_repeating_events = array(); // temp array to collect non-repeating events
+	if (is_array($events) && count($events) > 0) { // do we have any events?
 		foreach($events as $e) {
-			if ($e->repeats != 'yes') {
+			if ($e->repeats != 'yes') { // is it non-repeating?
 				$non_repeating_events[] = array('event' => $e,'data' => array(array('start_time' => $e->start_date, 'end_time' => $e->real_end_time)));
 			}
 		}
-		if (is_array($repeating_events) && count($repeating_events) > 0) {
-			if (count($non_repeating_events) > 0) {
-				return array_merge($non_repeating_events, $repeating_events);
+		if (is_array($repeating_events) && count($repeating_events) > 0) { // do we have also repeating events?
+			if (count($non_repeating_events) > 0) { // anything to merge?
+				return array_merge($non_repeating_events, $repeating_events); // return merged array of non-repeating and repeating events
 			} else {
-				return $repeating_events;
+				return $repeating_events; // only repeating events, so return only these
 			}
 		}
-	} else if (is_array($repeating_events) && count($repeating_events) > 0) {
-		return $repeating_events;
+	} else if (is_array($repeating_events) && count($repeating_events) > 0) { // do we have at least repeating events after we have no non-repeating events?
+		return $repeating_events; // then return the array of the repeating events
 	}
-	return $non_repeating_events;
+	// if we got here we have either only non-repeating events (then return them)
+	// or we have neither non-repeating nor repeating events and the temp array is still empty so return the empty temp array
+	return $non_repeating_events; 
 }
 
 function event_calendar_get_repeating_events_between($start_date, $end_date, $container_guid, $region) {
