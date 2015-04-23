@@ -1,5 +1,17 @@
 <?php
 
+if (event_calendar_is_upgrade_available()) {
+	echo '<div class="elgg-admin-notices">';
+	echo '<p>';
+	echo elgg_view('output/url', array(
+		'text' => elgg_echo('event_calendar:upgrade'),
+		'href' => 'action/event_calendar/upgrade',
+		'is_action' => true,
+	));
+	echo '</p>';
+	echo '</div>';
+}
+
 $yn_options = array(elgg_echo('event_calendar:settings:yes') => 'yes',
 	elgg_echo('event_calendar:settings:no') => 'no',
 );

@@ -2518,3 +2518,26 @@ function event_calendar_map_type_to_color($type_name) {
 
 	return false;
 }
+
+/**
+ * Are there upgrade scripts to be run?
+ *
+ * @return bool
+ */
+function event_calendar_is_upgrade_available() {
+	// sets $version based on code
+	require_once elgg_get_plugins_path() . "event_calendar/version.php";
+
+	$local_version = elgg_get_plugin_setting('version', 'event_calendar');
+	if ($local_version === null) {
+		// set initial version for new install
+		elgg_set_plugin_setting('version', $version, 'event_calendar');
+		$local_version = $version;
+	}
+
+	if ($local_version == $version) {
+		return false;
+	} else {
+		return true;
+	}
+}

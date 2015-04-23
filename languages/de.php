@@ -61,11 +61,15 @@ $german = array(
 	'event_calendar:removed_from_the_calendar' => "Das Event wurde aus dem Kalender entfernt.",
 	'event_calendar:add_to_the_calendar_error' => "Dieses Event konnte nicht zum persönlichen Kalender dieses Mitglieds hinzugefügt werden (vielleicht ist das Event bereits ausgebucht oder es findet zu einer Zeit statt, zu der bereits ein anderes Event im persönlichen Kalender dieses Mitglieds eingetragen ist).",
 
+	'event_calendar:upgrade:success' => "Die Aktualisierung des Event Calendar-Plugins war erfolgreich.",
+	'event_calendar:upgrade:no_updates' => "Es ist keine Aktualisierung notwendig.",
+
 	'event_calendar:users_for_event_menu_title' => "Mitglieder mit diesem Event in ihrem persönlichen Kalender",
 	'event_calendar:users_for_event_title' => "Persönliche Kalender für \"%s'\"",
 	'event_calendar:personal_event_calendars_link' => "In %s Kalendern",
 	'event_calendar:personal_event_calendars_link_one' => "In 1 Kalender",
 	'event_calendar:users_for_event_breadcrumb' => "Persönliche Kalender",
+	'event_calendar:upgrade' => "Aktualisieren",
 	'event_calendar:settings:times:title' => "Anfangs- und Endzeiten zusätzlich zum Datum des Events anzeigen?",
 	'event_calendar:settings:autopersonal:title' => "Events automatisch in den persönlichen Kalender des Benutzers eintragen, der das Event hinzufügt?",
 	'event_calendar:settings:autogroup:title' => "Gruppen-Events automatisch in die persönlichen Kalender aller Gruppenmitglieder eintragen?",
