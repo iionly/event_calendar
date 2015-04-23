@@ -224,12 +224,10 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 function event_calendar_get_events_between($start_date, $end_date, $is_count=false, $limit=10, $offset=0, $container_guid=0, $region='-') {
 	$polls_supported = elgg_is_active_plugin('event_poll');
 	if ($is_count) {
-		$count = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date',
-		$start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, true, $region);
+		$count = event_calendar_get_entities_from_metadata_between('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, true, $region);
 		return $count;
 	} else {
-		$events = event_calendar_get_entities_from_metadata_between2('start_date','end_date',
-			$start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, false, $region);
+		$events = event_calendar_get_entities_from_metadata_between('start_date','end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, false, $region);
 
 		$repeating_events = event_calendar_get_repeating_events_between($start_date, $end_date, $container_guid, $region);
 
@@ -377,10 +375,10 @@ function event_calendar_get_repeating_event_structure($events, $start_date, $end
 
 function event_calendar_get_open_events_between($start_date, $end_date, $is_count=false, $limit=10, $offset=0, $container_guid=0, $region='-', $meta_max = 'spots', $relationship_name = 'personal_event') {
 	if ($is_count) {
-		$count = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, true, $region, $meta_max, $relationship_name);
+		$count = event_calendar_get_entities_from_metadata_between('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, true, $region, $meta_max, $relationship_name);
 		return $count;
 	} else {
-		$events = event_calendar_get_entities_from_metadata_between2('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, false, $region, $meta_max, $relationship_name);
+		$events = event_calendar_get_entities_from_metadata_between('start_date', 'end_date', $start_date, $end_date, "object", "event_calendar", 0, $container_guid, $limit, $offset, "", 0, false, false, $region, $meta_max, $relationship_name);
 		//return event_calendar_vsort($events,'start_date');
 		$repeating_events = event_calendar_get_open_repeating_events_between($start_date, $end_date, $container_guid, $region);
 		$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
@@ -450,60 +448,51 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 
 function event_calendar_get_events_for_user_between($start_date, $end_date, $is_count, $limit=10, $offset=0, $user_guid, $container_guid=0, $region='-') {
 	if ($is_count) {
-		// old way
-		$count = event_calendar_get_entities_from_metadata_between('start_date','end_date',
-		$start_date, $end_date, "object", "event_calendar", $user_guid, $container_guid, $limit, $offset, "", 0, true, true, $region);
+		$count = event_calendar_get_entities_from_metadata_between('start_date','end_date', $start_date, $end_date, "object", "event_calendar", $user_guid, $container_guid, $limit, $offset, "", 0, true, true, $region, "", "");
 
 		return $count;
 	} else {
-		$events = event_calendar_get_entities_from_metadata_between('start_date','end_date',
-		$start_date, $end_date, "object", "event_calendar", $user_guid, $container_guid, $limit, $offset, "", 0, true, false, $region);
+		$events = event_calendar_get_entities_from_metadata_between('start_date','end_date', $start_date, $end_date, "object", "event_calendar", $user_guid, $container_guid, $limit, $offset, "", 0, true, false, $region, "", "");
 		//return event_calendar_vsort($events,'start_date');
 		return $events;
 	}
 }
 
 function event_calendar_get_events_for_user_between2($start_date, $end_date, $is_count, $limit=10, $offset=0, $user_guid, $container_guid=0, $region='-') {
-	$options_new_way = 	array(
-			'type' => 'object',
-			'subtype' => 'event_calendar',
-			'relationship' => 'personal_event',
-			'relationship_guid' => $user_guid,
-			'metadata_name_value_pairs' => array(
-												array(
-													'name' => 'start_date',
-													'value' => $start_date,
-													'operand' => '>='),
-												array(
-													'name' => 'real_end_time',
-													'value' => $end_date,
-													'operand' => '<=')
-			),
+	$options = array(
+		'type' => 'object',
+		'subtype' => 'event_calendar',
+		'relationship' => 'personal_event',
+		'relationship_guid' => $user_guid,
+		'metadata_name_value_pairs' => array(
+			array(
+				'name' => 'start_date',
+				'value' => $start_date,
+				'operand' => '>='),
+			array(
+				'name' => 'real_end_time',
+				'value' => $end_date,
+				'operand' => '<=')
+		),
 	);
 
 	if ($container_guid) {
-		$options_new_way['container_guid'] = $container_guid;
+		$options['container_guid'] = $container_guid;
 	}
 	if ($region && $region != '-') {
-		$options_new_way['metadata_name_value_pairs'][] = array('name' => 'region', 'value' => sanitize_string($region));
+		$options['metadata_name_value_pairs'][] = array('name' => 'region', 'value' => sanitize_string($region));
 	}
 	if ($is_count) {
-		// old way
-		$count_old_way = event_calendar_get_entities_from_metadata_between('start_date','real_end_time',
-		$start_date, $end_date, "object", "event_calendar", $user_guid, $container_guid, $limit, $offset, "", 0, true, true, $region);
-		// new way
-		$options_new_way['count'] = true;
-		$count_new_way = elgg_get_entities_from_relationship($options_new_way);
-		return $count_old_way+$count_new_way;
+		$options['count'] = true;
+		$count = elgg_get_entities_from_relationship($options);
+		return $count;
 	} else {
-		$events_old_way = event_calendar_get_entities_from_metadata_between('start_date','real_end_time',
-		$start_date, $end_date, "object", "event_calendar", $user_guid, $container_guid, $limit, $offset, "", 0, true, false, $region);
-		$options_new_way['limit'] = $limit;
-		$options_new_way['offset'] = $offset;
-		$options_new_way['order_by_metadata'] = array(array('name' => 'start_date', 'direction' => 'ASC', 'as' => 'integer'));
-		$events_new_way = elgg_get_entities_from_relationship($options_new_way);
+		$options['limit'] = $limit;
+		$options['offset'] = $offset;
+		$options['order_by_metadata'] = array(array('name' => 'start_date', 'direction' => 'ASC', 'as' => 'integer'));
+		$events = elgg_get_entities_from_relationship($options);
 		$repeating_events = event_calendar_get_repeating_events_for_user_between($user_guid, $start_date, $end_date, $container_guid, $region);
-		$all_events = event_calendar_merge_repeating_events(array_merge($events_old_way, $events_new_way), $repeating_events);
+		$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
 		return $all_events;
 	}
 }
@@ -593,43 +582,42 @@ function event_calendar_get_events_for_friends_between($start_date, $end_date, $
 			$friend_list = implode(",", $friend_guids);
 			// elgg_get_entities_from_relationship does not take multiple relationship guids, so need some custom joins and wheres
 			$db_prefix = elgg_get_config('dbprefix');
-			$options_new_way = array(
+			$options = array(
 				'type' => 'object',
 				'subtype' => 'event_calendar',
-				'metadata_name_value_pairs' => array(array(
-														'name' => 'start_date',
-														'value' => $start_date,
-														'operand' => '>='),
-													array(
-														'name' => 'real_end_time',
-														'value' => $end_date,
-														'operand' => '<=')
+				'metadata_name_value_pairs' => array(
+					array(
+						'name' => 'start_date',
+						'value' => $start_date,
+						'operand' => '>='
+					),
+					array(
+						'name' => 'real_end_time',
+						'value' => $end_date,
+						'operand' => '<='
+					)
 				),
 				'joins' => array("JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid)"),
 				'wheres' => array("r.relationship = 'personal_event'","r.guid_one IN ($friend_list)"),
 			);
 
 			if ($container_guid) {
-				$options_new_way['container_guid'] = $container_guid;
+				$options['container_guid'] = $container_guid;
 			}
 			if ($region && $region != '-') {
-				$options_new_way['metadata_name_value_pairs'][] = array('name' => 'region', 'value' => sanitize_string($region));
+				$options['metadata_name_value_pairs'][] = array('name' => 'region', 'value' => sanitize_string($region));
 			}
 			if ($is_count) {
-				$count_old_way = event_calendar_get_entities_from_metadata_between('start_date', 'end_date',
-				$start_date, $end_date, "object", "event_calendar", $friend_guids, $container_guid, $limit, $offset, "", 0, true, true, $region);
-				$options_new_way['count'] = true;
-				$count_new_way = elgg_get_entities_from_metadata($options_new_way);
-				return $count_old_way + $count_new_way;
+				$options['count'] = true;
+				$count = elgg_get_entities_from_metadata($options);
+				return $count;
 			} else {
-				$events_old_way = event_calendar_get_entities_from_metadata_between('start_date','end_date',
-				$start_date, $end_date, "object", "event_calendar", $friend_guids, $container_guid, $limit, $offset, "", 0, true, false, $region);
-				$options_new_way['limit'] = $limit;
-				$options_new_way['offset'] = $offset;
-				$options_new_way['order_by_metadata'] = array(array('name' => 'start_date', 'direction' => 'ASC','as' => 'integer'));
-				$events_new_way = elgg_get_entities_from_metadata($options_new_way);
+				$options['limit'] = $limit;
+				$options['offset'] = $offset;
+				$options['order_by_metadata'] = array(array('name' => 'start_date', 'direction' => 'ASC','as' => 'integer'));
+				$events = elgg_get_entities_from_metadata($options);
 				$repeating_events = event_calendar_get_repeating_events_for_friends_between($user_guid, $friend_list, $start_date, $end_date, $container_guid, $region);
-				$all_events = event_calendar_merge_repeating_events(array_merge($events_old_way, $events_new_way), $repeating_events);
+				$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
 				return $all_events;
 			}
 		}
@@ -661,165 +649,7 @@ function event_calendar_vsort($original, $field, $descending = false) {
 	return $resultArr;
 }
 
-// TODO - replace with Elgg API if possible
-
-/**
- * Return a list of entities based on the given search criteria.
- * In this case, returns entities with the given metadata between two values inclusive
- *
- * @param mixed $meta_start_name
- * @param mixed $meta_end_name
- * @param mixed $meta_start_value - start of metadata range, must be numerical value
- * @param mixed $meta_end_value - end of metadata range, must be numerical value
- * @param string $entity_type The type of entity to look for, eg 'site' or 'object'
- * @param string $entity_subtype The subtype of the entity.
- * @param mixed $owner_guid Either one integer user guid or an array of user guids
- * @param int $container_guid If supplied, the result is restricted to events associated with a specific container
- * @param int $limit
- * @param int $offset
- * @param string $order_by Optional ordering.
- * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
- * @param boolean $filter Filter by events in personal calendar if true
- * @param true|false $count If set to true, returns the total number of entities rather than a list. (Default: false)
- *
- * @return int|array A list of entities, or a count if $count is set to true
- */
-function event_calendar_get_entities_from_metadata_between($meta_start_name, $meta_end_name, $meta_start_value, $meta_end_value, $entity_type="", $entity_subtype="", $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $order_by="", $site_guid=0, $filter=false, $count=false, $region='-') {
-	// This should not be possible, but a sanity check just in case
-	if (!is_numeric($meta_start_value) || !is_numeric($meta_end_value)) {
-		return false;
-	}
-
-	$meta_start_n = get_metastring_id($meta_start_name);
-	$meta_end_n = get_metastring_id($meta_end_name);
-	if ($region && $region != '-') {
-		$region_n = get_metastring_id('region');
-		$region_value_n = get_metastring_id($region);
-		if (!$region_n || !$region_value_n) {
-			if ($count) {
-				return 0;
-			} else {
-				return false;
-			}
-		}
-	}
-
-	$entity_type = sanitise_string($entity_type);
-	$entity_subtype = get_subtype_id($entity_type, $entity_subtype);
-	$limit = (int)$limit;
-	$offset = (int)$offset;
-
-	if ($order_by == "") {
-		$order_by = "v.string asc";
-	}
-	$order_by = sanitise_string($order_by);
-	$site_guid = (int) $site_guid;
-	if ((is_array($owner_guid) && (count($owner_guid)))) {
-		foreach($owner_guid as $key => $guid) {
-			$owner_guid[$key] = (int) $guid;
-		}
-	} else {
-		$owner_guid = (int) $owner_guid;
-	}
-
-	if ((is_array($container_guid) && (count($container_guid)))) {
-		foreach($container_guid as $key => $guid) {
-			$container_guid[$key] = (int) $guid;
-		}
-	} else {
-		$container_guid = (int) $container_guid;
-	}
-	if ($site_guid == 0)
-	$site_guid = elgg_get_site_entity()->guid;
-
-	$where = array();
-
-	if ($entity_type!="") {
-		$where[] = "e.type='$entity_type'";
-	}
-	if ($entity_subtype) {
-		$where[] = "e.subtype=$entity_subtype";
-	}
-	$where[] = "m.name_id='$meta_start_n'";
-	$where[] = "m2.name_id='$meta_end_n'";
-	$where[] = "((v.string >= $meta_start_value AND v.string <= $meta_end_value) OR ( v2.string >= $meta_start_value AND v2.string <= $meta_end_value) OR (v.string <= $meta_start_value AND v2.string >= $meta_start_value) OR ( v2.string <= $meta_end_value AND v2.string >= $meta_end_value))";
-	if ($region && $region != '-') {
-		$where[] = "m3.name_id='$region_n'";
-		$where[] = "m3.value_id='$region_value_n'";
-	}
-	if ($site_guid > 0)
-	$where[] = "e.site_guid = {$site_guid}";
-	if ($filter) {
-		if (is_array($owner_guid)) {
-			$where[] = "ms2.string in (".implode(",", $owner_guid).")";
-		} else if ($owner_guid > 0) {
-			$where[] = "ms2.string = {$owner_guid}";
-		}
-
-		$where[] = "ms.string = 'personal_event'";
-	} else {
-		if (is_array($owner_guid)) {
-			$where[] = "e.owner_guid in (".implode(",", $owner_guid).")";
-		} else if ($owner_guid > 0) {
-			$where[] = "e.owner_guid = {$owner_guid}";
-		}
-	}
-
-	if (is_array($container_guid)) {
-		$where[] = "e.container_guid in (".implode(",", $container_guid).")";
-	} else if ($container_guid > 0)
-	$where[] = "e.container_guid = {$container_guid}";
-
-	if (!$count) {
-		$query = "SELECT distinct e.* ";
-	} else {
-		$query = "SELECT count(distinct e.guid) as total ";
-	}
-
-	$db_prefix = elgg_get_config('dbprefix');
-	$query .= "from {$db_prefix}entities e JOIN {$db_prefix}metadata m on e.guid = m.entity_guid JOIN {$db_prefix}metadata m2 on e.guid = m2.entity_guid ";
-	if ($filter) {
-		$query .= "JOIN {$db_prefix}annotations a ON (a.entity_guid = e.guid) ";
-		$query .= "JOIN {$db_prefix}metastrings ms ON (a.name_id = ms.id) ";
-		$query .= "JOIN {$db_prefix}metastrings ms2 ON (a.value_id = ms2.id) ";
-	}
-	if ($region && $region != '-') {
-		$query .= "JOIN {$db_prefix}metadata m3 ON (e.guid = m3.entity_guid) ";
-	}
-	$query .= "JOIN {$db_prefix}metastrings v on v.id = m.value_id JOIN {$db_prefix}metastrings v2 on v2.id = m2.value_id where";
-	foreach ($where as $w) {
-		$query .= " $w and ";
-	}
-	$query .= get_access_sql_suffix("e"); // Add access controls
-	$query .= ' and ' . get_access_sql_suffix("m"); // Add access controls
-	$query .= ' and ' . get_access_sql_suffix("m2"); // Add access controls
-
-	if (!$count) {
-		$query .= " order by $order_by";
-		if ($limit) {
-			$query .= " limit $offset, $limit"; // Add order and limit
-		}
-		$entities = get_data($query, "entity_row_to_elggstar");
-		if (elgg_get_plugin_setting('add_to_group_calendar', 'event_calendar') == 'yes') {
-			if (get_entity($container_guid) instanceOf ElggGroup) {
-				$entities = event_calendar_get_entities_from_metadata_between_related($meta_start_name, $meta_end_name,
-					$meta_start_value, $meta_end_value, $entity_type,
-					$entity_subtype, $owner_guid, $container_guid,
-					0, 0, "", 0,
-					false, false, '-',$entities);
-			}
-		}
-		return $entities;
-	} else {
-		if ($row = get_data_row($query))
-		return $row->total;
-	}
-	return false;
-}
-
-// adds any related events (has the display_on_group relation)
-// that meet the appropriate criteria
-
+// adds any related events (has the display_on_group relation) that meet the appropriate criteria
 function event_calendar_get_entities_from_metadata_between_related($meta_start_name, $meta_end_name,$meta_start_value, $meta_end_value, $entity_type="", $entity_subtype="", $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $order_by="", $site_guid=0, $filter=false, $count=false, $region='-', $main_events) {
 
 	$main_list = array();
@@ -840,9 +670,7 @@ function event_calendar_get_entities_from_metadata_between_related($meta_start_n
 		}
 	}
 	// get all the events (across all containers) that meet the criteria
-	$all_events = event_calendar_get_entities_from_metadata_between($meta_start_name, $meta_end_name,
-	$meta_start_value, $meta_end_value, $entity_type, $entity_subtype, $owner_guid,
-	0, $limit, $offset, $order_by, $site_guid, $filter, $count, $region);
+	$all_events = event_calendar_get_entities_from_metadata_between($meta_start_name, $meta_end_name, $meta_start_value, $meta_end_value, $entity_type, $entity_subtype, $owner_guid, 0, $limit, $offset, $order_by, $site_guid, $filter, $count, $region, "", "");
 
 	if ($all_events) {
 		foreach($all_events as $event) {
@@ -882,7 +710,7 @@ function event_calendar_get_entities_from_metadata_between_related($meta_start_n
  *
  * TODO: see if the new API is robust enough to avoid this custom query
  */
-function event_calendar_get_entities_from_metadata_between2($meta_start_name, $meta_end_name, $meta_start_value, $meta_end_value, $entity_type="", $entity_subtype="", $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $order_by="", $site_guid=0, $filter=false, $count=false, $region='-', $meta_max='', $relationship_name='') {
+function event_calendar_get_entities_from_metadata_between($meta_start_name, $meta_end_name, $meta_start_value, $meta_end_value, $entity_type="", $entity_subtype="", $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $order_by="", $site_guid=0, $filter=false, $count=false, $region='-', $meta_max='', $relationship_name='') {
 
 	// This should not be possible, but a sanity check just in case
 	if (!is_numeric($meta_start_value) || !is_numeric($meta_end_value)) {
@@ -928,8 +756,9 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 	} else {
 		$container_guid = (int) $container_guid;
 	}
-	if ($site_guid == 0)
-	$site_guid = elgg_get_site_entity()->guid;
+	if ($site_guid == 0) {
+		$site_guid = elgg_get_site_entity()->guid;
+	}
 
 	$where = array();
 
@@ -951,12 +780,12 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 	}
 	if ($filter) {
 		if (is_array($owner_guid)) {
-			$where[] = "ms2.string in (".implode(",", $owner_guid).")";
+			$where[] = "ms.string in (".implode(",", $owner_guid).")";
 		} else if ($owner_guid > 0) {
-			$where[] = "ms2.string = {$owner_guid}";
+			$where[] = "ms.string = {$owner_guid}";
 		}
 
-		$where[] = "ms.string = 'personal_event'";
+		$where[] = "r.relationship = 'personal_event'";
 	} else {
 		if (is_array($owner_guid)) {
 			$where[] = "e.owner_guid in (".implode(",", $owner_guid).")";
@@ -980,9 +809,8 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 	$db_prefix = elgg_get_config('dbprefix');
 	$query .= "FROM {$db_prefix}entities e JOIN {$db_prefix}metadata m on e.guid = m.entity_guid JOIN {$db_prefix}metadata m2 on e.guid = m2.entity_guid ";
 	if ($filter) {
-		$query .= "JOIN {$db_prefix}annotations a ON (a.entity_guid = e.guid) ";
-		$query .= "JOIN {$db_prefix}metastrings ms ON (a.name_id = ms.id) ";
-		$query .= "JOIN {$db_prefix}metastrings ms2 ON (a.value_id = ms2.id) ";
+		$query .= "JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid) ";
+		$query .= "JOIN {$db_prefix}metastrings ms ON (r.guid_one = ms.id) ";
 	}
 	if ($region && $region != '-') {
 		$query .= "JOIN {$db_prefix}metadata m3 ON (e.guid = m3.entity_guid) ";
@@ -1036,18 +864,10 @@ function event_calendar_get_entities_from_metadata_between2($meta_start_name, $m
 }
 
 function event_calendar_has_personal_event($event_guid, $user_guid) {
-	// check legacy implementation and new one
 	if (check_entity_relationship($user_guid, 'personal_event', $event_guid)) {
 		return true;
-	} else {
-		// use old method for now
-		$options = array('guid' => $event_guid, 'annotation_name' => 'personal_event', 'annotation_value' => $user_guid, 'count' => true);
-		if (elgg_get_annotations($options)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
+	return false;
 }
 
 function event_calendar_add_personal_event($event_guid, $user_guid) {
@@ -1072,40 +892,16 @@ function event_calendar_add_personal_events_from_group($event_guid, $group_guid)
 
 function event_calendar_remove_personal_event($event_guid, $user_guid) {
 	remove_entity_relationship($user_guid, 'personal_event', $event_guid);
-	// also use old method for now
-	$annotations = elgg_get_annotations(array(
-		'guid' => $event_guid,
-		'type' => "object",
-		'subtype' => "event_calendar",
-		'annotation_name' => "personal_event",
-		'annotation_value' => (int) $user_guid,
-		'annotation_owner_guid' => $user_guid
-	));
-	if ($annotations) {
-		foreach ($annotations as $annotation) {
-			$annotation->delete();
-		}
-	}
 }
 
 function event_calendar_get_personal_events_for_user($user_guid, $limit) {
-	$events_old_way = elgg_get_entities_from_annotations(array(
-		'type' => 'object',
-		'subtype' => 'event_calendar',
-		'annotation_names' => 'personal_event',
-		'annotation_value' => $user_guid,
-		'limit' => false,
-	));
-
-	$events_new_way = elgg_get_entities_from_relationship(array(
+	$events = elgg_get_entities_from_relationship(array(
 		'type' => 'object',
 		'subtype' => 'event_calendar',
 		'relationship' => 'personal_event',
 		'relationship_guid' => $user_guid,
 		'limit' => false,
 	));
-
-	$events = array_merge($events_old_way, $events_new_way);
 
 	$final_events = array();
 	if ($events) {
@@ -1122,9 +918,6 @@ function event_calendar_get_personal_events_for_user($user_guid, $limit) {
 	return array_slice($sorted, 0, $limit);
 }
 
-// the old way used annotations, and the new Elgg 1.8 way uses relationships
-// for now this version attempts to bridge the gap by using both methods for older sites
-
 function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_count=false) {
 	$options = array(
 		'type' => 'user',
@@ -1134,35 +927,12 @@ function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_
 		'limit' => false,
 	);
 	if ($is_count) {
-		$count_old_way = elgg_get_annotations(array(
-			'guid' => $event_guid,
-			'type' => "object",
-			'subtype' => "event_calendar",
-			'annotation_name' => "personal_event",
-			'count' => true
-		));
 		$options ['count'] = true;
-		$count_new_way = elgg_get_entities_from_relationship($options);
-		return $count_old_way + $count_new_way;
+		$count = elgg_get_entities_from_relationship($options);
+		return $count;
 	} else {
-		$users_old_way = array();
-		$annotations = elgg_get_annotations(array(
-			'guid' => $event_guid,
-			'type' => "object",
-			'subtype' => "event_calendar",
-			'annotation_name' => "personal_event",
-			'limit' => $limit,
-			'offset' => $offset
-		));
-		if ($annotations) {
-			foreach($annotations as $annotation) {
-				if (($user = get_entity($annotation->value)) && ($user instanceOf ElggUser)) {
-					$users_old_way[] = $user;
-				}
-			}
-		}
-		$users_new_way = elgg_get_entities_from_relationship($options);
-		return array_merge($users_old_way, $users_new_way);
+		$users = elgg_get_entities_from_relationship($options);
+		return $users;
 	}
 }
 
