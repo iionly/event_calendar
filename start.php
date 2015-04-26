@@ -114,6 +114,10 @@ function event_calendar_init() {
 	elgg_register_action("event_calendar/manage_subscribers","$action_path/manage_subscribers.php");
 	elgg_register_action("event_calendar/modify_full_calendar","$action_path/modify_full_calendar.php");
 	elgg_register_action("event_calendar/join_conference","$action_path/join_conference.php");
+	elgg_register_action("event_calendar/upgrade", "$action_path/upgrade.php", 'admin');
+
+	// check for pending event_calendar upgrades when a site upgrade is made
+	elgg_register_event_handler('upgrade', 'system', 'event_calendar_check_pending_upgrades');
 }
 
 /**
@@ -437,6 +441,15 @@ function event_calendar_invalidate_cache($hook, $type, $return, $params){
   if(isset($params["plugin"]) && ($params["plugin"]->getID() == "event_calendar")){
     elgg_invalidate_simplecache();
   }
+}
+
+function event_calendar_check_pending_upgrades() {
+	elgg_load_library('elgg:event_calendar');
+	elgg_delete_admin_notice('event_calendar_admin_notice_pending_upgrades');
+	if (event_calendar_is_upgrade_available()) {
+		$message = elgg_echo('event_calendar:admin_notice_pending_upgrades', array(elgg_normalize_url('admin/plugin_settings/event_calendar')));
+		elgg_add_admin_notice('event_calendar_admin_notice_pending_upgrades', $message);
+	}
 }
 
 elgg_register_plugin_hook_handler("setting", "plugin", "event_calendar_invalidate_cache");

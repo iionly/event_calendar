@@ -61,11 +61,16 @@ $english = array(
 	'event_calendar:removed_from_the_calendar' => "Removed from calendar.",
 	'event_calendar:add_to_the_calendar_error' => "This event could not added to this person's calendar. (perhaps the event is full or is scheduled at the same time as another event in this person's calendar).",
 
+	'event_calendar:upgrade:success' => "Upgrade of Event Calendar was successful.",
+	'event_calendar:upgrade:no_updates' => "No upgrade required.",
+	'event_calendar:admin_notice_pending_upgrades' => "There are pending upgrades for the Event Calendar plugin. Please go to the <a href=\"%s\">Event Calendar plugin settings</a> page to run the pending upgrades.",
+
 	'event_calendar:users_for_event_menu_title' => "People listing this event on their personal calendars",
 	'event_calendar:users_for_event_title' => "Personal calendars for \"%s'\"",
 	'event_calendar:personal_event_calendars_link' => "On %s calendars",
 	'event_calendar:personal_event_calendars_link_one' => "On 1 calendar",
 	'event_calendar:users_for_event_breadcrumb' => "Personal calendars",
+	'event_calendar:upgrade' => "Upgrade",
 	'event_calendar:settings:times:title' => "Add time as well as date to events?",
 	'event_calendar:settings:autopersonal:title' => "Automatically add events a user creates to his/her personal calendar?",
 	'event_calendar:settings:autogroup:title' => "Automatically add group events for all members to their personal calendars?",
