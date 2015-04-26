@@ -1,5 +1,7 @@
 <?php
 
+elgg_load_library('elgg:event_calendar');
+
 if (event_calendar_is_upgrade_available()) {
 	echo '<div class="elgg-admin-notices">';
 	echo '<p>';

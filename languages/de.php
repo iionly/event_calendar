@@ -63,6 +63,7 @@ $german = array(
 
 	'event_calendar:upgrade:success' => "Die Aktualisierung des Event Calendar-Plugins war erfolgreich.",
 	'event_calendar:upgrade:no_updates' => "Es ist keine Aktualisierung notwendig.",
+	'event_calendar:admin_notice_pending_upgrades' => "Es gibt ausstehende Aktualisierungen für das Event Calendar-Plugin. Bitte gehe zu den <a href=\"%s\">Event Calendar-Plugineinstellungen</a>, um diese ausstehenden Aktualisierungen durchzuführen.",
 
 	'event_calendar:users_for_event_menu_title' => "Mitglieder mit diesem Event in ihrem persönlichen Kalender",
 	'event_calendar:users_for_event_title' => "Persönliche Kalender für \"%s'\"",

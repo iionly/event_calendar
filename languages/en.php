@@ -63,6 +63,7 @@ $english = array(
 
 	'event_calendar:upgrade:success' => "Upgrade of Event Calendar was successful.",
 	'event_calendar:upgrade:no_updates' => "No upgrade required.",
+	'event_calendar:admin_notice_pending_upgrades' => "There are pending upgrades for the Event Calendar plugin. Please go to the <a href=\"%s\">Event Calendar plugin settings</a> page to run the pending upgrades.",
 
 	'event_calendar:users_for_event_menu_title' => "People listing this event on their personal calendars",
 	'event_calendar:users_for_event_title' => "Personal calendars for \"%s'\"",
