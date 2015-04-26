@@ -2012,20 +2012,7 @@ function event_calendar_queue_reminders() {
 
 	$now = time();
 
-	// TODO Add support for repeated events
-	/*
-	$options = array(
-		'type' => 'object',
-		'subtype' => 'event_calendar',
-		'metadata_name_value_pairs' => array(
-			array('name' => 'reminder_queued', 'value' => 'no'),
-			array('name' => 'send_reminder', 'value' => 1),
-			array('name' => 'start_date', 'value' => $now + 60*24*60*60, 'operand' => '>='),
-		),
-		'limit' => false,
-	);
-	$events = elgg_get_entities_from_metadata($options);
-	*/
+	$ia = elgg_set_ignore_access(true);
 
 	$event_list = event_calendar_get_events_between($now, $now + 60*24*60*60, false, 0);
 
@@ -2058,12 +2045,14 @@ function event_calendar_queue_reminders() {
 			}
 		}
 	}
+
+	elgg_set_ignore_access($ia);
 }
 
 function event_calendar_repeat_reminder_log($e, $start) {
 	// this simple log just uses annotations on the event
 	// TODO - remove log entries for past events
-	create_annotation($e->guid, 'repeat_reminder_log_item', $start, '', 0, ACCESS_PUBLIC);
+	create_annotation($e->guid, 'repeat_reminder_log_item', $start, '', 0, ACCESS_PRIVATE);
 }
 
 function event_calendar_repeat_reminder_logged($e, $start) {
