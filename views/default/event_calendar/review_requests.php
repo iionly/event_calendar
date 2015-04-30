@@ -2,10 +2,7 @@
 
 foreach($vars['requests'] as $request) {
 	if ($request instanceof ElggUser) {
-		$icon = elgg_view("profile/icon", array(
-			'entity' => $request,
-			'size' => 'small'
-		));
+		$icon = elgg_view_entity_icon($request, 'small');
 		$info = '<a href="' . $request->getURL() . '" >'.$request->name.'</a>';
 		$info .= '<div style="margin-top: 5px;" ></div>';
 		$info .=  elgg_view('output/confirmlink', array(

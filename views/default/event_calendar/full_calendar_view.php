@@ -1,6 +1,8 @@
 <?php
 
 elgg_load_js('elgg.full_calendar');
+elgg_load_js('lightbox');
+elgg_load_css('lightbox');
 
 $timeformat = elgg_get_plugin_setting('timeformat', 'event_calendar') == 24 ? 'H(:mm)' : 'h(:mm)t';
 // TODO: is there an easy way to avoid embedding JS?
@@ -11,7 +13,11 @@ var goToDateFlag = 0;
 
 handleEventClick = function(event) {
 	if (event.url) {
-		window.location.href = event.url;
+		if (event.is_event_poll) {
+			window.location.href = event.url;
+		} else {
+			$.fancybox({'href':event.url});
+		}
 		return false;
 	}
 };

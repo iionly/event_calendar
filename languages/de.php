@@ -30,7 +30,6 @@ $german = array(
 	'event_calendar:add_event_response' => "Dein Event wurde hinzugefügt.",
 	'event_calendar:manage_event_error' => "Fehler: Beim Speichern Deines Events ist ein Problem aufgetreten. Vergewissere Dich, dass Du die notwendigen Felder ausgefüllt hast.",
 	'event_calendar:error_nosuchevent' => "Fehler: dieses Event ist nicht verfügbar.",
-	'event_calendar:show_events_title' => "Event-Kalender",
 	'event_calendar:day_label' => "Tag",
 	'event_calendar:week_label' => "Woche",
 	'event_calendar:month_label' => "Monat",
@@ -66,7 +65,7 @@ $german = array(
 	'event_calendar:admin_notice_pending_upgrades' => "Es gibt ausstehende Aktualisierungen für das Event Calendar-Plugin. Bitte gehe zu den <a href=\"%s\">Event Calendar-Plugineinstellungen</a>, um diese ausstehenden Aktualisierungen durchzuführen.",
 
 	'event_calendar:users_for_event_menu_title' => "Mitglieder mit diesem Event in ihrem persönlichen Kalender",
-	'event_calendar:users_for_event_title' => "Persönliche Kalender für \"%s'\"",
+	'event_calendar:users_for_event_title' => "Persönliche Kalender für \"%s\"",
 	'event_calendar:personal_event_calendars_link' => "In %s Kalendern",
 	'event_calendar:personal_event_calendars_link_one' => "In 1 Kalender",
 	'event_calendar:users_for_event_breadcrumb' => "Persönliche Kalender",
@@ -106,7 +105,6 @@ $german = array(
 	'event_calendar:agenda:column:time' => "Zeit",
 	'event_calendar:agenda:column:session' => "Event",
 	'event_calendar:agenda:column:venue' => "Ort",
-	'event_calendar:upcoming_events_title' => "Events",
 	'event_calendar:settings:paged' => "Listenansicht mit Seitenumbruch",
 	'event_calendar:settings:agenda' => "Agenda-Ansicht",
 	'event_calendar:settings:month' => "Events nach Monat sortiert",
@@ -133,7 +131,6 @@ $german = array(
 
 	'event_calendar:settings:personal_manage:title' => "Kalender-Zugriffsrechte?",
 	'event_calendar:settings:personal_manage:description' => "(Lege fest, ob Mitglieder Events von anderen zu ihren persönlichen Kalendern hinzufügen dürfen (unbeschränkt), den Ersteller des Events erst um Zustimmung bitten müssen (beschränkt), gar keine Möglichkeit dazu haben sollen (privat), oder der Ersteller eines Events dies für jedes Event gesondert festlegen darf (Event-spezifisch) (Anmerkung: wenn Du hier die Einstellung \"privat\" auswählst, solltest Du am besten zusätzlich den Erstellern von Events und Admins das Hinzufügen von Events zu persönlichen Kalendern anderer Mitglieder erlauben)",
-	'event_calendar:strapline' => "%s erstellt von %s",
 
 	'event_calendar:request_event_response' => "Deine Anfrage zur Teilnahme an diesem Event wurde gesendet.",
 	'event_calendar:request_event_error' => "Fehler: Deine Anfrage zur Teilnahme an diesem Event konnte nicht gesendet werden.",
@@ -177,11 +174,10 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:add_to_group:success' => "Das Event wurde zum Gruppen-Kalender hinzugefügt.",
 	'event_calendar:settings:add_to_group_calendar:title' => "Gruppen-Admins erlauben, jedes existierende Event zu einem Gruppen-Kalender hinzuzufügen?",
 
-	'event_calendar:group_breadcrumb' => "Gruppen-Kalender",
 	'event_calendar:no_group' => "Diese Gruppe konnte nicht gefunden werden.",
 	'event_calendar:generic_error_title' => "Fehler",
 	'event_calendar:error_event_edit' => "Fehler: dieses Event ist nicht vorhanden oder Du hast keine Berechtigung, es zu bearbeiten.",
-	'event_calendar:add' => "Hinzufügen",
+	'event_calendar:add' => "Event hinzufügen",
 
 	'feed:ical' => "iCal-feed für diese Seite",
 	'event_calendar:ical_popup_message' => "Du kannst die folgende URL verwenden, um einen iCalendar-Feed der öffentlichen Events, die auf dieser Seite aufgelistet sind, zu bekommen: ",
@@ -197,8 +193,12 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 
 	'event_calendar:listing_title:all' => "Alle Events",
 	'event_calendar:listing_title:open' => "Events mit freien Plätzen",
-	'event_calendar:listing_title:mine' => "Meine Events",
+	'event_calendar:listing_title:user' => "Events von %s",
 	'event_calendar:listing_title:friends' => "Events von Freunden",
+	'event_calendar:upcoming_events_listing_title:all' => "Alle bevorstehenden Events",
+	'event_calendar:upcoming_events_listing_title:open' => "Bevorstehende Events mit freien Plätzen",
+	'event_calendar:upcoming_events_listing_title:user' => "Bevorstehende Events von %s",
+	'event_calendar:upcoming_events_listing_title:friends' => "Bevorstehende Events von Freunden",
 	'event_calendar:manage_users:title' => "Teilnehmer für \"%s\" verwalten",
 	'event_calendar:manage_users:breadcrumb' => "Teilnehmer verwalten",
 	'event_calendar:manage_users:description' => "Events zu personlichen Kalendern hinzufügen bzw. daraus entfernen.",

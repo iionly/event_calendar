@@ -17,25 +17,57 @@ $event = $vars['entity'];
 $full = elgg_extract('full_view', $vars, false);
 
 if ($full) {
-	$body = elgg_view('event_calendar/strapline', $vars);
+	$owner = $event->getOwnerEntity();
+	$owner_icon = elgg_view_entity_icon($owner, 'tiny');
+	$owner_link = elgg_view('output/url', array(
+		'href' => "event_calendar/owner/$owner->username",
+		'text' => $owner->name,
+		'is_trusted' => true,
+	));
+	$author_text = elgg_echo('byline', array($owner_link));
+	$date = elgg_view_friendly_time($event->time_created);
+	// The "on" status changes for comments, so best to check for !Off
+	if ($event->comments_on != 'Off') {
+		$comments_count = $event->countComments();
+		//only display if there are commments
+		if ($comments_count != 0) {
+			$text = elgg_echo("comments") . " ($comments_count)";
+			$comments_link = elgg_view('output/url', array(
+				'href' => $event->getURL() . '#event-comments',
+				'text' => $text,
+				'is_trusted' => true,
+			));
+		} else {
+			$comments_link = '';
+		}
+	} else {
+		$comments_link = '';
+	}
+	$subtitle = "$author_text $date $comments_link";
+
+	$body = '';
 	if ($event->web_conference) {
-		$body .= '<br />';
+		$body .= '<br>';
 		$body .= elgg_view('event_calendar/conference_button', array('event' => $event));
 	}
 	$event_items = event_calendar_get_formatted_full_items($event);
-	$body .= '<br />';
+	$body .= '<br>';
 
 	foreach($event_items as $item) {
 		$value = $item->value;
 		if (!empty($value)) {
-
-			//This function controls the alternating class
-			$even_odd = ('odd' != $even_odd) ? 'odd' : 'even';
-			$body .= "<p class=\"{$even_odd}\"><b>";
-			$body .= $item->title.':</b> ';
-			$body .= $item->value;
+			$body .= '<div class="mts">';
+			$body .= '<label>' . $item->title.': </label>';
+			$body .= $item->value . '</div>';
 		}
 	}
+
+	if ($event->long_description) {
+		$body .= '<div class="mtm">' . $event->description . '</div>';
+	} else if ($event->description) {
+		$body .= '<div class="mtm">' . $event->description . '</div>';
+	}
+
 	$metadata = elgg_view_menu('entity', array(
 		'entity' => $event,
 		'handler' => 'event_calendar',
@@ -43,22 +75,20 @@ if ($full) {
 		'class' => 'elgg-menu-hz',
 	));
 
-	$tags = elgg_view('output/tags', array('tags' => $event->tags));
-	
 	$params = array(
 		'entity' => $event,
-		'metadata' => $metadata,
-		'tags' => $tags,
 		'title' => false,
+		'metadata' => $metadata,
+		'subtitle' => $subtitle
 	);
-	$list_body = elgg_view('object/elements/summary', $params);
-	echo $list_body;
-	echo $body;
-	if ($event->long_description) {
-		echo '<p>'.$event->long_description.'</p>';
-	} else {
-		echo '<p>'.$event->description.'</p>';
-	}
+	$params = $params + $vars;
+	$summary = elgg_view('object/elements/summary', $params);
+
+	echo elgg_view('object/elements/full', array(
+		'summary' => $summary,
+		'icon' => $owner_icon,
+		'body' => $body,
+	));
 
 	if (elgg_get_plugin_setting('add_to_group_calendar', 'event_calendar') == 'yes') {
 		echo elgg_view('event_calendar/forms/add_to_group', array('event' => $event));
@@ -77,7 +107,7 @@ if ($full) {
 		$extras[] = $event->venue;
 	}
 	if ($extras) {
-		$info = "<p>".implode("<br />",$extras)."</p>";
+		$info = "<p>".implode("<br>",$extras)."</p>";
 	} else {
 		$info = '';
 	}
@@ -93,14 +123,12 @@ if ($full) {
 		));
 	}
 
-	$tags = elgg_view('output/tags', array('tags' => $event->tags));
-
 	$params = array(
 		'entity' => $event,
 		'metadata' => $metadata,
 		'subtitle' => $info,
-		'tags' => $tags,
 	);
+	$params = $params + $vars;
 	$list_body = elgg_view('object/elements/summary', $params);
 	
 	echo elgg_view_image_block($icon, $list_body);

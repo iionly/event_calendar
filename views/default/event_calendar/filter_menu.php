@@ -1,13 +1,9 @@
 <?php
 
 // generate a list of filter tabs
-$group_guid = $vars['group_guid'];
+
 $filter_context = $vars['filter'];
-if ($group_guid) {
-	$url_start = "event_calendar/group/{$group_guid}/{$vars['start_date']}/{$vars['mode']}";
-} else {
-	$url_start = "event_calendar/list/{$vars['start_date']}/{$vars['mode']}";
-}
+$url_start = "event_calendar/list/{$vars['start_date']}/{$vars['mode']}";
 
 $tabs = array(
 	'all' => array(
