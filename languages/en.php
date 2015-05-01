@@ -30,7 +30,6 @@ $english = array(
 	'event_calendar:add_event_response' => "Your event has been added.",
 	'event_calendar:manage_event_error' => "Error: There was an error in saving your event. Please make sure that you have provided the required fields.",
 	'event_calendar:error_nosuchevent' => "Error: there is no such event.",
-	'event_calendar:show_events_title' => "Event calendar",
 	'event_calendar:day_label' => "Day",
 	'event_calendar:week_label' => "Week",
 	'event_calendar:month_label' => "Month",
@@ -39,7 +38,7 @@ $english = array(
 	'event_calendar:month_label_with_separator' => "Month: %s %s",
 	'event_calendar:group' => "Group calendar",
 	'event_calendar:new' => "Add event",
-	'event_calendar:submit' => "Save and Continue",
+	'event_calendar:submit' => "Save",
 	'event_calendar:widget_title' => "Event calendar",
 	'event_calendar:widget:description' => "Displays your events.",
 	'event_calendar:num_display' => "Number of events to display.",
@@ -66,7 +65,7 @@ $english = array(
 	'event_calendar:admin_notice_pending_upgrades' => "There are pending upgrades for the Event Calendar plugin. Please go to the <a href=\"%s\">Event Calendar plugin settings</a> page to run the pending upgrades.",
 
 	'event_calendar:users_for_event_menu_title' => "People listing this event on their personal calendars",
-	'event_calendar:users_for_event_title' => "Personal calendars for \"%s'\"",
+	'event_calendar:users_for_event_title' => "Personal calendars for \"%s\"",
 	'event_calendar:personal_event_calendars_link' => "On %s calendars",
 	'event_calendar:personal_event_calendars_link_one' => "On 1 calendar",
 	'event_calendar:users_for_event_breadcrumb' => "Personal calendars",
@@ -106,7 +105,6 @@ $english = array(
 	'event_calendar:agenda:column:time' => "Time",
 	'event_calendar:agenda:column:session' => "Event",
 	'event_calendar:agenda:column:venue' => "Location",
-	'event_calendar:upcoming_events_title' => "Upcoming events",
 	'event_calendar:settings:paged' => "paged",
 	'event_calendar:settings:agenda' => "agenda",
 	'event_calendar:settings:month' => "by month",
@@ -133,7 +131,6 @@ $english = array(
 
 	'event_calendar:settings:personal_manage:title' => "Calendar permissions?",
 	'event_calendar:settings:personal_manage:description' => "(Determines whether people can add events to their personal calendars (open), need to request the event creator to do so (closed), have no option at all (private), or allow event creators to determine this for each event (by event) (Note: if you set this to private you should probably activate the option above to allow event creators and site admins to add their events to other personal calendars)",
-	'event_calendar:strapline' => "Posted %s by %s",
 
 	'event_calendar:request_event_response' => "Your request to be added to this event has been sent.",
 	'event_calendar:request_event_error' => "Error: Could not send your request to be added to this event.",
@@ -177,11 +174,10 @@ You can manage calendar requests for this event here:
 	'event_calendar:add_to_group:success' => "Event added to group calendar.",
 	'event_calendar:settings:add_to_group_calendar:title' => "Allow group admins to add any existing event to a group calendar?",
 
-	'event_calendar:group_breadcrumb' => "Group calendar",
 	'event_calendar:no_group' => "There is no such group.",
 	'event_calendar:generic_error_title' => "Error",
 	'event_calendar:error_event_edit' => "Error: there is no such event or you do not have permission to edit it.",
-	'event_calendar:add' => "Add",
+	'event_calendar:add' => "Add event",
 
 	'feed:ical' => "iCal feed for this page",
 	'event_calendar:ical_popup_message' => "You can use the following URL to get an iCalendar feed of the public events from this listing page: ",
@@ -197,8 +193,12 @@ You can manage calendar requests for this event here:
 
 	'event_calendar:listing_title:all' => "All events",
 	'event_calendar:listing_title:open' => "Open events",
-	'event_calendar:listing_title:mine' => "My events",
+	'event_calendar:listing_title:user' => "%s's events",
 	'event_calendar:listing_title:friends' => "Friends' events",
+	'event_calendar:upcoming_events_listing_title:all' => "All upcoming events",
+	'event_calendar:upcoming_events_listing_title:open' => "Upcoming open events",
+	'event_calendar:upcoming_events_listing_title:user' => "%s's upcoming events",
+	'event_calendar:upcoming_events_listing_title:friends' => "Friends' upcoming events",
 	'event_calendar:manage_users:title' => "Manage subscribers for \"%s\"",
 	'event_calendar:manage_users:breadcrumb' => "Manage subscribers",
 	'event_calendar:manage_users:description' => "Add or remove events from personal calendars.",

@@ -46,6 +46,9 @@ function event_calendar_init() {
 	$plugin_js = elgg_get_simplecache_url('js', 'event_calendar/event_calendar');
 	elgg_register_simplecache_view('js/event_calendar/event_calendar');
 	elgg_register_js('elgg.event_calendar', $plugin_js);
+	
+	// ajax event summary popup
+	elgg_register_ajax_view('event_calendar/popup');
 
 	//add to group profile page
 	$group_calendar = elgg_get_plugin_setting('group_calendar', 'event_calendar');
@@ -131,6 +134,10 @@ function event_calendar_owner_block_menu($hook, $type, $return, $params) {
 			$item = new ElggMenuItem('event_calendar', elgg_echo('event_calendar:group'), $url);
 			$return[] = $item;
 		}
+	} else if (elgg_instanceof($params['entity'], 'user')) {
+		$url = "event_calendar/owner/{$params['entity']->username}";
+		$item = new ElggMenuItem('event_calendar', elgg_echo('event_calendar:widget_title'), $url);
+		$return[] = $item;
 	}
 
 	return $return;
@@ -344,23 +351,23 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 				$return[] = ElggMenuItem::factory($options);
 			}
 		}
-	}
 
-	$count = event_calendar_get_users_for_event($entity->guid, 0, 0, true);
-	if ($count == 1) {
-		$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link_one');
-	} else {
-		$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link', array($count));
-	}
+		$count = event_calendar_get_users_for_event($entity->guid, 0, 0, true);
+		if ($count == 1) {
+			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link_one');
+		} else {
+			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link', array($count));
+		}
 
-	$options = array(
-		'name' => 'calendar_listing',
-		'text' => $calendar_text,
-		'title' => elgg_echo('event_calendar:users_for_event_menu_title'),
-		'href' => "event_calendar/display_users/{$entity->guid}",
-		'priority' => 150,
-	);
-	$return[] = ElggMenuItem::factory($options);
+		$options = array(
+			'name' => 'calendar_listing',
+			'text' => $calendar_text,
+			'title' => elgg_echo('event_calendar:users_for_event_menu_title'),
+			'href' => "event_calendar/display_users/{$entity->guid}",
+			'priority' => 150,
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
 
 	return $return;
 }
