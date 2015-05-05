@@ -2,15 +2,22 @@
 
 === 1.8.0 (iionly and Juho Jaakola) ===
 
-- Code cleanup
+- Major code cleanup
+- Adds upgrade script to convert old handling of personal events (with annotations) to new implementation (handled by relationships)
 - Fixed remaining deprecation issues appearing on Elgg 1.8
 - Updated to version 1.6.4 of FullCalendar jQuery plugin
-- No longer use lightbox popup for detailed event view in full calendar view (wasn't correctly working anyway)
+- Rework of UI: consolidation of breakcrump usage, title and body sections in event's full view and list views, filter menu, sidebar (in short: look and feel should be much more like other Elgg plugins)
+- Getting sending of reminders (when message_queue plugin is installed) to work on Elgg 1.8
+- Correctly list open events (events with a limited number of spots that still have free spots) on the open events tab
 - Correctly display html editor (Tinymce) for longtext input fields both with the bundled Tinymce editor plugin and a Tinymce plugin that uses version 4.X of the Tinymce editor
-- It's now possible to translate the calendar UI
+- It's now possible to translate the calendar UI (at least the parts allowed to translate by the FullCalendar jQuery plugin)
 - Uses default userpicker instead of custom one
+- Support of index page and group profile page widgets (for use with Widget Manager plugin)
 - Adds Finnish translations
-- Adds Japanese translations
+- Adds German translations
+- Adds Japanese translations (incomplete)
+- Adds Spanish translations (incomplete)
+- Adds French translations (incomplete)
 
 === 0.85 ===
 
