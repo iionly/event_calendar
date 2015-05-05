@@ -74,10 +74,10 @@ function event_calendar_init() {
 	// Index page and group profile page widgets and widget title urls if Widget Manager plugin is available
 	if (elgg_is_active_plugin('widget_manager')) {
 		//add index widget for Widget Manager plugin
-		elgg_register_widget_type('index_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), "index");
-		elgg_register_widget_type('groups_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), "groups");
+		elgg_register_widget_type('index_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), array("index"));
+		elgg_register_widget_type('groups_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), array("groups"));
 		//register title urls for widgets
-		elgg_register_plugin_hook_handler('widget_url', 'widget_manager', "event_calendar_widget_urls", 498);
+		elgg_register_plugin_hook_handler("entity:url", "object", "event_calendar_widget_urls");
 	}
 
 	// add the event calendar group tool option
