@@ -1,5 +1,5 @@
 <?php
-$french = array (
+return array (
 	'event_calendar:manage_event_description' => 'Entrez les détails de votre événement ci-dessous. Le titre, le lieu et la date de début sont obligatoires. Vous pouvez cliquer sur les icônes du calendrier pour indiquer les dates de début et de fin.',
 	'event_calendar:start_time_label' => 'Horaire de départ',
 	'event_calendar:start_time_description' => 'À quelle heure cet événement commence?',
@@ -130,4 +130,3 @@ $french = array (
 %s',
 	'event_calendar:notify:summary' => 'New event: %s',
 );
-add_translation("fr", $french);

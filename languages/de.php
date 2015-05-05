@@ -1,6 +1,6 @@
 <?php
 
-$german = array(
+return array(
 	'item:object:event_calendar' => "Event-Kalender",
 	'tag_names:event_tags' => "Tags",
 	'event_calendar:optional' => "Optional.",
@@ -317,6 +317,12 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	'river:create:object:event_calendar' => "%s fügte das Event %s hinzu",
 	'river:comment:object:event_calendar' => '%s kommentierte das Event %s',
 
-);
+		// Notifications
+	'event_calendar:notify:subject' => 'Neues Event: %s',
+	'event_calendar:notify:body' => '%s hat ein neues Event hinzugefügt: %s
 
-add_translation("de",$german);
+%s
+
+%s',
+	'event_calendar:notify:summary' => 'Neues Event: %s',
+);
