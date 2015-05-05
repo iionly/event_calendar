@@ -16,7 +16,7 @@ handleEventClick = function(event) {
 		if (event.is_event_poll) {
 			window.location.href = event.url;
 		} else {
-			$.fancybox({'href':event.url});
+			$.colorbox({'href':event.url});
 		}
 		return false;
 	}
