@@ -1,6 +1,6 @@
 <?php
 
-	$japanese = array(
+$japanese = array(
 
 	'item:object:event_calendar' => "イベントカレンダー",
 	'tag_names:event_tags' => "タグ",
@@ -357,8 +357,6 @@ You can visit the event page here:
     'event_calendar:river:create' => "a new event titled",
     'event_calendar:river:the_event' => "an event titled",
 
-	);
+);
 
-	add_translation("ja",$japanese);
-
-?>
+add_translation("ja",$japanese);
