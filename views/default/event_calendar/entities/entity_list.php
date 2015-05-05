@@ -48,15 +48,10 @@ if ($pagination) {
 }
 
 $html .= $nav;
-if ($viewtype == 'list') {
-	if (is_array($entities) && sizeof($entities) > 0) {
-		foreach($entities as $entity) {
-			$html .= elgg_view_entity($entity, $full_view);
-		}
-	}
-} else {
-	if (is_array($entities) && sizeof($entities) > 0) {
-		$html .= elgg_view('event_calendar/entities/gallery', array('entities' => $entities));
+
+if (is_array($entities) && sizeof($entities) > 0) {
+	foreach($entities as $entity) {
+		$html .= elgg_view_entity($entity, $full_view);
 	}
 }
 
