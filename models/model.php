@@ -393,7 +393,7 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 	$joins = array();
 	$wheres = array();
 
-	$meta_max_n = get_metastring_id($meta_max);
+	$meta_max_n = elgg_get_metastring_id($meta_max);
 	if (!$meta_max_n) {
 		if ($count) {
 			return 0;
@@ -811,7 +811,7 @@ function event_calendar_get_entities_from_metadata_between($meta_start_name, $me
 		// This groups events for which the meta max name is defined
 		// perhaps this should be a left join and accept null values?
 		// so it would return groups with no spots defined as well
-		$meta_max_n = get_metastring_id($meta_max);
+		$meta_max_n = elgg_get_metastring_id($meta_max);
 		if (!$meta_max_n) {
 			if ($count) {
 				return 0;
