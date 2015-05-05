@@ -1,6 +1,6 @@
 <?php
 
-$english = array(
+return array(
 	'item:object:event_calendar' => "Event calendar",
 	'tag_names:event_tags' => "Tags",
 	'event_calendar:optional' => "Optional.",
@@ -326,5 +326,3 @@ You can visit the event page here:
 %s',
 	'event_calendar:notify:summary' => 'New event: %s',
 );
-
-add_translation("en",$english);

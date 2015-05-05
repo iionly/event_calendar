@@ -1,6 +1,6 @@
 <?php
 
-	$japanese = array(
+return array(
 
 	'item:object:event_calendar' => "イベントカレンダー",
 	'tag_names:event_tags' => "タグ",
@@ -366,8 +366,4 @@ You can visit the event page here:
 %s',
 	'event_calendar:notify:summary' => 'New event: %s',
 
-	);
-
-	add_translation("ja",$japanese);
-
-?>
+);

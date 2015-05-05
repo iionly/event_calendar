@@ -1,6 +1,6 @@
 <?php
 
-$finnish = array(
+return array(
 
 	'item:object:event_calendar' => "Kalenteri",
 	'tag_names:event_tags' => "Tagit",
@@ -361,5 +361,3 @@ You can visit the event page here:
 %s',
 	'event_calendar:notify:summary' => 'Uusi tapahtuma: %s',
 );
-
-add_translation("fi", $finnish);

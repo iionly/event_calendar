@@ -1,5 +1,5 @@
 <?php
-$spanish = array (
+return array (
 	'item:object:event_calendar' => 'Calendario de eventos',
 	'event_calendar:new_event' => 'Nuevo evento',
 	'event_calendar:no_such_event_edit_error' => 'Error: No existe tal evento o usted no tiene autorización para editarlo.',
@@ -129,4 +129,3 @@ $spanish = array (
 %s',
 	'event_calendar:notify:summary' => 'New event: %s',
 );
-add_translation("es", $spanish);
