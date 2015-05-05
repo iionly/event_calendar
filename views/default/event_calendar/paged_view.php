@@ -13,12 +13,13 @@ $event_calendar_times = elgg_get_plugin_setting('times', 'event_calendar');
 $event_calendar_personal_manage = elgg_get_plugin_setting('personal_manage', 'event_calendar');
 $events = $vars['events'];
 $html = '';
-$date_format = 'F Y';
+$date_format_month = 'm';
+$date_format_year = 'Y';
 $current_month = '';
 
 if ($events) {
 	foreach($events as $event) {
-		$month = date($date_format, $event->start_date);
+		$month = elgg_echo("event_calendar:month:".date($date_format_month, $event->start_date)) . " " . date($date_format_year, $event->start_date);
 		if ($month != $current_month) {
 			if ($html) {
 				$html .= elgg_view('event_calendar/paged_footer');

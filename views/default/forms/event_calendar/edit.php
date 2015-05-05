@@ -148,9 +148,9 @@ $vars['prefix'] = $prefix;
 $body .= elgg_view('event_calendar/schedule_section', $vars);
 
 if ($event_calendar_spots_display == 'yes') {
-	$body .= '<p><label>'.elgg_echo("event_calendar:spots_label").'<br />';
+	$body .= '<br><p><label>'.elgg_echo("event_calendar:spots_label").'</label>';
 	$body .= elgg_view("input/text", array('name' => 'spots', 'class' => 'event-calendar-medium-text', 'value' => $spots));
-	$body .= '</label></p>';
+	$body .= '</p>';
 	$body .= '<p class="event-calendar-description">'.$prefix['spots'].elgg_echo('event_calendar:spots_description').'</p>';
 }
 

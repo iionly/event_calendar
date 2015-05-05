@@ -1,20 +1,16 @@
 <?php
 
 // generate a list of filter tabs
-$group_guid = $vars['group_guid'];
+
 $filter_context = $vars['filter'];
-if ($group_guid) {
-	$url_start = "event_calendar/group/{$group_guid}/{$vars['start_date']}/{$vars['mode']}";
-} else {
-	$url_start = "event_calendar/list/{$vars['start_date']}/{$vars['mode']}";
-}
+$url_start = "event_calendar/list/{$vars['start_date']}/{$vars['mode']}";
 
 $tabs = array(
 	'all' => array(
 		'text' => elgg_echo('event_calendar:show_all'),
 		'href' => "$url_start/all",
 		'selected' => ($filter_context == 'all'),
-		'priority' => 200,
+		'priority' => 100,
 	),
 );
 
@@ -23,13 +19,13 @@ if (elgg_is_logged_in()) {
 		'text' => elgg_echo('event_calendar:show_mine'),
 		'href' => "$url_start/mine",
 		'selected' => ($filter_context == 'mine'),
-		'priority' => 300,
+		'priority' => 200,
 	);
 	$tabs['friend'] = array(
 		'text' => elgg_echo('event_calendar:show_friends'),
 		'href' =>  "$url_start/friends",
 		'selected' => ($filter_context == 'friends'),
-		'priority' => 400,
+		'priority' => 300,
 	);
 }
 
@@ -41,7 +37,7 @@ if ($event_calendar_spots_display == "yes") {
 		'text' => elgg_echo('event_calendar:show_open'),
 		'href' => "$url_start/open",
 		'selected' => ($filter_context == 'open'),
-		'priority' => 100,
+		'priority' => 400,
 	);
 } else {
 	$tab_rendered['open'] = '';
@@ -58,10 +54,10 @@ foreach ($tabs as $name => $tab) {
 
 $menu = <<<__MENU
 <ul class="elgg-menu elgg-menu-filter elgg-menu-hz elgg-menu-filter-default">
-	{$tab_rendered['open']}
 	{$tab_rendered['all']}
 	{$tab_rendered['mine']}
 	{$tab_rendered['friend']}
+	{$tab_rendered['open']}
 </ul>
 __MENU;
 

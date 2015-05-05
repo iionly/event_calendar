@@ -46,16 +46,15 @@ function event_calendar_init() {
 	elgg_register_simplecache_view('js/event_calendar/event_calendar');
 	elgg_register_js('elgg.event_calendar', $plugin_js);
 
+	// ajax event summary popup
+	elgg_register_ajax_view('event_calendar/popup');
+
 	//add to group profile page
 	$group_calendar = elgg_get_plugin_setting('group_calendar', 'event_calendar');
 	if (!$group_calendar || $group_calendar != 'no') {
 		elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'event_calendar_owner_block_menu');
 		$group_profile_display = elgg_get_plugin_setting('group_profile_display', 'event_calendar');
-		if (!$group_profile_display || $group_profile_display == 'right') {
-			elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
-		} else if ($group_profile_display == 'left') {
-			elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
-		}
+		elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
 	}
 
 	//add to the css
@@ -70,7 +69,16 @@ function event_calendar_init() {
 	}
 
 	//add a widget
-	elgg_register_widget_type('event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), array('all', 'groups'));
+	elgg_register_widget_type('event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'));
+
+	// Index page and group profile page widgets and widget title urls if Widget Manager plugin is available
+	if (elgg_is_active_plugin('widget_manager')) {
+		//add index widget for Widget Manager plugin
+		elgg_register_widget_type('index_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), "index");
+		elgg_register_widget_type('groups_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), "groups");
+		//register title urls for widgets
+		elgg_register_plugin_hook_handler('widget_url', 'widget_manager', "event_calendar_widget_urls", 498);
+	}
 
 	// add the event calendar group tool option
 	$event_calendar_group_default = elgg_get_plugin_setting('group_default', 'event_calendar');
@@ -108,6 +116,10 @@ function event_calendar_init() {
 	elgg_register_action("event_calendar/manage_subscribers","$action_path/manage_subscribers.php");
 	elgg_register_action("event_calendar/modify_full_calendar","$action_path/modify_full_calendar.php");
 	elgg_register_action("event_calendar/join_conference","$action_path/join_conference.php");
+	elgg_register_action("event_calendar/upgrade", "$action_path/upgrade.php", 'admin');
+
+	// check for pending event_calendar upgrades when a site upgrade is made
+	elgg_register_event_handler('upgrade', 'system', 'event_calendar_check_pending_upgrades');
 }
 
 /**
@@ -121,6 +133,10 @@ function event_calendar_owner_block_menu($hook, $type, $return, $params) {
 			$item = new ElggMenuItem('event_calendar', elgg_echo('event_calendar:group'), $url);
 			$return[] = $item;
 		}
+	} else if (elgg_instanceof($params['entity'], 'user')) {
+		$url = "event_calendar/owner/{$params['entity']->username}";
+		$item = new ElggMenuItem('event_calendar', elgg_echo('event_calendar:widget_title'), $url);
+		$return[] = $item;
 	}
 
 	return $return;
@@ -349,23 +365,23 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 				$return[] = ElggMenuItem::factory($options);
 			}
 		}
-	}
 
-	$count = event_calendar_get_users_for_event($entity->guid, 0, 0, true);
-	if ($count == 1) {
-		$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link_one');
-	} else {
-		$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link', array($count));
-	}
+		$count = event_calendar_get_users_for_event($entity->guid, 0, 0, true);
+		if ($count == 1) {
+			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link_one');
+		} else {
+			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link', array($count));
+		}
 
-	$options = array(
-		'name' => 'calendar_listing',
-		'text' => $calendar_text,
-		'title' => elgg_echo('event_calendar:users_for_event_menu_title'),
-		'href' => "event_calendar/display_users/{$entity->guid}",
-		'priority' => 150,
-	);
-	$return[] = ElggMenuItem::factory($options);
+		$options = array(
+			'name' => 'calendar_listing',
+			'text' => $calendar_text,
+			'title' => elgg_echo('event_calendar:users_for_event_menu_title'),
+			'href' => "event_calendar/display_users/{$entity->guid}",
+			'priority' => 150,
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
 
 	return $return;
 }
@@ -385,6 +401,32 @@ function event_calendar_entity_menu_prepare($hook, $type, $return, $params) {
 	}
 
 	return $return;
+}
+
+function event_calendar_widget_urls($hook_name, $entity_type, $return_value, $params){
+	$result = $return_value;
+	$widget = $params["entity"];
+
+	if(empty($result) && ($widget instanceof ElggWidget)) {
+		$owner = $widget->getOwnerEntity();
+
+		switch($widget->handler) {
+			case "event_calendar":
+				$result = "/event_calendar/owner/" . $owner->username;
+				break;
+			case "index_event_calendar":
+				$result = "/event_calendar/list";
+				break;
+			case "groups_event_calendar":
+				if($owner instanceof ElggGroup){
+					$result = "/event_calendar/group/" . $owner->guid;
+				} else {
+					$result = "/event_calendar/list";
+				}
+				break;
+		}
+	}
+	return $result;
 }
 
 function event_calendar_handle_join($event, $object_type, $object) {
@@ -451,6 +493,15 @@ function event_calendar_prepare_notification($hook, $type, $notification, $param
     $notification->summary = elgg_echo('event_calendar:notify:summary', array($entity->title), $language);
 
     return $notification;
+}
+
+function event_calendar_check_pending_upgrades() {
+	elgg_load_library('elgg:event_calendar');
+	elgg_delete_admin_notice('event_calendar_admin_notice_pending_upgrades');
+	if (event_calendar_is_upgrade_available()) {
+		$message = elgg_echo('event_calendar:admin_notice_pending_upgrades', array(elgg_normalize_url('admin/plugin_settings/event_calendar')));
+		elgg_add_admin_notice('event_calendar_admin_notice_pending_upgrades', $message);
+	}
 }
 
 elgg_register_plugin_hook_handler("setting", "plugin", "event_calendar_invalidate_cache");

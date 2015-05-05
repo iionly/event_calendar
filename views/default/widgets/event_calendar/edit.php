@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Elgg event_calendar group widget
+ * Elgg event_calendar widget
  *
  * @package event_calendar
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -12,7 +12,7 @@
  */
 
 if (!$vars['entity']->num_display) {
-	$num_display = 5;
+	$num_display = 4;
 } else {
 	$num_display = $vars['entity']->num_display;
 }

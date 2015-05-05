@@ -21,6 +21,9 @@ $url_start = elgg_get_site_url().'mod/event_calendar/show_events.php?group_guid=
 ?>
 <div id="elgg_horizontal_tabbed_nav">
 	<ul>
+		<li <?php echo $allselect; ?> ><a onclick="javascript:$('#event_list').load('<?php echo $url_start; ?>&amp;filter=all&amp;callback=true'); return false;" href="<?php echo $url_start; ?>&amp;filter=all&amp;callback=true"><?php echo elgg_echo('all'); ?></a></li>
+		<li <?php echo $friendsselect; ?> ><a onclick="javascript:$('#event_list').load('<?php echo $url_start; ?>&amp;filter=friends&amp;callback=true'); return false;" href="<?php echo $url_start; ?>&amp;filter=friends&amp;callback=true"><?php echo elgg_echo('friends'); ?></a></li>
+		<li <?php echo $mineselect; ?> ><a onclick="javascript:$('#event_list').load('<?php echo $url_start; ?>&amp;filter=mine&amp;callback=true'); return false;" href="<?php echo $url_start; ?>&amp;filter=mine&amp;callback=true"><?php echo elgg_echo('event_calendar:mine'); ?></a></li>
 <?php
 		$event_calendar_spots_display = elgg_get_plugin_setting('spots_display', 'event_calendar');
 		if ($event_calendar_spots_display == "yes") {
@@ -29,9 +32,6 @@ $url_start = elgg_get_site_url().'mod/event_calendar/show_events.php?group_guid=
 <?php
 		}
 ?>
-		<li <?php echo $allselect; ?> ><a onclick="javascript:$('#event_list').load('<?php echo $url_start; ?>&amp;filter=all&amp;callback=true'); return false;" href="<?php echo $url_start; ?>&amp;filter=all&amp;callback=true"><?php echo elgg_echo('all'); ?></a></li>
-		<li <?php echo $friendsselect; ?> ><a onclick="javascript:$('#event_list').load('<?php echo $url_start; ?>&amp;filter=friends&amp;callback=true'); return false;" href="<?php echo $url_start; ?>&amp;filter=friends&amp;callback=true"><?php echo elgg_echo('friends'); ?></a></li>
-		<li <?php echo $mineselect; ?> ><a onclick="javascript:$('#event_list').load('<?php echo $url_start; ?>&amp;filter=mine&amp;callback=true'); return false;" href="<?php echo $url_start; ?>&amp;filter=mine&amp;callback=true"><?php echo elgg_echo('event_calendar:mine'); ?></a></li>
 	</ul>
 </div>
 <?php

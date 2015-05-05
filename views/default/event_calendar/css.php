@@ -144,10 +144,6 @@ table.event_calendar_paged_table th {
 	padding:3px 3px 3px 3px;
 }
 
-.event_calendar_strapline {
-	font-size: 85%;
-}
-
 .event-calendar-personal-calendar-toggle-wrapper {
 	width: 100%;
 	margin-bottom: 30px;
@@ -175,7 +171,7 @@ li.event-calendar-filter-menu-show-only {
 
 .event-calendar-edit-form-block label {
 	float: left;
-	width: 90px;
+	width: 105px;
 	margin-top: 5px;
 }
 
