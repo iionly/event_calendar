@@ -1296,7 +1296,7 @@ function event_calendar_get_page_content_list($page_type, $container_guid, $star
 				'name' => 'add',
 				'href' => "event_calendar/add",
 				'text' => elgg_echo('event_calendar:add'),
-				'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+				'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 			));
 		}
 	} else {
@@ -1740,7 +1740,7 @@ function event_calendar_get_page_content_view($event_guid) {
 					'name' => 'add',
 					'href' => "event_calendar/add/".$event_container->getGUID(),
 					'text' => elgg_echo('event_calendar:add'),
-					'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 				));
 			}
 		} else {
@@ -1753,7 +1753,7 @@ function event_calendar_get_page_content_view($event_guid) {
 					'name' => 'add',
 					'href' => "event_calendar/add",
 					'text' => elgg_echo('event_calendar:add'),
-					'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 				));
 			}
 		}
@@ -1800,7 +1800,7 @@ function event_calendar_get_page_content_display_users($event_guid) {
 					'name' => 'add',
 					'href' => "event_calendar/add/".$event_container->getGUID(),
 					'text' => elgg_echo('event_calendar:add'),
-					'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 				));
 			}
 		} else {
@@ -1810,7 +1810,7 @@ function event_calendar_get_page_content_display_users($event_guid) {
 					'name' => 'add',
 					'href' => "event_calendar/add",
 					'text' => elgg_echo('event_calendar:add'),
-					'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 				));
 			}
 		}
@@ -1882,7 +1882,7 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 						'name' => 'add',
 						'href' => "event_calendar/add/".$event_container->getGUID(),
 						'text' => elgg_echo('event_calendar:add'),
-						'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+						'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 					));
 				}
 				$users = $event_container->getMembers($limit, $offset);
@@ -1904,7 +1904,7 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 						'name' => 'add',
 						'href' => "event_calendar/add",
 						'text' => elgg_echo('event_calendar:add'),
-						'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+						'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 					));
 				}
 				$content = '<p>'.elgg_echo('event_calendar:manage_users:description').'</p>';
@@ -1945,7 +1945,7 @@ function event_calendar_get_page_content_review_requests($event_guid) {
 					'name' => 'add',
 					'href' => "event_calendar/add/".$event_container->getGUID(),
 					'text' => elgg_echo('event_calendar:add'),
-					'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 				));
 			}
 		} else {
@@ -1955,7 +1955,7 @@ function event_calendar_get_page_content_review_requests($event_guid) {
 					'name' => 'add',
 					'href' => "event_calendar/add",
 					'text' => elgg_echo('event_calendar:add'),
-					'class' => 'elgg-button elgg-button-action event-calendar-button-add',
+					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 				));
 			}
 		}
