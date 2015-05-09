@@ -148,7 +148,9 @@ elgg.event_calendar.toggleDisplayPagePersonalCalendar = function(event_guid,user
 							var msg = res.message;
 							if (success) {
 								var button_text = res.button_text;
+								var button_class = res.button_class;
 								$('#event_calendar_user_data_'+event_guid+'_'+user_guid).val(button_text);
+								$('#event_calendar_user_data_'+event_guid+'_'+user_guid).attr('class', button_class);
 								//elgg.system_message(msg,2000);
 							} else {
 								elgg.register_error(msg,2000);
