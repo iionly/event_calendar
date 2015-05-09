@@ -1788,13 +1788,15 @@ function event_calendar_get_page_content_display_users($event_guid) {
 		$content = elgg_echo('event_calendar:error_nosuchevent');
 		$title = elgg_echo('event_calendar:generic_error_title');
 	} else {
-		event_calendar_handle_menu($event_guid);
 		$title = elgg_echo('event_calendar:users_for_event_title', array(htmlspecialchars($event->title)));
 		$event_container = get_entity($event->container_guid);
 		if (elgg_instanceof($event_container, 'group')) {
 			elgg_push_context('groups');
 			elgg_set_page_owner_guid($event->container_guid);
 			elgg_push_breadcrumb($event_container->name, 'event_calendar/group/' . $event->container_guid);
+			if ($event_container->canEdit()) {
+				event_calendar_handle_menu($event_guid);
+			}
 			if(event_calendar_can_add($event_container->getGUID())) {
 				elgg_register_menu_item('title', array(
 					'name' => 'add',
@@ -1805,6 +1807,9 @@ function event_calendar_get_page_content_display_users($event_guid) {
 			}
 		} else {
 			elgg_push_breadcrumb($event_container->name, 'event_calendar/owner/' . $event_container->username);
+			if ($event->canEdit()) {
+				event_calendar_handle_menu($event_guid);
+			}
 			if(event_calendar_can_add()) {
 				elgg_register_menu_item('title', array(
 					'name' => 'add',
@@ -1857,7 +1862,6 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 		$content = elgg_echo('event_calendar:error_nosuchevent');
 		$title = elgg_echo('event_calendar:generic_error_title');
 	} else {
-		event_calendar_handle_menu($event_guid);
 		$title = elgg_echo('event_calendar:manage_users:title', array($event->title));
 		$event_container = get_entity($event->container_guid);
 		if ($event_container->canEdit()) {
@@ -1865,6 +1869,9 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 				elgg_push_context('groups');
 				elgg_set_page_owner_guid($event->container_guid);
 				elgg_push_breadcrumb($event_container->name, 'event_calendar/group/' . $event->container_guid);
+				if ($event_container->canEdit()) {
+					event_calendar_handle_menu($event_guid);
+				}
 				elgg_register_menu_item('title', array(
 					'name' => 'remove_from_group_members',
 					'href' => elgg_add_action_tokens_to_url('action/event_calendar/remove_from_group_members?event_guid='.$event_guid),
@@ -1899,6 +1906,9 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 				$content .= elgg_view_entity_list($users, $options, $offset, $limit);
 			} else {
 				elgg_push_breadcrumb($event_container->name, 'event_calendar/owner/' . $event_container->username);
+				if ($event->canEdit()) {
+					event_calendar_handle_menu($event_guid);
+				}
 				if(event_calendar_can_add()) {
 					elgg_register_menu_item('title', array(
 						'name' => 'add',
@@ -1933,13 +1943,15 @@ function event_calendar_get_page_content_review_requests($event_guid) {
 		$content = elgg_echo('event_calendar:error_nosuchevent');
 		$title = elgg_echo('event_calendar:generic_error_title');
 	} else {
-		event_calendar_handle_menu($event_guid);
 		$title = elgg_echo('event_calendar:review_requests_title', array(htmlspecialchars($event->title)));
 		$event_container = get_entity($event->container_guid);
 		if (elgg_instanceof($event_container, 'group')) {
 			elgg_push_context('groups');
 			elgg_set_page_owner_guid($event->container_guid);
 			elgg_push_breadcrumb($event_container->name, 'event_calendar/group/' . $event->container_guid);
+			if ($event_container->canEdit()) {
+				event_calendar_handle_menu($event_guid);
+			}
 			if(event_calendar_can_add($event_container->getGUID())) {
 				elgg_register_menu_item('title', array(
 					'name' => 'add',
@@ -1950,6 +1962,9 @@ function event_calendar_get_page_content_review_requests($event_guid) {
 			}
 		} else {
 			elgg_push_breadcrumb($event_container->name, 'event_calendar/owner/' . $event_container->username);
+			if ($event->canEdit()) {
+				event_calendar_handle_menu($event_guid);
+			}
 			if(event_calendar_can_add()) {
 				elgg_register_menu_item('title', array(
 					'name' => 'add',
