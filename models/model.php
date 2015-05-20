@@ -877,7 +877,7 @@ function event_calendar_add_personal_event($event_guid, $user_guid) {
 function event_calendar_add_personal_events_from_group($event_guid, $group_guid) {
 	$group = get_entity($group_guid);
 
-	$members->getMembers(array('limit' => false));
+	$members = $group->getMembers(array('limit' => false));
 
 	foreach($members as $member) {
 		event_calendar_add_personal_event($event_guid, $member->guid);
