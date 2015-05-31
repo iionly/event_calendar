@@ -1,5 +1,10 @@
 == Version history ==
 
+=== 1.10.0 (iionly and Juho Jaakola) ===
+
+- Requires: Elgg 1.10 or newer
+- Fixed deprecation issue newly introduced with Elgg 1.10 (deprecation of output/confirmlink view).
+
 === 1.9.0 (iionly and Juho Jaakola) ===
 
 - Requires: Elgg 1.9
