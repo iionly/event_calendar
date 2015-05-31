@@ -1251,7 +1251,11 @@ function event_calendar_send_event_request($event, $user_guid) {
 		$url = $event->getUrl();
 		$link = elgg_get_site_url().'event_calendar/review_requests/'.$event->guid;
 		$message = elgg_echo('event_calendar:request_message', array($name, $title, $url, $link));
-		notify_user($event->owner_guid, elgg_get_site_entity()->guid, $subject, $message);
+		notify_user($event->owner_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
+			'object' => $event,
+			'action' => 'event_calendar_notification_request',
+			'summary' => $subject
+		));
 		$result = true;
 	}
 	return $result;

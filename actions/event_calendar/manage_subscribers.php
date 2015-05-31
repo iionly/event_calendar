@@ -10,14 +10,19 @@ if (($event_calendar_add_users == 'yes') && elgg_instanceof($event, 'object', 'e
 	remove_entity_relationships($event_guid, 'personal_event', true);
 	// add event to personal calendars
 	$event_calendar_add_users_notify = elgg_get_plugin_setting('add_users_notify', 'event_calendar');
-	$site_guid = elgg_get_site_entity()->guid;
 	foreach ($members as $user_guid) {
 		add_entity_relationship($user_guid, 'personal_event', $event_guid);
 		if ($event_calendar_add_users_notify == 'yes') {
-			$subject = elgg_echo('event_calendar:add_users_notify:subject');
-			$user = get_user($user_guid);
-			$message = elgg_echo('event_calendar:add_users_notify:body', array($user->name, $event->title, $event->getURL()));
-			notify_user($user_guid, $site_guid, $subject, $message, null, 'email');
+			if ($user_guid != elgg_get_logged_in_user_guid()) {
+				$subject = elgg_echo('event_calendar:add_users_notify:subject');
+				$user = get_user($user_guid);
+				$message = elgg_echo('event_calendar:add_users_notify:body', array($user->name, $event->title, $event->getURL()));
+				notify_user($user_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
+					'object' => $event,
+					'action' => 'event_calendar_notification_subscribe',
+					'summary' => $subject
+				));
+			}
 		}
 	}
 	system_message(elgg_echo('event_calendar:manage_subscribers:success'));

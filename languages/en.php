@@ -122,7 +122,7 @@ return array(
 	'event_calendar:spots_description' => "How many people are allowed to add this event to their personal calendars?",
 	'event_calendar:open' => "Open",
 	'event_calendar:settings:add_users:title' => "Allow event creators and site admins to add their events to other personal calendars?",
-	'event_calendar:settings:add_users_notify:title' => "Email users who have had an event added to their personal calendar by an admin or event creator?",
+	'event_calendar:settings:add_users_notify:title' => "Notify users who have had an event added to their personal calendar by an admin or event creator?",
 	'event_calendar:add_users_notify:subject' => "A new event has been added to your personal calendar",
 	'event_calendar:add_users_notify:body' => "%s,\n\nThe \"%s\" event has been added to your calendar.\n\nYou can view it here: \n\n%s\n",
 
