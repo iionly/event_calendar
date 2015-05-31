@@ -17,10 +17,10 @@ if($event_calendar_hide_access == 'yes') {
 	$body .= '</p>';
 }
 if (elgg_plugin_exists('entity_admins')) {
-	$body .= elgg_echo('event_calendar:share_ownership:label');
-	$body .= '<br />';
-	$body .= elgg_echo('event_calendar:share_ownership:description');
+	$body .= '<div class="event-calendar-edit-form-share"><label>'.elgg_echo("event_calendar:share_ownership:label").'</label>';
+	$body .= '<br>'.elgg_echo('event_calendar:share_ownership:description');
 	$body .= elgg_view('input/entity_admins_dropdown', array('entity' => $vars['event']));
+	$body .= '</div>';
 }
 $body .= '</div>';
 
