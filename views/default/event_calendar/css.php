@@ -182,6 +182,12 @@ li.event-calendar-filter-menu-show-only {
 	width: 100% !important;
 }
 
+.event-calendar-edit-form-share label {
+	float:none;
+	clear:both;
+	width: 100% !important;
+}
+
 .event-calendar-edit-form {
 	background-color: #FFFFFF;
 }

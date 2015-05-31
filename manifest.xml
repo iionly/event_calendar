@@ -24,6 +24,10 @@
 	</suggests>
 	<suggests>
 		<type>plugin</type>
+		<name>entity_admins</name>
+	</suggests>
+	<suggests>
+		<type>plugin</type>
 		<name>widget_manager</name>
 	</suggests>
 </plugin_manifest>
