@@ -20,7 +20,7 @@ if (($event_calendar_add_users == 'yes') && elgg_instanceof($event, 'object', 'e
 				$message = elgg_echo('event_calendar:add_users_notify:body', array($user->name, $event->title, $event->getURL()), $user_language);
 				notify_user($user_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
 					'object' => $event,
-					'action' => 'event_calendar_notification_subscribe',
+					'action' => 'subscribe',
 					'summary' => $subject
 				));
 			}
