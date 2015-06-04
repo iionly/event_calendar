@@ -182,7 +182,7 @@ if ($event_calendar_region_display == 'yes' || $event_calendar_type_display == '
 				}
 			}
 			$body .= '<p><label>'.elgg_echo("event_calendar:region_label").'</label>';
-			$body .= elgg_view("input/dropdown", array('name' => 'region', 'value' => $region, 'options_values' => $options));
+			$body .= elgg_view("input/select", array('name' => 'region', 'value' => $region, 'options_values' => $options));
 			$body .= '</p>';
 			$body .= '<p class="event-calendar-description">'.$prefix['region'].elgg_echo('event_calendar:region_description').'</p>';
 		}
@@ -213,7 +213,7 @@ if ($event_calendar_region_display == 'yes' || $event_calendar_type_display == '
 			}
 
 			$body .= '<p><label>'.elgg_echo("event_calendar:type_label").'</label>';
-			$body .= elgg_view("input/dropdown", array(
+			$body .= elgg_view("input/select", array(
 				'name' => 'event_type',
 				'value' => $event_type,
 				'options_values' => $options
