@@ -1834,7 +1834,10 @@ function event_calendar_get_page_content_display_users($event_guid) {
 			'limit' => $limit,
 			'event_calendar_event' => $event,
 		);
-		elgg_extend_view('user/default', 'event_calendar/calendar_toggle');
+
+		set_input('guid', $event->guid);
+		elgg_extend_view('user/elements/summary', 'event_calendar/calendar_toggle');
+
 		$content = elgg_view_entity_list($users, $options);
 	}
 	$params = array('title' => $title, 'content' => $content,'filter' => '');
@@ -1898,7 +1901,10 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 				}
 				$users = $event_container->getMembers($limit, $offset);
 				$count = $event_container->getMembers($limit, $offset, true);
-				elgg_extend_view('user/default', 'event_calendar/calendar_toggle');
+
+				set_input('guid', $event->guid);
+				elgg_extend_view('user/elements/summary', 'event_calendar/calendar_toggle');
+
 				$options = array(
 					'full_view' => false,
 					'list_type_toggle' => false,
