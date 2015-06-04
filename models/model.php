@@ -1245,12 +1245,14 @@ function event_calendar_personal_can_manage($event, $user_id) {
 function event_calendar_send_event_request($event, $user_guid) {
 	$result = false;
 	if(add_entity_relationship($user_guid, 'event_calendar_request', $event->guid)) {
-		$subject = elgg_echo('event_calendar:request_subject');
+		$event_owner = get_user($event->owner_guid);
+		$event_owner_language = ($event_owner->language) ? $event_owner->language : (($site_language = elgg_get_config('language')) ? $site_language : 'en');
+		$subject = elgg_echo('event_calendar:request_subject', array(), $event_owner_language);
 		$name = get_entity($user_guid)->name;
 		$title = $event->title;
 		$url = $event->getUrl();
 		$link = elgg_get_site_url().'event_calendar/review_requests/'.$event->guid;
-		$message = elgg_echo('event_calendar:request_message', array($name, $title, $url, $link));
+		$message = elgg_echo('event_calendar:request_message', array($name, $title, $url, $link), $event_owner_language);
 		notify_user($event->owner_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
 			'object' => $event,
 			'action' => 'event_calendar_notification_request',

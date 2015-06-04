@@ -24,10 +24,11 @@ if (event_calendar_has_personal_event($event_guid, $user_guid)) {
 		$event_calendar_add_users_notify = elgg_get_plugin_setting('add_users_notify', 'event_calendar');
 		if ($event_calendar_add_users_notify == 'yes') {
 			if ($user_guid != elgg_get_logged_in_user_guid()) {
-				$subject = elgg_echo('event_calendar:add_users_notify:subject');
-				$event = get_entity($event_guid);
 				$user = get_user($user_guid);
-				$message = elgg_echo('event_calendar:add_users_notify:body', array($user->name, $event->title, $event->getURL()));
+				$user_language = ($user->language) ? $user->language : (($site_language = elgg_get_config('language')) ? $site_language : 'en');
+				$subject = elgg_echo('event_calendar:add_users_notify:subject', array(), $user_language);
+				$event = get_entity($event_guid);
+				$message = elgg_echo('event_calendar:add_users_notify:body', array($user->name, $event->title, $event->getURL()), $user_language);
 				notify_user($user_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
 					'object' => $event,
 					'action' => 'event_calendar_notification_subscribe',
