@@ -166,7 +166,7 @@ li.event-calendar-filter-menu-show-only {
 
 .event-calendar-edit-form-block label {
 	float: left;
-	width: 105px;
+	width: 120px;
 	margin-top: 5px;
 }
 
