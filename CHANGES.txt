@@ -1,5 +1,12 @@
 == Version history ==
 
+=== 1.9.1 (iionly and Juho Jaakola) ===
+
+- Cleanup of entity_list view (no longer use deprecated navigation/viewtype view that were unnecessary to be used anyway)
+- Use elgg_is_active_plugin() instead of elgg_plugin_exists() to make sure the helper plugins are enabled before using them
+- Naming of actions on notification sending more user friendly in case someone registers a prepare hook for them
+- Increase width of labels section on event edit page
+
 === 1.9.0 (iionly and Juho Jaakola) ===
 
 - Requires: Elgg 1.9
