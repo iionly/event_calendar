@@ -37,9 +37,7 @@ function event_calendar_init() {
 	elgg_register_entity_type('object', 'event_calendar');
 
 	// make legacy tags searchable
-	if (function_exists('elgg_register_tag_metadata_name')) {
-		elgg_register_tag_metadata_name('event_tags');
-	}
+	elgg_register_tag_metadata_name('event_tags');
 
 	// register the plugin's JavaScript
 	$plugin_js = elgg_get_simplecache_url('js', 'event_calendar/event_calendar');
