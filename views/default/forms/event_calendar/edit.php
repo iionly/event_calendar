@@ -240,7 +240,7 @@ if ($event_calendar_region_display == 'yes' || $event_calendar_type_display == '
 		$body .= '</p>';
 		$body .= '<p class="event-calendar-description">'.$prefix['organiser'].elgg_echo('event_calendar:organiser_description').'</p>';
 
-		$body .= '<br><p><label style="float:left; width:200px;">'.elgg_echo("event_calendar:long_description_label").'</label>';
+		$body .= '<br><p><label style="float:left; width:250px;">'.elgg_echo("event_calendar:long_description_label").'</label>';
 		$body .= elgg_view("input/longtext", array('name' => 'long_description', 'value' => $long_description));
 		$body .= '</p>';
 		$body .= '<p class="event-calendar-description">'.$prefix['long_description'].elgg_echo('event_calendar:long_description_description').'</p>';
