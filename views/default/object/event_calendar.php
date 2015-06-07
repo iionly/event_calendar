@@ -63,7 +63,7 @@ if ($full) {
 	}
 
 	if ($event->long_description) {
-		$body .= '<div class="mtm">' . $event->description . '</div>';
+		$body .= '<div class="mtm">' . $event->long_description . '</div>';
 	} else if ($event->description) {
 		$body .= '<div class="mtm">' . $event->description . '</div>';
 	}
