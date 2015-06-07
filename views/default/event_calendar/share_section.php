@@ -16,7 +16,7 @@ if($event_calendar_hide_access == 'yes') {
 	$body .= elgg_view("input/access", array('name' => 'access_id', 'value' => $fd['access_id']));
 	$body .= '</p>';
 }
-if (elgg_plugin_exists('entity_admins')) {
+if ((elgg_is_active_plugin('entity_admins')) {
 	$body .= '<div class="event-calendar-edit-form-share"><label>'.elgg_echo("event_calendar:share_ownership:label").'</label>';
 	$body .= '<br>'.elgg_echo('event_calendar:share_ownership:description');
 	$body .= elgg_view('input/entity_admins_dropdown', array('entity' => $vars['event']));

@@ -2165,7 +2165,7 @@ function event_calendar_flatten_event_structure($events) {
  * notification message using the message_queue plugin.
  */
 function event_calendar_queue_reminders() {
-	if (!elgg_plugin_exists('message_queue')) {
+	if (!elgg_is_active_plugin('message_queue')) {
 		return;
 	}
 
