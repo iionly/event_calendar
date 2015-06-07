@@ -1253,7 +1253,7 @@ function event_calendar_send_event_request($event, $user_guid) {
 		$message = elgg_echo('event_calendar:request_message', array($name, $title, $url, $link));
 		notify_user($event->owner_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
 			'object' => $event,
-			'action' => 'event_calendar_notification_request',
+			'action' => 'request',
 			'summary' => $subject
 		));
 		$result = true;
