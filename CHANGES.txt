@@ -1,5 +1,11 @@
 == Version history ==
 
+=== 1.8.1 (iionly and Juho Jaakola) ===
+
+- If event's long description is available, display it on event full view page
+- Cleanup of entity_list view (no longer use deprecated navigation/viewtype view that were unnecessary to be used anyway)
+- Use elgg_is_active_plugin() instead of elgg_plugin_exists() to make sure the helper plugins are enabled before using them
+
 === 1.8.0 (iionly and Juho Jaakola) ===
 
 - Major code cleanup
