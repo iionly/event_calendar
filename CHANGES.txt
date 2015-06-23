@@ -1,5 +1,13 @@
 == Version history ==
 
+=== 1.9.1.1 (iionly and Juho Jaakola) ===
+
+- Fixed syntax error in share_section view that resulted in a WSOD on the event edit page if the Entity Admins plugin is used
+- Change usage of input/dropdown to input/select
+- Deliver notifications in recieving user language
+- Improving manage subsribers page: Fixes positioning of the calendar toggle buttons (thanks to Juho)
+- Improving manage subsribers page: Toggles between Add to/remove from calendar buttons when clicked (thanks to Juho)
+
 === 1.9.1 (iionly and Juho Jaakola) ===
 
 - Cleanup of entity_list view (no longer use deprecated navigation/viewtype view that were unnecessary to be used anyway)

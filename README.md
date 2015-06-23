@@ -1,8 +1,8 @@
 Event Calendar plugin for Elgg 1.9
 ==================================
 
-Latest Version: 1.9.1  
-Released: 2015-06-07  
+Latest Version: 1.9.1.1  
+Released: 2015-06-23  
 Contact: iionly@gmx.de  
 License: GNU General Public License version 2  
 Copyright: (c) iionly, Juho Jaakola 2015, (C) Kevin Jardine (Radagast Solutions) 2008-2015
