@@ -408,6 +408,17 @@ $body .= elgg_view('input/radio', array('name' => 'params[more_required]', 'valu
 
 $body .= '<br />';
 
+$event_calendar_ical_import_export = elgg_get_plugin_setting('ical_import_export', 'event_calendar');
+if (!$event_calendar_ical_import_export) {
+	$event_calendar_ical_import_export = 'no';
+}
+
+$body .= elgg_echo('event_calendar:settings:ical_import_export');
+$body .= '<br />';
+$body .= elgg_view('input/radio', array('name' => 'params[ical_import_export]', 'value' => $event_calendar_ical_import_export, 'options' => $yn_options));
+
+$body .= '<br />';
+
 $ical_auth_file_name = elgg_get_plugin_setting('ical_auth_file_name', 'event_calendar');
 
 $body .= elgg_echo('event_calendar:ical_auth_file_name:title');

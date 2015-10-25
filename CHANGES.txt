@@ -1,5 +1,12 @@
 == Version history ==
 
+=== 1.8.2 (iionly and Matt Beckett) ===
+
+- iCAL import/export support by integration of the Event Calendar iCal plugin (this feature can be enabled/disabled by a new plugin setting),
+- Fixed: repeating events can no longer be created without selection at least on day of week the repeating event should take place on,
+- Workaround added for the site menu's "More" dropdown being overlayed by parts of the calendar if the full view event listing format is used (the workaround consists of overriding Elgg core's elgg-menu-site class; if your theme plugin or any other plugin ordered below the Event Calendar plugin does also override this class that is defined in views/default/css/elements/navigation.php the workaround is likely to fail),
+- Title in event popup display when using the full view event listing format is now a link forwarding to the event's full view page.
+
 === 1.8.1 (iionly and Juho Jaakola) ===
 
 - If event's long description is available, display it on event full view page

@@ -210,6 +210,7 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:add_to_group_members:button' => "Zu allen hinzufügen",
 	'event_calendar:remove_from_group_members:button' => "Aus allen entfernen",
 	'event_calander:end_before_start:error' => "Fehler: die Endzeit eines Events kann nicht vor der Startzeit sein.",
+	'event_calander:repeating_event:error' => "Fehler: beim Hinzufügen eines sich wiederholendes Events muss mindestens ein Wochentag ausgewählt werden an dem sich das Event wiederholen soll.",
 
 	'event_calendar:manage_subscribers:success' => "Die persönlichen Kalender wurden aktualisiert.",
 	'event_calendar:manage_subscribers:error' => "Fehler: die Aktualierung der persönlichen Kalender ist fehlgeschlagen.",
@@ -317,6 +318,30 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	'river:create:object:event_calendar' => "%s fügte das Event %s hinzu",
 	'river:comment:object:event_calendar' => '%s kommentierte das Event %s',
 
+	/**
+	 * Event calendar iCal
+	 **/
+
+	'event_calendar:settings:ical_import_export' => "Importieren von Events im iCal-Format bzw. Exportieren von Events ins iCal-Format erlauben?",
+	'event_calendar:timezone' => "Welche Zeitzone soll beim Importieren verwendet werden?",
+	'event_calendar:timezone:help' => "Abhängig von der verwendeten Zeitzone des Computers, auf dem die iCal-Datei erzeugt wurde, kann es beim Datum bzw. der Zeit der importierten Events zu Abweichungen kommen, wenn der Server, auf diese Community-Seite gehostet ist, eine andere Zeitzone verwendet. Wenn Du nicht sicher bist, welche Zeitzone Du auswählen sollst, belasse es bei der Voreinstellung, die der Zeitzone dieses Servers entspricht.",
+	'event_calendar:tooltip' => "Exportieren in /Importieren von iCal",
+	'event_calendar:export' => "Exportieren",
+	'event_calendar:import' => "Importieren",
+	'event_calendar:title:export' => "Exportieren in iCal",
+	'event_calendar:title:import' => "Importieren von iCal",
+	'event_calendar:export:settings' => "Lege die Auswahlkriterien für die zu exportierenden Events fest",
+	'event_calendar:import:settings' => "Lege die Auswahlkriterien für die zu importierenden Events fest",
+	'event_calendar:export:type' => "Welchen Kalender exportieren?",
+	'event_calendar:import:type' => "In welchen Kalender importieren?",
+	'event_calendar:start_date' => "Anfangsdatum",
+	'event_calendar:end_date' => "Enddatum",
+	'event_calendar:file:upload' => "iCal-Datei hochladen",
+	'event_calendar:import:access' => "Setze den Zugriffslevel der importierten Events auf",
+	'event_calendar:filter' => "Wessen Events sollen exportiert werden?",
+	'event_calendar:file:cannotload' => "Beim Hochladen der iCal-Datei ist ein Fehler aufgetreten.",
+	'event_calendar:file:nofile' => "Das Hochladen der iCal-Datei ist fehlgeschlagen.",
+	'event_calendar:error:failed' => "Es ist ein Fehler aufgetreten. Es wurden keine Events importiert.",
 );
 
 add_translation("de",$german);
