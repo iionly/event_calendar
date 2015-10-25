@@ -210,6 +210,7 @@ You can manage calendar requests for this event here:
 	'event_calendar:add_to_group_members:button' => "Add to all",
 	'event_calendar:remove_from_group_members:button' => "Remove from all",
 	'event_calander:end_before_start:error' => "Error: the end time of an event must take place after the start.",
+	'event_calander:repeating_event:error' => "Error: when adding a repeating event you need to select at least one day of the week the event should be repeated on.",
 
 	'event_calendar:manage_subscribers:success' => "Personal calendars updated.",
 	'event_calendar:manage_subscribers:error' => "Error: could not update personal calendars.",
@@ -325,4 +326,29 @@ You can visit the event page here:
 
 %s',
 	'event_calendar:notify:summary' => 'New event: %s',
+
+	/**
+	 * Event calendar iCal
+	 **/
+
+	'event_calendar:settings:ical_import_export' => "Allow events to be imported from and exported to iCal?",
+	'event_calendar:timezone' => "Import using which timezone?",
+	'event_calendar:timezone:help' => "Depending on the timezone of the server that exported the data the listed dates/times may be off if different from the timezone of this server. If in doubt, leave it as the default which is this servers timezone.",
+	'event_calendar:tooltip' => "Export/Import to iCal",
+	'event_calendar:export' => "Export",
+	'event_calendar:import' => "Import",
+	'event_calendar:title:export' => "Export to iCal",
+	'event_calendar:title:import' => "Import from iCal",
+	'event_calendar:export:settings' => "Select the export criteria",
+	'event_calendar:import:settings' => "Select the import criteria",
+	'event_calendar:export:type' => "Export which calendar?",
+	'event_calendar:import:type' => "Import to which calendar?",
+	'event_calendar:start_date' => "Start date",
+	'event_calendar:end_date' => "End date",
+	'event_calendar:file:upload' => "Upload iCal file",
+	'event_calendar:import:access' => "Set access of imported events to",
+	'event_calendar:filter' => "Whose events should be exported?",
+	'event_calendar:file:cannotload' => "There was an issue with the file upload.",
+	'event_calendar:file:nofile' => "No file was uploaded.",
+	'event_calendar:error:failed' => "An error has occurred, events have not been imported.",
 );

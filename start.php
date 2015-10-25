@@ -15,6 +15,7 @@ elgg_register_event_handler('init','system','event_calendar_init');
 function event_calendar_init() {
 
 	elgg_register_library('elgg:event_calendar', elgg_get_plugins_path() . 'event_calendar/models/model.php');
+	elgg_register_library('event_calendar:ical', elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator.class.php');
 
 	elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
 	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
@@ -115,9 +116,15 @@ function event_calendar_init() {
 	elgg_register_action("event_calendar/modify_full_calendar","$action_path/modify_full_calendar.php");
 	elgg_register_action("event_calendar/join_conference","$action_path/join_conference.php");
 	elgg_register_action("event_calendar/upgrade", "$action_path/upgrade.php", 'admin');
+	elgg_register_action("event_calendar/import", "$action_path/import.php");
+	elgg_register_action('event_calendar/export', "$action_path/export.php");
 
 	// check for pending event_calendar upgrades when a site upgrade is made
 	elgg_register_event_handler('upgrade', 'system', 'event_calendar_check_pending_upgrades');
+
+	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
+		elgg_register_event_handler('pagesetup', 'system', 'ec_ical_pagesetup');
+	}
 }
 
 /**
@@ -181,29 +188,50 @@ function event_calendar_url($hook, $type, $url, $params) {
  */
 function event_calendar_page_handler($page) {
 
+	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
+		set_input('ical_calendar_title_menu', true);
+	}
 	elgg_load_library('elgg:event_calendar');
 	$page_type = $page[0];
 	switch ($page_type) {
 		case 'list':
 			if (isset($page[1])) {
 				$start_date = $page[1];
+				set_input('ical_date', $page[1]);
 				if (isset($page[2])) {
 					$display_mode = $page[2];
+					set_input('ical_interval', $page[2]);
 					if (isset($page[3])) {
 						$filter_mode = $page[3];
+						switch($page[3]) {
+							case 'mine':
+								set_input('ical_calendar_filter', 'mine');
+								break;
+							case 'friends':
+								set_input('ical_calendar_filter', 'friends');
+								break;
+							default:
+								set_input('ical_calendar_filter', 'all');
+								break;
+						}
 						if (isset($page[4])) {
 							$region = $page[4];
+							set_input('ical_region', $page[4]);
 						} else {
 							$region = '';
+							set_input('ical_region', '');
 						}
 					} else {
 						$filter_mode = '';
+						set_input('ical_calendar_filter', 'all');
 					}
 				} else {
 					$display_mode = '';
+					set_input('ical_interval', '');
 				}
 			} else {
 				$start_date = 0;
+				set_input('ical_date', 0);
 			}
 			echo event_calendar_get_page_content_list($page_type, 0, $start_date, $display_mode, $filter_mode, $region);
 			break;
@@ -235,28 +263,48 @@ function event_calendar_page_handler($page) {
 			group_gatekeeper();
 			if (isset($page[1])) {
 				$group_guid = $page[1];
+				set_input('ical_group_guid', $page[1]);
 				if (isset($page[2])) {
 					$start_date = $page[2];
+					set_input('ical_date', $page[2]);
 					if (isset($page[3])) {
-					$display_mode = $page[3];
-					if (isset($page[4])) {
-						$filter_mode = $page[4];
-						if (isset($page[5])) {
-							$region = $page[5];
+						$display_mode = $page[3];
+						set_input('ical_interval', $page[3]);
+						if (isset($page[4])) {
+							$filter_mode = $page[4];
+							switch($page[4]) {
+								case 'mine':
+									set_input('ical_calendar_filter', 'mine');
+									break;
+								case 'friends':
+									set_input('ical_calendar_filter', 'friends');
+									break;
+								default:
+									set_input('ical_calendar_filter', 'all');
+									break;
+							}
+							if (isset($page[5])) {
+								$region = $page[5];
+								set_input('ical_region', $page[5]);
+							} else {
+								$region = '';
+								set_input('ical_region', '');
+							}
 						} else {
-							$region = '';
+							$filter_mode = '';
+							set_input('ical_calendar_filter', 'all');
 						}
 					} else {
-						$filter_mode = '';
-					}
-					} else {
 						$display_mode = '';
+						set_input('ical_interval', '');
 					}
 				} else {
 					$start_date = '';
+					set_input('ical_date', 0);
 				}
 			} else {
 				$group_guid = 0;
+				set_input('ical_group_guid', 0);
 			}
 			echo event_calendar_get_page_content_list($page_type, $group_guid, $start_date, $display_mode, $filter_mode, $region);
 			break;
@@ -297,10 +345,54 @@ function event_calendar_page_handler($page) {
 		case 'get_fullcalendar_events':
 			echo event_calendar_get_page_content_fullcalendar_events($page[1], $page[2], $page[3], $page[4]);
 			break;
+		case 'ical':
+			set_input('action_type', $page[1]);
+			require elgg_get_plugins_path() . 'event_calendar/pages/export.php';
+			break;
 		default:
 			return false;
 	}
 	return true;
+}
+
+// If iCal import/export is enabled add corresponding action buttons in title area
+function ec_ical_pagesetup() {
+	$use_titlemenu = get_input('ical_calendar_title_menu', false);
+	if ($use_titlemenu && elgg_is_logged_in()) {
+		$filter = get_input('ical_calendar_filter', false);
+		$date = get_input('ical_date', false);
+		$interval = get_input('ical_interval', false);
+		$group_guid = get_input('ical_group_guid', false);
+
+		$export_url = elgg_get_site_url() . 'event_calendar/ical/export?method=ical';
+		$import_url = elgg_get_site_url() . 'event_calendar/ical/import?method=ical';
+		$urlsuffix = '';
+
+		if ($filter) {
+			$urlsuffix .= "&filter={$filter}";
+		}
+
+		if ($date) {
+			$urlsuffix .= "&date={$date}";
+		}
+
+		if ($interval) {
+			$urlsuffix .= "&interval={$interval}";
+		}
+
+		if ($group_guid !== false) {
+			$urlsuffix .= "&group_guid={$group_guid}";
+		}
+
+		$export = new ElggMenuItem('ical_export', elgg_echo('event_calendar:export'), $export_url . $urlsuffix);
+		$export->setLinkClass('elgg-button elgg-button-action');
+
+		$import = new ElggMenuItem('ical_import', elgg_echo('event_calendar:import'), $import_url . $urlsuffix);
+		$import->setLinkClass('elgg-button elgg-button-action');
+
+		elgg_register_menu_item('title', $export);
+		elgg_register_menu_item('title', $import);
+	}
 }
 
 /**
@@ -379,6 +471,17 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 			'priority' => 150,
 		);
 		$return[] = ElggMenuItem::factory($options);
+
+		if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
+			$url = elgg_get_site_url() . 'action/event_calendar/export?filter=' . $entity->guid;
+			$options = array(
+				'name' => 'ical_export',
+				'text' => elgg_view('output/img', array('src' => elgg_get_site_url() . 'mod/event_calendar/images/ics.png')),
+				'href' => elgg_add_action_tokens_to_url($url),
+				'priority' => 1000,
+			);
+			$return[] = ElggMenuItem::factory($options);
+		}
 	}
 
 	return $return;

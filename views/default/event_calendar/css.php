@@ -4,6 +4,10 @@ $background_colour = '#F5F5F5';
 $highlight_colour = '#3874B7';
 ?>
 
+.elgg-menu-site {
+	z-index: 50;
+}
+
 #calendarmenucontainer {
 	position:relative;
 	left: 25px;

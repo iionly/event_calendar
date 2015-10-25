@@ -84,6 +84,24 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 		}
 	}
 
+	// Check if repeating event and if yes if day(s) of repeat has been selected
+	$repeats = get_input('repeats');
+	if ($repeats == 'yes') {
+		$no_day_selected = true;
+		$dow = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+		foreach ($dow as $w) {
+			$v = 'event-calendar-repeating-'.$w.'-value';
+			$selected = get_input($v);
+			if ($selected) {
+				$no_day_selected = false;
+			}
+		}
+		if ($no_day_selected) {
+			register_error(elgg_echo('event_calander:repeating_event:error'));
+			return false;
+		}
+	}
+
 	if ($e->schedule_type != 'poll') {
 		if ($e->schedule_type == 'all_day') {
 			$start_date_text = trim(get_input('start_date_for_all_day'));
@@ -1322,24 +1340,26 @@ function event_calendar_get_page_content_list($page_type, $container_guid, $star
 	$params = event_calendar_generate_listing_params($page_type, $container_guid, $start_date, $display_mode, $filter, $region);
 	$title = $params['title'];
 
-	$url = current_page_url();
-	if (substr_count($url, '?')) {
-		$url .= "&view=ical";
-	} else {
-		$url .= "?view=ical";
-	}
+	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
+		$url = current_page_url();
+		if (substr_count($url, '?')) {
+			$url .= "&view=ical";
+		} else {
+			$url .= "?view=ical";
+		}
 
-	$url = elgg_format_url($url);
-	$menu_options = array(
-		'name' => 'ical',
-		'id' => 'event-calendar-ical-link',
-		'text' => '<img src="'.elgg_get_site_url().'mod/event_calendar/images/ics.png" />',
-		'href' => $url,
-		'title' => elgg_echo('feed:ical'),
-		'priority' => 800,
-	);
-	$menu_item = ElggMenuItem::factory($menu_options);
-	elgg_register_menu_item('extras', $menu_item);
+		$url = elgg_format_url($url);
+		$menu_options = array(
+			'name' => 'ical',
+			'id' => 'event-calendar-ical-link',
+			'text' => '<img src="'.elgg_get_site_url().'mod/event_calendar/images/ics.png" />',
+			'href' => $url,
+			'title' => elgg_echo('feed:ical'),
+			'priority' => 800,
+		);
+		$menu_item = ElggMenuItem::factory($menu_options);
+		elgg_register_menu_item('extras', $menu_item);
+	}
 
 	$body = elgg_view_layout("content", $params);
 
@@ -1834,6 +1854,7 @@ function event_calendar_get_page_content_display_users($event_guid) {
 			'full_view' => false,
 			'list_type_toggle' => false,
 			'limit' => $limit,
+			'offset' => $offset,
 			'event_calendar_event' => $event,
 		);
 
@@ -1901,8 +1922,8 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 						'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 					));
 				}
-				$users = $event_container->getMembers($limit, $offset);
-				$count = $event_container->getMembers($limit, $offset, true);
+				$users = $event_container->getMembers(array('limit' => $limit, 'offset' => $offset));
+				$count = $event_container->getMembers(array('limit' => $limit, 'offset' => $offset, 'count' => true));
 
 				set_input('guid', $event->guid);
 				elgg_extend_view('user/elements/summary', 'event_calendar/calendar_toggle');
@@ -1911,11 +1932,12 @@ function event_calendar_get_page_content_manage_users($event_guid) {
 					'full_view' => false,
 					'list_type_toggle' => false,
 					'limit' => $limit,
+					'offset' => $offset,
 					'event_calendar_event' => $event,
 					'pagination' => true,
 					'count' => $count,
 				);
-				$content .= elgg_view_entity_list($users, $options, $offset, $limit);
+				$content .= elgg_view_entity_list($users, $options);
 			} else {
 				elgg_push_breadcrumb($event_container->name, 'event_calendar/owner/' . $event_container->username);
 				if ($event->canEdit()) {

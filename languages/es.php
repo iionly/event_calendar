@@ -1,4 +1,5 @@
 <?php
+
 return array (
 	"item:object:event_calendar" => "Calendario",
 	"tag_names:event_tags" => "Etiquetas",
@@ -74,7 +75,7 @@ return array (
 	"event_calendar:settings:no" => "No",
 	"event_calendar:settings:site_calendar:title" => "¿Habilitar calendario para todo el sitio?",
 	"event_calendar:settings:site_calendar:admin" => "Si, solamente lxs administradorxs pueden subir eventos",
-	"event_calendar:settings:site_calendar:loggedin" => "Si, cualquier miembro logueadx puede subir eventos",	
+	"event_calendar:settings:site_calendar:loggedin" => "Si, cualquier miembro logueadx puede subir eventos",
 	"event_calendar:settings:group_calendar:title" => "¿Habilitar calendario para los grupos?",
 	"event_calendar:settings:group_calendar:admin" => "Si, solamente lxs administradorxs y creadorxs del grupo puede subir eventos",
 	"event_calendar:settings:group_calendar:members" => "Si, cualquier miembro del grupo puede subir eventos",
@@ -124,23 +125,23 @@ return array (
 Se ha añadido un evento de \"%s\"  a tu calendario personal.",
 	"event_calendar:settings:region_list_handles:title" => "Las regiones del cuadro de arriba son cadenas manejadas por el sistema de localización. Utilice el sistema de traducción Elgg para resolverlos.",
 	"event_calendar:settings:type_list_handles:title" => "Las regiones del cuadro de arriba son cadenas manejadas por el sistema de localización. Utilice el sistema de traducción de Elgg para resolverlos.",
-		
+
 	"event_calendar:settings:personal_manage:title" => "Permisos del calendario",
 	"event_calendar:settings:personal_manage:description" => "Determina cuando una persona puede agregar eventos a sus calendarios personales (abierto), necesitan solicitar acceso (cerrado), no tiene ninguna opción en todo (privado), o permitir que los creadores de eventos puedan determinarlo para cada evento (por evento). Tenga en cuenta que si establece este como privado probablemente debería activar la opción anterior para permitir a los creadores de eventos y los administradores del sitio puedan agregar sus acontecimientos a otros calendarios personales.",
 	"event_calendar:request_event_response" => "Tu petición para añadir ese evento ha sido enviada,",
 	"event_calendar:request_event_error" => "Error: Tu petición para añadir el evento al calendario no se ha enviado.",
 	"event_calendar:request_subject" => "Haz recibido una invitación de calendario",
-	"event_calendar:request_message" => "%s ha pedido que el evento \"%s\", aquí: 
+	"event_calendar:request_message" => "%s ha pedido que el evento \"%s\", aquí:
 
-% s 
+% s
 
-añadido a su calendario personal. 
+añadido a su calendario personal.
 
-Puedes gestionar solicitudes de calendario para este evento aquí: 
+Puedes gestionar solicitudes de calendario para este evento aquí:
 
-% s 
+% s
 ",
-		
+
 	"event_calendar:review_requests_error" => "El evento no existe o no tienes permisos para aprobar la solicitud.",
 	"event_calendar:review_requests_request_none" => "No hay peticiones a revisar para ese evento.",
 	"event_calendar:request:remove:check" => "¿Estas seguro que quieres rechazar esa petición?",
@@ -155,7 +156,7 @@ Puedes gestionar solicitudes de calendario para este evento aquí:
 	"event_calendar:review_requests:accept:title" => "Aceptar la petición",
 	"event_calendar:review_requests:error:approve" => "Error: la petición no se ha aprobado.",
 	"event_calendar:review_requests:error:reject" => "Error: No se ha podido rechazar la petición.",
-		
+
 	"event_calendar:settings:hide_access:title" => "Ocultar acceso al calendario",
 	"event_calendar:settings:default_access:title" => "Si el acceso al evento esta oculto,  ¿cuál debería ser el valor por defecto?",
 	"event_calendar:settings:hide_end:title" => "Ocultar campos de fecha y hora",
@@ -186,12 +187,12 @@ Puedes gestionar solicitudes de calendario para este evento aquí:
 	'event_calendar:upcoming_events_listing_title:friends' => "Próximos eventos de tus amigxs",
 	"event_calendar:listing_title:all" => "Todos los eventos",
 	"event_calendar:listing_title:open" => "Eventos abiertos",
-	"event_calendar:listing_title:friends" => "Calendarios de amigxs",	
+	"event_calendar:listing_title:friends" => "Calendarios de amigxs",
 	"event_calendar:manage_users:title" => "Organizar suscriptorxs para \"%s\"",
 	"event_calendar:manage_users:breadcrumb" => "Organizar suscriptorxs",
 	"event_calendar:manage_users:description" => "Agregar o remover eventos de calendarios personales.",
 	"event_calendar:manage_users:unauthorized" => "Error: no tienes autorización para organizar calendarios personales para este evento",
-	'event_calander:end_before_start:error' => "Error: el fin del evento debe tener lugar luego de su comienzo.",	
+	'event_calander:end_before_start:error' => "Error: el fin del evento debe tener lugar luego de su comienzo.",
 	"event_calendar:add_to_group_members:success" => "El evento ha sido agregado a tu calendario personal y al de todos lxs miembros del grupo.",
 	"event_calendar:add_to_group_members:error" => "Error: no se pudo agregar este evento a los calendarios personales de lxs miembros del grupo.",
 	"event_calendar:remove_from_group_members:success" => "El evento ha sido borrado de tu calendario personal y de todos los miembros del grupo.",
@@ -270,23 +271,23 @@ Puedes gestionar solicitudes de calendario para este evento aquí:
 	"event_calendar:settings:repeated_events:title" => "Permitir eventos repetidos (actualmente solo funciona correctamente en modo de calendario completo)",
 	"event_calendar:settings:reminders:title" => "Permitir envío de recordatorios",
 	"event_calendar:reminder:subject" => "Recordatorio para el evento: %s",
-	"event_calendar:reminder:body" => "El evento 
+	"event_calendar:reminder:body" => "El evento
 
-% s 
+% s
 
-tiene lugar en 
+tiene lugar en
 
-% s. 
-⇥ 
-Usted puede visitar la página del evento aquí: 
-% s 
+% s.
+⇥
+Usted puede visitar la página del evento aquí:
+% s
 ⇥",
 	"event_calendar:bbb_server_url" => "URL del Servidor Big Blue Button (debe terminar con una barra)",
 	"event_calendar:bbb_security_salt" => "Salto de seguridad de Big Blue Button",
 	"event_calendar:conference_create_error" => "Error: imposible crear conferencia web.",
 	"event_calendar:couldnotjoin" => "Error: imposible unirse a la conferencia",
 	"event_calendar:join_conf_button" => "Unirse a la conferencia",
-			
+
 	"event_calendar:poll_suffix" => "(encuesta)",
 	"event_calendar:resend_poll_invitation" => "¿Quieres advertir de los cambios en las opciones de encuesta a los invitados?",
 	"river:update:object:event_calendar" => "%s actualizado el evento %s",
