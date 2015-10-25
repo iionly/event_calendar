@@ -4,6 +4,10 @@ $background_colour = '#F5F5F5';
 $highlight_colour = '#3874B7';
 ?>
 
+.elgg-menu-site {
+	z-index: 50;
+}
+
 #calendarmenucontainer {
 	position:relative;
 	left: 25px;
@@ -160,16 +164,6 @@ li.event-calendar-filter-menu-show-only {
 	margin-right: 10px;
 }
 
-.event-calendar-medium-text {
-	width: 500px !important;
-}
-
-.event-calendar-edit-form-block label {
-	float: left;
-	width: 120px;
-	margin-top: 5px;
-}
-
 .event-calendar-edit-form-other-block .mceLayout,
 .event-calendar-edit-form-other-block .mce-tinymce  {
 	float:none;
@@ -189,10 +183,7 @@ li.event-calendar-filter-menu-show-only {
 
 .event-calendar-edit-form-block {
 	width: 98%;
-	background-color: #DDDDDD;
-	border-width:1px;
-	border-style:solid;
-	border-color:#bfbfbf;
+	border-bottom: 1px solid #CCC;
 	padding: 5px;
 	margin-bottom: 10px;
 	clear: both;
@@ -235,11 +226,6 @@ li.event-calendar-filter-menu-show-only {
 .event-calendar-repeating-selected:hover {
 	text-decoration: none;
 	color: #CCCCCC;
-}
-
-.event-calendar-edit-form-schedule-block ul.elgg-vertical li {
-	display: block !important;
-	clear: both;
 }
 
 .event-calendar-edit-form-block ul.elgg-vertical li label {

@@ -1,11 +1,11 @@
-Event Calendar plugin for Elgg 1.10 and 1.11
-============================================
+Event Calendar plugin for Elgg 1.10 - 1.12
+==========================================
 
-Latest Version: 1.10.1  
-Released: 2015-06-07  
+Latest Version: 1.10.2  
+Released: 2015-10-25  
 Contact: iionly@gmx.de  
 License: GNU General Public License version 2  
-Copyright: (c) iionly, Juho Jaakola 2015, (C) Kevin Jardine (Radagast Solutions) 2008-2015
+Copyright: (c) iionly, Juho Jaakola, Matt Beckett 2015, (C) Kevin Jardine (Radagast Solutions) 2008-2015
 
 
 Description
@@ -22,6 +22,8 @@ Site admins (or optionally any user) can also add non-group-specific events to t
 Users can add group or site-wide events to a personal calendar to showcase events that they plan to attend or are interested in. They can optionally display these events by dragging an Event calendar widget onto their profile or dashboard.
 
 The number of users who have added an event to their personal gallery is listed on each event page along with a link to a page that displays these users in a gallery format. It is thus easy to find other people interested in the same event.
+
+Users can export to or import events from an iCal file.
 
 
 Admin settings

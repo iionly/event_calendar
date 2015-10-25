@@ -8,7 +8,7 @@ if ($fd['repeats'] == 'yes') {
 } else {
 	echo elgg_view('input/checkbox', array('name' => 'repeats', 'value' => 'yes'));
 }
-echo elgg_echo('event_calendar:repeat_interval_label').' ';
+echo ' '.elgg_echo('event_calendar:repeat_interval_label').' ';
 echo elgg_view('input/select', array('name' => 'repeat_interval', 'value' => $fd['repeat_interval'], 'options_values' => array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8')));
 echo ' '.elgg_echo('event_calendar:repeat_weeks');
 echo ' '.elgg_echo('event_calendar:on_these_days');
