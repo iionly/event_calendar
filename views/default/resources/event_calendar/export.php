@@ -2,7 +2,8 @@
 
 gatekeeper();
 
-$action_type = get_input('action_type', 'export');
+$action_type = elgg_extract('action_type', $vars);
+
 $filter = get_input('filter', 'mine');
 $group_guid = get_input('group_guid', false);
 $date = get_input('date', date('Y-n-j'));

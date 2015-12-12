@@ -96,6 +96,9 @@ function event_calendar_init() {
 	// Add page in Administer - Utilities section (this page offers cleanup of past event entries)
 	elgg_register_admin_menu_item('administer', 'event_calendar', 'administer_utilities');
 
+	// allow for liking of events
+	elgg_register_plugin_hook_handler('likes:is_likable', 'object:event_calendar', 'Elgg\Values::getTrue');
+
 	// register actions
 	$action_path = elgg_get_plugins_path() . 'event_calendar/actions/event_calendar';
 
@@ -346,8 +349,8 @@ function event_calendar_page_handler($page) {
 			echo event_calendar_get_page_content_fullcalendar_events($page[1], $page[2], $page[3], $page[4], $page[5]);
 			break;
 		case 'ical':
-			set_input('action_type', $page[1]);
-			require elgg_get_plugins_path() . 'event_calendar/pages/export.php';
+			$resource_vars['action_type'] = $page[1];
+			echo elgg_view_resource('event_calendar/export', $resource_vars);
 			break;
 		default:
 			return false;
@@ -476,7 +479,7 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 			$url = elgg_get_site_url() . 'action/event_calendar/export?filter=' . $entity->guid;
 			$options = array(
 				'name' => 'ical_export',
-				'text' => elgg_view('output/img', array('src' => elgg_get_site_url() . 'mod/event_calendar/graphics/ics.png')),
+				'text' => elgg_view('output/img', array('src' => elgg_get_simplecache_url('event_calendar/ics.png'))),
 				'href' => elgg_add_action_tokens_to_url($url),
 				'priority' => 1000,
 			);

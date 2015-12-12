@@ -192,13 +192,11 @@ define(function(require) {
 			});
 		}
 
-		elgg.get({
-			url: '/vendors/jquery/i18n/jquery.ui.datepicker-' + elgg.get_language() + '.js',
-			dataType: "script",
-			cache: true,
-			success: loadFullCalendar,
-			error: loadFullCalendar, // english language is already loaded
-		});
+		var deps = ['jquery-ui', 'jquery-ui/datepicker'];
+		if (elgg.get_language() != 'en') {
+			deps.push('jquery-ui/i18n/datepicker-'+ elgg.get_language() + '.min');
+		}
+		require(deps, loadFullCalendar);
 	}
 
 	return init();

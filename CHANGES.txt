@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.0 (iionly)
+--------------
+
+- Updated for Elgg 2.0 (therefore should also work on future Elgg 2.X versions).
+
 1.10.3 (iionly)
 ---------------
 

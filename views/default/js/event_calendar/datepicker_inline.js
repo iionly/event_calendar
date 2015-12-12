@@ -48,11 +48,13 @@ define(function(require) {
 						// jump to the new page
 						document.location.href = linkbit.replace('%s', date.substring(0,10));
 					},
-					prevText: "<<<",
-					nextText: ">>>",
+					nextText: '&#xBB;',
+					prevText: '&#xAB;',
 					dateFormat: "yy-mm-dd",
 					defaultDate: startdate+' - '+enddate,
-					beforeShowDay: highlightWeek
+					beforeShowDay: highlightWeek,
+					changeMonth: true,
+					changeYear: true
 				});
 
 				var start_date = $.datepicker.parseDate("yy-mm-dd", startdate);
@@ -66,16 +68,12 @@ define(function(require) {
 				done_loading = true;
 			};
 			
-			if ($("#"+name).length && elgg.get_language() == 'en') {
-				loadDatePickerInline();
-			} else if ($("#"+name).length) {
-				elgg.get({
-					url: elgg.config.wwwroot + 'vendors/jquery/i18n/jquery.ui.datepicker-'+ elgg.get_language() +'.js',
-					dataType: "script",
-					cache: true,
-					success: loadDatePickerInline,
-					error: loadDatePickerInline // english language is already loaded.
-				});
+			if ($("#"+name).length) {
+				var deps = ['jquery-ui', 'jquery-ui/datepicker'];
+				if (elgg.get_language() != 'en') {
+					deps.push('jquery-ui/i18n/datepicker-'+ elgg.get_language() + '.min');
+				}
+				require(deps, loadDatePickerInline);
 			}
 		});
 	}
