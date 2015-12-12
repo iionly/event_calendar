@@ -1,6 +1,20 @@
 Changelog
 =========
 
+1.10.3 (iionly)
+---------------
+
+- Conversion all JS code to AMD modules,
+- Fix for event calendar's entries on group profile pages (with and without Widget Manager plugin used) to work correctly depending on the state of the corresponding Event Calendar plugin settings for group calendars,
+- Fixed region event filter to work correctly with fullcalendar,
+- Usage of profile images of event creators as event icon in lists and on the activity page instead of generic event icon,
+- Cleanup of unused image files,
+- "Add event" link added in group's event widget (when Widget Manager is used to manage group widgets),
+- Line break added before "Add event" link in group module (when Widget Manager not used) when no group events exist,
+- Cleanup of code used to display event infos in calendar list views to prevent an empty line to be added after the info,
+- New tool ("Administer" - "Utilities" - "Event Calendar") for removal of past events,
+- Code cleanup of plugin settings page.
+
 1.10.2 (iionly and Matt Beckett)
 --------------------------------
 

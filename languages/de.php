@@ -1,6 +1,7 @@
 <?php
 
 return array(
+	'admin:administer_utilities:event_calendar' => 'Event-Kalender',
 	'item:object:event_calendar' => "Event-Kalender",
 	'tag_names:event_tags' => "Tags",
 	'event_calendar:optional' => "Optional.",
@@ -283,7 +284,7 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:repeated_event:week_single' => "jede Woche.",
 	'event_calendar:repeated_event:format' => "Beginnend am %s und wiederholend am %s",
 	'event_calendar:settings:repeated_events:title' => "Wiederholende Events erlauben (funktioniert derzeit nur im Kalender-Detailmodus zufriendenstellend)?",
-	'event_calendar:settings:reminders:title' => "Erlaube das Versenden von Erinnerungen (benötigt das message_queue-Plugin)?",
+	'event_calendar:settings:reminders:title' => "Erlaube das Versenden von Erinnerungen (benötigt das Message Queue-Plugin)?",
 	'event_calendar:reminder:subject' => "Erinnerung an Event: %s",
 	'event_calendar:reminder:body' => "Das Event
 
@@ -351,4 +352,21 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	'event_calendar:file:cannotload' => "Beim Hochladen der iCal-Datei ist ein Fehler aufgetreten.",
 	'event_calendar:file:nofile' => "Das Hochladen der iCal-Datei ist fehlgeschlagen.",
 	'event_calendar:error:failed' => "Es ist ein Fehler aufgetreten. Es wurden keine Events importiert.",
+
+	/**
+	 * Event calendar "administer - utilities" section
+	 **/
+	'event_calendar:administer:title' => "Löschen zurückliegender Event-Kalendar-Einträgen",
+	'event_calendar:administer:description' => "Im folgenden kannst Du eine Bereinigung der Datenbank von zurpckliegenden Event-Kalender-Einträgen vornehmen - sowohl vom seitenweiten Kalender als auch von Gruppenkalendern.<br> Der Löschvorgang wird alle Events löschen, deren Enddatum weiter zurückliegt als die im folgenden ausgewählte Zeitspanne.<br><br><b>Es ist empfehlenswert, vor Beginn des Löschens der Events ein Backup der Datenbank zu machen.</b>",
+	'event_calendar:administer:delete_upper_limit_label' => "Wie lange sollen die zu löschenden Event-Kalender-Einträge mindestens zurückliegen?",
+	'event_calendar:administer:one_year' => "Ein Jahr",
+	'event_calendar:administer:half_year' => "6 Monate",
+	'event_calendar:administer:three_months' => "3 Monate",
+	'event_calendar:administer:four_weeks' => "4 Wochen",
+	'event_calendar:administer:two_weeks' => "2 Wochen",
+	'event_calendar:administer:delete_repeating_events' => "Wiederholende Events beim Löschen mit einschließen",
+	'event_calendar:administer:delete_repeating_events_help' => "(Warnung: beim Löschen von sich wiederholenden Events wird die Zeitspanne, die sie zurückliegen, von dem Datum gerechnet, an dem sie zum ersten Mal stattfanden unabhängig von den Zeitpunkten der Wiederholungen!)",
+	'event_calendar:administer:error_no_interval' => "Fehler: Du hast keine Zeitspanne ausgewählt, die die zu löschenden Events mindestens zurückliegen müssen.",
+	'event_calendar:administer:error_invalid_interval' => "Entschuldigung: ein unbekannter Fehler ist aufgetreten.",
+	'event_calendar:administer:delete_past_events_result' => "Das Löschen der zurückliegenden Events ist abgeschlossen. Es wurden %s Events gelöscht. Bei %s Events ist das Löschen fehlgeschlagen.",
 );

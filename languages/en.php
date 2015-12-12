@@ -1,6 +1,7 @@
 <?php
 
 return array(
+	'admin:administer_utilities:event_calendar' => 'Event calendar',
 	'item:object:event_calendar' => "Event calendar",
 	'tag_names:event_tags' => "Tags",
 	'event_calendar:optional' => "Optional.",
@@ -283,7 +284,7 @@ You can manage calendar requests for this event here:
 	'event_calendar:repeated_event:week_single' => "every week.",
 	'event_calendar:repeated_event:format' => "Starting on %s and repeated on %s",
 	'event_calendar:settings:repeated_events:title' => "Allow repeated events (currently only works properly in full calendar mode)?",
-	'event_calendar:settings:reminders:title' => "Allow sending reminders (requires the message_queue plugin)?",
+	'event_calendar:settings:reminders:title' => "Allow sending reminders (requires the Message Queue plugin)?",
 	'event_calendar:reminder:subject' => "Reminder for event: %s",
 	'event_calendar:reminder:body' => "The event
 
@@ -351,4 +352,21 @@ You can visit the event page here:
 	'event_calendar:file:cannotload' => "There was an issue with the file upload.",
 	'event_calendar:file:nofile' => "No file was uploaded.",
 	'event_calendar:error:failed' => "An error has occurred, events have not been imported.",
+
+	/**
+	 * Event calendar "administer - utilities" section
+	 **/
+	'event_calendar:administer:title' => "Deletion of past event calendar entries",
+	'event_calendar:administer:description' => "Here you can clean up the database from past event calendar entries - both from of the site-wide calendar and group calendars.<br> The clean up process will delete any event entries from the database which have an end date older than the time period selected in the following.<br><br><b>It's advised to make a database backup before starting the clean up process.</b>",
+	'event_calendar:administer:delete_upper_limit_label' => "Delete event calendar entries past more than",
+	'event_calendar:administer:one_year' => "a year",
+	'event_calendar:administer:half_year' => "6 months",
+	'event_calendar:administer:three_months' => "3 months",
+	'event_calendar:administer:four_weeks' => "4 weeks",
+	'event_calendar:administer:two_weeks' => "2 weeks",
+	'event_calendar:administer:delete_repeating_events' => "Include repeating events in deletion process",
+	'event_calendar:administer:delete_repeating_events_help' => "(Warning: the repeating events are deleted based only on the date they have taken place the first time regardless of dates of repeat!)",
+	'event_calendar:administer:error_no_interval' => "Error: you haven't selected a time period for deletion of events older than this period.",
+	'event_calendar:administer:error_invalid_interval' => "Sorry: an unknown error occured.",
+	'event_calendar:administer:delete_past_events_result' => "Deletion of past events finished. There were %s past events removed. For %s events the removal failed.",
 );

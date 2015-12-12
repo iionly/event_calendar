@@ -77,13 +77,15 @@ foreach($events as $event) {
 	$vevent = $v->newComponent('vevent');
 
 	if (!isset($event->end_date)) {
-	  $event->end_date = $event->start_date;
+		$event_end_date = $event->start_date;
+	} else {
+		$event_end_date = $event->end_date;
 	}
 
 	$start = array(
-		'year' => date('Y', $event->start_date),
-		'month' => date('m', $event->start_date),
-		'day' => date('d', $event->start_date),
+		'year' => date('Y', (int)$event->start_date),
+		'month' => date('m', (int)$event->start_date),
+		'day' => date('d', (int)$event->start_date),
 		'hour' => $hb,
 		'min' => $mb,
 		'sec' => $sb
@@ -92,9 +94,9 @@ foreach($events as $event) {
 	$vevent->setProperty('dtstart', $start);
 
 	$end = array(
-		'year' => date('Y', $event->end_date),
-		'month' => date('m', $event->end_date),
-		'day' => date('d', $event->end_date),
+		'year' => date('Y', (int)$event_end_date),
+		'month' => date('m', (int)$event_end_date),
+		'day' => date('d', (int)$event_end_date),
 		'hour' => $he,
 		'min' => $me,
 		'sec' => $se

@@ -3,7 +3,7 @@
 	<name>Event Calendar</name>
 	<id>event_calendar</id>
 	<author>iionly, Juho Jaakkola, Matt Beckett and Kevin Jardine</author>
-	<version>1.10.2</version>
+	<version>1.10.3</version>
 	<category>content</category>
 	<category>communication</category>
 	<category>widget</category>
@@ -18,6 +18,7 @@
 	<suggests>
 		<type>plugin</type>
 		<name>event_poll</name>
+		<version>1.10.0</version>
 	</suggests>
 	<suggests>
 		<type>plugin</type>

@@ -1001,10 +1001,11 @@ function event_calender_get_gmt_from_server_time($server_time) {
 function event_calendar_activated_for_group($group) {
 	$group_calendar = elgg_get_plugin_setting('group_calendar', 'event_calendar');
 	$group_default = elgg_get_plugin_setting('group_default', 'event_calendar');
-	if ($group && ($group_calendar != 'no')) {
-		if ( ($group->event_calendar_enable == 'yes') || ((!$group->event_calendar_enable && (!$group_default || $group_default == 'yes')))) {
-			return true;
+	if ($group && (!$group_calendar || $group_calendar != 'no')) {
+		if ( ($group->event_calendar_enable == 'no') || (!$group->event_calendar_enable && $group_default == 'no')) {
+			return false;
 		}
+		return true;
 	}
 	return false;
 }
@@ -1284,15 +1285,15 @@ function event_calendar_send_event_request($event, $user_guid) {
 // pages
 
 function event_calendar_get_page_content_list($page_type, $container_guid, $start_date, $display_mode, $filter, $region='-') {
-	elgg_load_js('elgg.event_calendar');
+	elgg_require_js('event_calendar/event_calendar');
 	global $autofeed;
 	$autofeed = true;
 	elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), 'event_calendar/list');
 	if ($page_type == 'group') {
-		if (!event_calendar_activated_for_group($container_guid)) {
+		$group = get_entity($container_guid);
+		if (!event_calendar_activated_for_group($group)) {
 			forward();
 		}
-		$group = get_entity($container_guid);
 		elgg_push_breadcrumb($group->name, 'event_calendar/group/' . $group->getGUID());
 		elgg_push_context('groups');
 		elgg_set_page_owner_guid($container_guid);
@@ -1352,7 +1353,7 @@ function event_calendar_get_page_content_list($page_type, $container_guid, $star
 		$menu_options = array(
 			'name' => 'ical',
 			'id' => 'event-calendar-ical-link',
-			'text' => '<img src="'.elgg_get_site_url().'mod/event_calendar/images/ics.png" />',
+			'text' => '<img src="'.elgg_get_site_url().'mod/event_calendar/graphics/ics.png" />',
 			'href' => $url,
 			'title' => elgg_echo('feed:ical'),
 			'priority' => 800,
@@ -1367,7 +1368,7 @@ function event_calendar_get_page_content_list($page_type, $container_guid, $star
 }
 
 function event_calendar_get_page_content_edit($page_type, $guid, $start_date='') {
-	elgg_load_js('elgg.event_calendar');
+	elgg_require_js('event_calendar/event_calendar');
 	$vars = array();
 	$vars['id'] = 'event-calendar-edit';
 	$vars['name'] = 'event_calendar_edit';
@@ -1805,7 +1806,7 @@ function event_calendar_get_page_content_view($event_guid) {
 }
 
 function event_calendar_get_page_content_display_users($event_guid) {
-	elgg_load_js('elgg.event_calendar');
+	elgg_require_js('event_calendar/event_calendar');
 	$event = get_entity($event_guid);
 
 	elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), 'event_calendar/list');
@@ -1874,7 +1875,7 @@ function event_calendar_get_page_content_display_users($event_guid) {
 // adding or removing them
 function event_calendar_get_page_content_manage_users($event_guid) {
 	// TODO: make this an optional feature, toggled off
-	elgg_load_js('elgg.event_calendar');
+	elgg_require_js('event_calendar/event_calendar');
 	$event = get_entity($event_guid);
 	$limit = 10;
 	$offset = get_input('offset', 0);
@@ -2405,10 +2406,10 @@ function event_calendar_can_add($group_guid=0, $user_guid=0) {
 		}
 	}
 	if ($group_guid) {
-		if (!event_calendar_activated_for_group($group_guid)) {
+		$group = get_entity($group_guid);
+		if (!event_calendar_activated_for_group($group)) {
 			return false;
 		}
-		$group = get_entity($group_guid);
 		if (elgg_instanceof($group, 'group')) {
 			$group_calendar = elgg_get_plugin_setting('group_calendar', 'event_calendar');
 			if (!$group_calendar || $group_calendar == 'members') {
