@@ -68,9 +68,16 @@ Igor Nuk from UNESCO sent me Spanish and French language files as well as a vers
 Many clients too numerous to mention have funded enhancements since the original version was funded by the Royal Institute of British Architects.
 
 
-Installation
+Installation 
 ------------
+
+- Traditional Way
 
 1. If you have installed a previous version of the Event Calendar plugin plugin disable the plugin in the admin section of your site and then remove the event_calendar folder from the mod directory of your Elgg installation,
 2. Copy the event_calendar folder into the mod directory of your Elgg installation,
 3. Enable the Event Calendar plugin plugin in the admin section of your site.
+
+- Using Composer
+
+In your project root folder, run: composer require iionly/event_calendar
+
