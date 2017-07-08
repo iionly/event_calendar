@@ -23,7 +23,20 @@ $date = elgg_view_friendly_time($event->time_created);
 
 $owner_icon = elgg_view_entity_icon($event->getOwnerEntity(), 'tiny');
 
-$subtitle = "$author_text $date";
+$comments_count = $event->countComments();
+//only display if there are commments
+if ($comments_count != 0) {
+	$text = elgg_echo("comments") . " ($comments_count)";
+	$comments_link = elgg_view('output/url', array(
+		'href' => $event->getURL() . '#comments',
+		'text' => $text,
+		'is_trusted' => true,
+	));
+} else {
+	$comments_link = '';
+}
+
+$subtitle = "$author_text $date $comments_link";
 
 $info = '';
 $event_items = event_calendar_get_formatted_full_items($event);
@@ -45,7 +58,6 @@ $params = array(
 	'title' => false,
 	'metadata' => '',
 	'subtitle' => $subtitle,
-	'tags' => $tags,
 );
 $list_body = elgg_view('object/elements/summary', $params);
 

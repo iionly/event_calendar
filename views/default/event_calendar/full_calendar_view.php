@@ -1,8 +1,5 @@
 <?php
 
-elgg_require_js('event_calendar/fullcalendar');
-elgg_load_js('lightbox');
-elgg_load_css('lightbox');
 elgg_require_js('event_calendar/event_calendar_fullcalendar');
 
 $timeformat = elgg_get_plugin_setting('timeformat', 'event_calendar') == 24 ? 'H(:mm)' : 'h(:mm)t';

@@ -63,9 +63,9 @@ if ($full) {
 	}
 
 	if ($event->long_description) {
-		$body .= '<div class="mtm">' . $event->long_description . '</div>';
+		$body .= elgg_view('output/longtext', array('value' => $event->long_description, 'class' => 'mtm'));
 	} else if ($event->description) {
-		$body .= '<div class="mtm">' . $event->description . '</div>';
+		$body .= elgg_view('output/longtext', array('value' => $event->description, 'class' => 'mtm'));
 	}
 
 	$metadata = elgg_view_menu('entity', array(
@@ -85,6 +85,7 @@ if ($full) {
 	$summary = elgg_view('object/elements/summary', $params);
 
 	echo elgg_view('object/elements/full', array(
+		'entity' => $event,
 		'summary' => $summary,
 		'icon' => $owner_icon,
 		'body' => $body,

@@ -17,6 +17,7 @@ return array(
 	'event_calendar:venue_description' => "Where will this event be held?",
 	'event_calendar:start_date_label' => "Start date",
 	'event_calendar:start_date_description' => "When will this event start?",
+	'event_calendar:end_date_label' => "End date",
 	'event_calendar:fees_label' => "Fees",
 	'event_calendar:fees_description' => "The cost of this event, if any.",
 	'event_calendar:contact_label' => "Contact",
@@ -93,7 +94,7 @@ return array(
 	'event_calendar:region_description' => "Select the region that this event will be held in.",
 	'event_calendar:settings:type_display:title' => "Add event type to events?",
 	'event_calendar:settings:type_list:title' => "List of event types (one per line):",
-	'event_calendar:settings:type_list:desc' => '(you can associate each type with a css color value that will be used as event background color in full calendar view. Separate type and color with | character. Example: "meeting|#00CC33")',
+	'event_calendar:settings:type_list:desc' => '(You can associate each type with a css color value that will be used as event background color in full calendar view. Separate type and color with | character. Example: "meeting|#00CC33")',
 	'event_calendar:type_label' => "Type",
 	'event_calendar:type_description' => "Select the type of event.",
 	'event_calendar:all' => "All",
@@ -127,8 +128,8 @@ return array(
 	'event_calendar:add_users_notify:subject' => "A new event has been added to your personal calendar",
 	'event_calendar:add_users_notify:body' => "%s,\n\nThe \"%s\" event has been added to your calendar.\n\nYou can view it here: \n\n%s\n",
 
-	'event_calendar:settings:region_list_handles:title' => "Processing of above region strings as Elgg language strings (you can provide translations of them in language files in form of 'event_calendar:region:<region_identifier>')?",
-	'event_calendar:settings:type_list_handles:title' => "Processing of above type strings as Elgg language strings (you can provide translations of them in language files in form of 'event_calendar:type:<type_identifier>')?",
+	'event_calendar:settings:region_list_handles:title' => "Processing of above region strings as Elgg language strings (you can provide translations of them in language files in form of 'event_calendar:region:&lt;region_identifier&gt;')?",
+	'event_calendar:settings:type_list_handles:title' => "Processing of above type strings as Elgg language strings (you can provide translations of them in language files in form of 'event_calendar:type:&lt;type_identifier&gt;')?",
 
 	'event_calendar:settings:personal_manage:title' => "Calendar permissions?",
 	'event_calendar:settings:personal_manage:description' => "(Determines whether people can add events to their personal calendars (open), need to request the event creator to do so (closed), have no option at all (private), or allow event creators to determine this for each event (by event) (Note: if you set this to private you should probably activate the option above to allow event creators and site admins to add their events to other personal calendars)",

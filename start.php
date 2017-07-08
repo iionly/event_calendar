@@ -11,11 +11,12 @@
  */
 
 elgg_register_event_handler('init','system','event_calendar_init');
+elgg_register_plugin_hook_handler("setting", "plugin", "event_calendar_invalidate_cache");
 
 function event_calendar_init() {
 
 	elgg_register_library('elgg:event_calendar', elgg_get_plugins_path() . 'event_calendar/models/model.php');
-	elgg_register_library('event_calendar:ical', elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator.class.php');
+	elgg_register_library('event_calendar:ical', elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
 
 	elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
 	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
@@ -126,7 +127,7 @@ function event_calendar_init() {
 	elgg_register_event_handler('upgrade', 'system', 'event_calendar_check_pending_upgrades');
 
 	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
-		elgg_register_event_handler('pagesetup', 'system', 'ec_ical_pagesetup');
+		elgg_register_plugin_hook_handler('register', 'menu:title', 'ec_ical_titlemenu');
 	}
 }
 
@@ -196,16 +197,17 @@ function event_calendar_page_handler($page) {
 	}
 	elgg_load_library('elgg:event_calendar');
 	$page_type = $page[0];
+	$resource_vars = [];
 	switch ($page_type) {
 		case 'list':
 			if (isset($page[1])) {
-				$start_date = $page[1];
+				$resource_vars['start_date'] = $page[1];
 				set_input('ical_date', $page[1]);
 				if (isset($page[2])) {
-					$display_mode = $page[2];
+					$resource_vars['display_mode'] = $page[2];
 					set_input('ical_interval', $page[2]);
 					if (isset($page[3])) {
-						$filter_mode = $page[3];
+						$resource_vars['filter_mode'] = $page[3];
 						switch($page[3]) {
 							case 'mine':
 								set_input('ical_calendar_filter', 'mine');
@@ -218,63 +220,76 @@ function event_calendar_page_handler($page) {
 								break;
 						}
 						if (isset($page[4])) {
-							$region = $page[4];
+							$resource_vars['region'] = $page[4];
 							set_input('ical_region', $page[4]);
 						} else {
-							$region = '';
+							$resource_vars['region'] = '-';
 							set_input('ical_region', '');
 						}
 					} else {
-						$filter_mode = '';
+						$resource_vars['filter_mode'] = '';
 						set_input('ical_calendar_filter', 'all');
 					}
 				} else {
-					$display_mode = '';
+					$resource_vars['display_mode'] = '';
 					set_input('ical_interval', '');
 				}
 			} else {
-				$start_date = 0;
+				$resource_vars['start_date'] = 0;
 				set_input('ical_date', 0);
 			}
-			echo event_calendar_get_page_content_list($page_type, 0, $start_date, $display_mode, $filter_mode, $region);
+			echo elgg_view_resource('event_calendar/list', $resource_vars);
 			break;
 		case 'view':
-			echo event_calendar_get_page_content_view($page[1]);
+			elgg_entity_gatekeeper($page[1], 'object', 'event_calendar');
+			elgg_group_gatekeeper();
+			$resource_vars['event_guid'] = $page[1];
+			echo elgg_view_resource('event_calendar/view', $resource_vars);
 			break;
 		case 'display_users':
-			echo event_calendar_get_page_content_display_users($page[1]);
+			elgg_entity_gatekeeper($page[1], 'object', 'event_calendar');
+			elgg_group_gatekeeper();
+			$resource_vars['event_guid'] = $page[1];
+			echo elgg_view_resource('event_calendar/display_users', $resource_vars);
 			break;
 		case 'manage_users':
-			echo event_calendar_get_page_content_manage_users($page[1]);
+			elgg_entity_gatekeeper($page[1], 'object', 'event_calendar');
+			elgg_group_gatekeeper();
+			$resource_vars['event_guid'] = $page[1];
+			echo elgg_view_resource('event_calendar/manage_users', $resource_vars);
 			break;
 		case 'schedule':
 		case 'add':
+			$resource_vars['page_type'] = $page_type;
 			if (isset($page[1])) {
-				group_gatekeeper();
-				$group_guid = $page[1];
+				elgg_group_gatekeeper();
+				$resource_vars['guid'] =  $page[1];
+				$resource_vars['start_date'] = elgg_extract(2, $page, '');
 			} else {
-				gatekeeper();
-				$group_guid = 0;
+				elgg_gatekeeper();
+				$resource_vars['guid'] = 0;
 			}
-			echo event_calendar_get_page_content_edit($page_type, $group_guid, $page[2]);
+			echo elgg_view_resource('event_calendar/edit', $resource_vars);
 			break;
 		case 'edit':
-			gatekeeper();
-			echo event_calendar_get_page_content_edit($page_type, $page[1]);
+			elgg_gatekeeper();
+			$resource_vars['page_type'] = $page_type;
+			$resource_vars['guid'] = $page[1];
+			echo elgg_view_resource('event_calendar/edit', $resource_vars);
 			break;
 		case 'group':
-			group_gatekeeper();
+			elgg_group_gatekeeper();
 			if (isset($page[1])) {
-				$group_guid = $page[1];
+				$resource_vars['container_guid'] = $page[1];
 				set_input('ical_group_guid', $page[1]);
 				if (isset($page[2])) {
-					$start_date = $page[2];
+					$resource_vars['start_date'] = $page[2];
 					set_input('ical_date', $page[2]);
 					if (isset($page[3])) {
-						$display_mode = $page[3];
+						$resource_vars['display_mode'] = $page[3];
 						set_input('ical_interval', $page[3]);
 						if (isset($page[4])) {
-							$filter_mode = $page[4];
+							$resource_vars['filter_mode'] = $page[4];
 							switch($page[4]) {
 								case 'mine':
 									set_input('ical_calendar_filter', 'mine');
@@ -287,66 +302,73 @@ function event_calendar_page_handler($page) {
 									break;
 							}
 							if (isset($page[5])) {
-								$region = $page[5];
+								$resource_vars['region'] = $page[5];
 								set_input('ical_region', $page[5]);
 							} else {
-								$region = '';
+								$resource_vars['region'] = '-';
 								set_input('ical_region', '');
 							}
 						} else {
-							$filter_mode = '';
+							$resource_vars['filter_mode'] = '';
 							set_input('ical_calendar_filter', 'all');
 						}
 					} else {
-						$display_mode = '';
+						$resource_vars['display_mode'] = '';
 						set_input('ical_interval', '');
 					}
 				} else {
-					$start_date = '';
+					$resource_vars['start_date'] = '';
 					set_input('ical_date', 0);
 				}
 			} else {
-				$group_guid = 0;
-				set_input('ical_group_guid', 0);
+				$resource_vars['container_guid'] = elgg_get_page_owner_guid();
+				set_input('ical_group_guid', $page[1], $resource_vars['container_guid']);
 			}
-			echo event_calendar_get_page_content_list($page_type, $group_guid, $start_date, $display_mode, $filter_mode, $region);
+			echo elgg_view_resource('event_calendar/group', $resource_vars);
 			break;
 		case 'owner':
 			if (isset($page[1])) {
 				$username = $page[1];
 				$user = get_user_by_username($username);
-				$user_guid = $user->guid;
+				$resource_vars['container_guid'] = $user->guid;
 				if (isset($page[2])) {
-					$start_date = $page[2];
+					$resource_vars['start_date'] = $page[2];
 					if (isset($page[3])) {
-					$display_mode = $page[3];
+					$resource_vars['display_mode'] = $page[3];
 					if (isset($page[4])) {
-						$filter_mode = $page[4];
+						$resource_vars['filter_mode'] = $page[4];
 						if (isset($page[5])) {
-							$region = $page[5];
+							$resource_vars['region'] = $page[5];
 						} else {
-							$region = '';
+							$resource_vars['region'] = '-';
 						}
 					} else {
-						$filter_mode = '';
+						$resource_vars['filter_mode'] = '';
 					}
 					} else {
-						$display_mode = '';
+						$resource_vars['display_mode'] = '';
 					}
 				} else {
-					$start_date = '';
+					$resource_vars['start_date'] = '';
 				}
 			} else {
-				$group_guid = 0;
+				elgg_gatekeeper();
+				$resource_vars['container_guid'] = elgg_get_logged_in_user_guid();
 			}
-			echo event_calendar_get_page_content_list($page_type, $user_guid, $start_date, $display_mode, $filter_mode, $region);
+			echo elgg_view_resource('event_calendar/owner', $resource_vars);
 			break;
 		case 'review_requests':
-			gatekeeper();
-			echo event_calendar_get_page_content_review_requests($page[1]);
+			elgg_gatekeeper();
+			$resource_vars['event_guid'] = $page[1];
+			echo elgg_view_resource('event_calendar/review_requests', $resource_vars);
 			break;
 		case 'get_fullcalendar_events':
-			echo event_calendar_get_page_content_fullcalendar_events($page[1], $page[2], $page[3], $page[4], $page[5]);
+			$resource_vars['start_date'] = $page[1];
+			$resource_vars['end_date'] = $page[2];
+			$resource_vars['filter'] = $page[3];
+			$resource_vars['container_guid'] = (int)$page[4];
+			$resource_vars['region'] = $page[5];
+			echo elgg_view_resource('event_calendar/fullcalendar_events', $resource_vars);
 			break;
 		case 'ical':
 			$resource_vars['action_type'] = $page[1];
@@ -359,7 +381,11 @@ function event_calendar_page_handler($page) {
 }
 
 // If iCal import/export is enabled add corresponding action buttons in title area
-function ec_ical_pagesetup() {
+function ec_ical_titlemenu($hook, $type, $return, $params) {
+	if(!elgg_in_context("event_calendar")) {
+		return $return;
+	}
+
 	$use_titlemenu = get_input('ical_calendar_title_menu', false);
 	if ($use_titlemenu && elgg_is_logged_in()) {
 		$filter = get_input('ical_calendar_filter', false);
@@ -389,12 +415,13 @@ function ec_ical_pagesetup() {
 
 		$export = new ElggMenuItem('ical_export', elgg_echo('event_calendar:export'), $export_url . $urlsuffix);
 		$export->setLinkClass('elgg-button elgg-button-action');
+		$return[] = $export;
 
 		$import = new ElggMenuItem('ical_import', elgg_echo('event_calendar:import'), $import_url . $urlsuffix);
 		$import->setLinkClass('elgg-button elgg-button-action');
+		$return[] = $import;
 
-		elgg_register_menu_item('title', $export);
-		elgg_register_menu_item('title', $import);
+		return $return;
 	}
 }
 
@@ -635,5 +662,3 @@ function event_calendar_tool_widgets_handler($hook, $type, $return_value, $param
 
 	return $return_value;
 }
-
-elgg_register_plugin_hook_handler("setting", "plugin", "event_calendar_invalidate_cache");

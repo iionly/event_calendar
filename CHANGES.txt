@@ -1,6 +1,29 @@
 Changelog
 =========
 
+2.3.1 (iionly)
+--------------
+
+- Minimum Elgg version required is 2.3.0,
+- Added missing language string for end date label to English, German and Spanish language file,
+- French translations added (thanks to Facyla),
+- Fixed deprecation issue with $autofeed by using elgg_register_rss_link(),
+- No longer use deprecated 'page', 'setup' plugin hook for registering menu items,
+- Clean up of plugin settings page code,
+- Clean up of model.php code,
+- Populate 'entity' attribute on calling object/elements/full view,
+- Redirect correctly on lack of access permissions for full view of event instead of WSOD when logged out,
+- Drop (apparently?) unnecessary usage of elgg_push_context('group') in views,
+- Move views used in pagehandler out of model.php into resource views,
+- Usage of output/longtext view for displaying event description/long description to correctly display (allowed) html formatting like table styling,
+- No longer load Elgg's lightbox JS and CSS because they are loaded by core on all pages now anyway,
+- Dependency of fullcalendar AMD module declared within the module to prevent race condition on loading,
+- Rework of event popup view code,
+- Fixed inline datepicker weekly view month selection,
+- First day of week either Monday or Sunday depending of region of logged-in user (as determined by user language used),
+- Updated to iCalcreator v2.22.1,
+- Rework of ical event export for consistency in included event attributes regardless if using title section export button or sidebar extra menu button.
+
 2.0.0 (iionly)
 --------------
 

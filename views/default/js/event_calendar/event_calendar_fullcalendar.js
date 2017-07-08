@@ -1,6 +1,7 @@
 define(function(require) {
 	var elgg = require("elgg");
 	var $ = require("jquery");
+	require("event_calendar/fullcalendar");
 
 	var goToDateFlag = 0;
 

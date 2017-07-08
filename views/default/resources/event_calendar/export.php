@@ -1,6 +1,6 @@
 <?php
 
-gatekeeper();
+elgg_gatekeeper();
 
 $action_type = elgg_extract('action_type', $vars);
 

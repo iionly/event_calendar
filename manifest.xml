@@ -3,17 +3,17 @@
 	<name>Event Calendar</name>
 	<id>event_calendar</id>
 	<author>iionly, Juho Jaakkola, Matt Beckett and Kevin Jardine</author>
-	<version>2.0.0</version>
+	<version>2.3.1</version>
 	<category>content</category>
 	<category>communication</category>
 	<category>widget</category>
 	<description>Adds configurable group and/or site-wide event calendars.</description>
 	<website>https://github.com/iionly</website>
-	<copyright>(C) iionly, Juho Jaakkola, Matt Beckett 2015, (C) Kevin Jardine (Radagast Solutions) 2008-2015</copyright>
+	<copyright>(C) iionly, Juho Jaakkola, Matt Beckett 2015, (C) Kevin Jardine (Radagast Solutions) 2008</copyright>
 	<license>GNU Public License version 2</license>
 	<requires>
 		<type>elgg_release</type>
-		<version>2.0.0-beta.1</version>
+		<version>2.3.0</version>
 	</requires>
 	<suggests>
 		<type>plugin</type>

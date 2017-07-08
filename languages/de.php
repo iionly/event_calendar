@@ -17,6 +17,7 @@ return array(
 	'event_calendar:venue_description' => "Wo wird dieses Event stattfinden?",
 	'event_calendar:start_date_label' => "Anfangsdatum",
 	'event_calendar:start_date_description' => "Wann wird dieses Event beginnen?",
+	'event_calendar:end_date_label' => "Enddatum",
 	'event_calendar:fees_label' => "Gebühr",
 	'event_calendar:fees_description' => "Die Kosten für dieses Event, falls es welche gibt.",
 	'event_calendar:contact_label' => "Kontakt",
@@ -127,8 +128,8 @@ return array(
 	'event_calendar:add_users_notify:subject' => "Ein neues Event wurde zu Deinem persönlichen Kalender hinzugefügt",
 	'event_calendar:add_users_notify:body' => "%s,\n\ndas Event \"%s\" wurde zu Deinem persönlichen Kalender hinzugefügt.\n\nDu kannst die Details des Events hier ansehen: \n\n%s\n",
 
-	'event_calendar:settings:region_list_handles:title' => "Verarbeitung der obigen Regionen-Strings als Elgg-Sprachstrings (Du kannst Übersetzungen der Form 'event_calendar:region:<region_identifier>' in Sprachdateien definieren)?",
-	'event_calendar:settings:type_list_handles:title' => "Verarbeitung der obigen Event-Typ-Strings als Elgg-Sprachstrings (Du kannst Übersetzungen der Form 'event_calendar:type:<type_identifier>' in Sprachdateien definieren)?",
+	'event_calendar:settings:region_list_handles:title' => "Verarbeitung der obigen Regionen-Strings als Elgg-Sprachstrings (Du kannst Übersetzungen der Form 'event_calendar:region:&lt;region_identifier&gt;' in Sprachdateien definieren)?",
+	'event_calendar:settings:type_list_handles:title' => "Verarbeitung der obigen Event-Typ-Strings als Elgg-Sprachstrings (Du kannst Übersetzungen der Form 'event_calendar:type:&lt;type_identifier&gt;' in Sprachdateien definieren)?",
 
 	'event_calendar:settings:personal_manage:title' => "Kalender-Zugriffsrechte?",
 	'event_calendar:settings:personal_manage:description' => "(Lege fest, ob Mitglieder Events von anderen zu ihren persönlichen Kalendern hinzufügen dürfen (unbeschränkt), den Ersteller des Events erst um Zustimmung bitten müssen (beschränkt), gar keine Möglichkeit dazu haben sollen (privat), oder der Ersteller eines Events dies für jedes Event gesondert festlegen darf (Event-spezifisch) (Anmerkung: wenn Du hier die Einstellung \"privat\" auswählst, solltest Du am besten zusätzlich den Erstellern von Events und Admins das Hinzufügen von Events zu persönlichen Kalendern anderer Mitglieder erlauben)",

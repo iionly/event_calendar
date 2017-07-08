@@ -6,7 +6,6 @@ define(function(require) {
 		$('.event_calendar_paged_checkbox').on('click', handlePagedPersonalCalendarToggle);
 		$('.event-calendar-personal-calendar-toggle').on('click', toggleDisplayPagePersonalCalendar);
 		$('#event-calendar-region').on('change', handleRegionChange);
-		$('#event-calendar-ical-link').on('click', handleIcalPopup);
 		$('.event-calendar-repeating-unselected').each(setRepeatingClass);
 		$(document).on('click', '.event-calendar-repeating-unselected', handleRepeatingSelect);
 		$(document).on('click', '.event-calendar-repeating-selected', handleRepeatingUnselect);
@@ -98,12 +97,6 @@ define(function(require) {
 	handleRegionChange = function(e) {
 		url = $('#event-calendar-region-url-start').val()+"/"+escape($('#event-calendar-region').val());
 		elgg.forward(url);
-	}
-
-	handleIcalPopup = function(e) {
-		var message = elgg.echo('event_calendar:ical_popup_message')+"\n"+this.href;
-		alert(message);
-		return false;
 	}
 
 	handlePagedPersonalCalendarToggle = function() {
