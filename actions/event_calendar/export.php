@@ -29,7 +29,7 @@ switch ($filter) {
 		$events = false;
 		$event = get_entity($filter);
 		if (elgg_instanceof($event, 'object', 'event_calendar')) {
-			$events = array(array('event' => $event));
+			$events = [['event' => $event]];
 		}
 		break;
 }
@@ -43,11 +43,11 @@ $events = event_calendar_flatten_event_structure($events);
 
 $timezone = date_default_timezone_get();
 
-$config = array(
+$config = [
 	'unique_id' => elgg_get_site_url(),
 	'filename'=> 'Calendar.ics',
-	'TZID' => $timezone
-);
+	'TZID' => $timezone,
+];
 
 $v = new vcalendar($config);
 
@@ -58,7 +58,7 @@ $v->setProperty( "version", "2.0" );
 $v->setProperty( "X-WR-CALNAME", elgg_get_logged_in_user_entity()->username . "Calendar" );
 $v->setProperty( "X-WR-CALDESC", elgg_get_logged_in_user_entity()->username . "Calendar" );
 
-$xprops = array( "X-LIC-LOCATION" => $timezone );
+$xprops = [ "X-LIC-LOCATION" => $timezone ];
 iCalUtilityFunctions::createTimezone($v, $timezone, $xprops);
 
 foreach($events as $event) {
@@ -86,25 +86,25 @@ foreach($events as $event) {
 		$event_end_date = $event->end_date;
 	}
 
-	$start = array(
+	$start = [
 		'year' => date('Y', (int)$event->start_date),
 		'month' => date('m', (int)$event->start_date),
 		'day' => date('d', (int)$event->start_date),
 		'hour' => $hb,
 		'min' => $mb,
-		'sec' => $sb
-	);
+		'sec' => $sb,
+	];
 
 	$vevent->setProperty('dtstart', $start);
 
-	$end = array(
+	$end = [
 		'year' => date('Y', (int)$event_end_date),
 		'month' => date('m', (int)$event_end_date),
 		'day' => date('d', (int)$event_end_date),
 		'hour' => $he,
 		'min' => $me,
-		'sec' => $se
-	);
+		'sec' => $se,
+	];
 
 	$vevent->setProperty('dtend', $end);
 	$vevent->setProperty('LOCATION', $event->venue);
@@ -118,14 +118,14 @@ foreach($events as $event) {
 
 	$organiser = (isset($event->organiser) && $event->organiser != "") ? $event->organiser : $event->getOwnerEntity()->name;
 
-	if (is_string($event->tags)) {
+	if (is_array($event->tags)) {
 		$tags = implode(',' , $event->tags);
 	} else {
 		$tags = '';
 	}
 
 	$vevent->setProperty('description', $description);
-	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, array('CN' => $organiser));
+	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
 	$vevent->setProperty( "X-PROP-REGION", $event->region );
 	$vevent->setProperty( "X-PROP-TYPE", $event->event_type );
 	$vevent->setProperty( "X-PROP-FEES", $event->fees );

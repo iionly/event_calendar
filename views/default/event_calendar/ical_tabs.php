@@ -10,17 +10,17 @@ if ($vars['region']) {
 	$urlmod .= "&region={$vars['region']}";
 }
 
-echo elgg_view('navigation/tabs', array(
-	'tabs' => array(
-		array(
+echo elgg_view('navigation/tabs', [
+	'tabs' => [
+		[
 			'text' => elgg_echo('event_calendar:export'),
 			'href' => elgg_get_site_url() . 'event_calendar/ical/export' . $urlmod,
 			'selected' => ($vars['filter_type'] == 'export')
-		),
-		array(
+		],
+		[
 			'text' => elgg_echo('event_calendar:import'),
 			'href' => elgg_get_site_url() . 'event_calendar/ical/import' . $urlmod,
 			'selected' => ($vars['filter_type'] == 'import')
-		)
-	)
-));
+		]
+	]
+]);

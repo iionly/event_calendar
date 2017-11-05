@@ -5,40 +5,40 @@
 $filter_context = $vars['filter'];
 $url_start = "event_calendar/list/{$vars['start_date']}/{$vars['mode']}";
 
-$tabs = array(
-	'all' => array(
+$tabs = [
+	'all' => [
 		'text' => elgg_echo('event_calendar:show_all'),
 		'href' => "$url_start/all",
 		'selected' => ($filter_context == 'all'),
 		'priority' => 100,
-	),
-);
+	],
+];
 
 if (elgg_is_logged_in()) {
-	$tabs ['mine'] = array(
+	$tabs ['mine'] = [
 		'text' => elgg_echo('event_calendar:show_mine'),
 		'href' => "$url_start/mine",
 		'selected' => ($filter_context == 'mine'),
 		'priority' => 200,
-	);
-	$tabs['friend'] = array(
+	];
+	$tabs['friend'] = [
 		'text' => elgg_echo('event_calendar:show_friends'),
 		'href' =>  "$url_start/friends",
 		'selected' => ($filter_context == 'friends'),
 		'priority' => 300,
-	);
+	];
 }
 
-$tab_rendered = array();
+$tab_rendered = [];
 
 $event_calendar_spots_display = elgg_get_plugin_setting('spots_display', 'event_calendar');
 if ($event_calendar_spots_display == "yes") {
-	$tabs['open'] = array(
+	$tabs['open'] = [
 		'text' => elgg_echo('event_calendar:show_open'),
 		'href' => "$url_start/open",
 		'selected' => ($filter_context == 'open'),
 		'priority' => 400,
-	);
+	];
 } else {
 	$tab_rendered['open'] = '';
 }
@@ -67,5 +67,5 @@ $event_calendar_region_display = elgg_get_plugin_setting('region_display', 'even
 if ($event_calendar_region_display == 'yes') {
 	elgg_require_js('event_calendar/event_calendar');
 	$url_start .= "/$filter_context";
-	echo elgg_view('event_calendar/region_select', array('url_start' => $url_start, 'region' => $vars['region']));
+	echo elgg_view('event_calendar/region_select', ['url_start' => $url_start, 'region' => $vars['region']]);
 }

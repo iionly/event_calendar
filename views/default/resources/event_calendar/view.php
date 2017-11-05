@@ -20,12 +20,12 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 		}
 		elgg_push_breadcrumb($event_container->name, 'event_calendar/group/' . $event->container_guid);
 		if(event_calendar_can_add($event_container->getGUID())) {
-			elgg_register_menu_item('title', array(
+			elgg_register_menu_item('title', [
 				'name' => 'add',
 				'href' => "event_calendar/add/".$event_container->getGUID(),
 				'text' => elgg_echo('event_calendar:add'),
 				'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
-			));
+			]);
 		}
 	} else {
 		if ($event->canEdit()) {
@@ -33,29 +33,29 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 		}
 		elgg_push_breadcrumb($event_container->name, 'event_calendar/owner/' . $event_container->username);
 		if(event_calendar_can_add()) {
-			elgg_register_menu_item('title', array(
+			elgg_register_menu_item('title', [
 				'name' => 'add',
 				'href' => "event_calendar/add",
 				'text' => elgg_echo('event_calendar:add'),
 				'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
-			));
+			]);
 		}
 	}
 
 	elgg_push_breadcrumb($event->title);
-	$content = elgg_view_entity($event, array('full_view' => true));
+	$content = elgg_view_entity($event, ['full_view' => true]);
 	//check to see if comment are on - TODO - add this feature to all events
 	if ($event->comments_on != 'Off') {
 		$content .= elgg_view_comments($event);
 	}
 }
 
-$params = array(
+$params = [
 	'title' => $title,
 	'content' => $content,
 	'filter' => '',
-	'sidebar' => elgg_view('event_calendar/sidebar', array('page' => 'full_view'))
-);
+	'sidebar' => elgg_view('event_calendar/sidebar', ['page' => 'full_view']),
+];
 
 $body = elgg_view_layout("content", $params);
 

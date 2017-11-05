@@ -5,15 +5,13 @@ echo '<h3>' . elgg_echo('event_calendar:export:settings') . '</h3>';
 echo '</div>';
 
 // export which calendar
-echo '<div class="mbm">' . elgg_echo('event_calendar:export:type') . ' ';
-
-$options_values = array();
+$options_values = [];
 
 if (elgg_get_plugin_setting('site_calendar', 'event_calendar') != 'no') {
 	$options_values[0] = elgg_echo('event_calendar:site_calendar');
 }
 
-$groups = elgg_get_logged_in_user_entity()->getGroups(array('limit' => false));
+$groups = elgg_get_logged_in_user_entity()->getGroups(['limit' => false]);
 if ($groups) {
 	foreach ($groups as $group) {
 		if (event_calendar_activated_for_group($group)) {
@@ -22,39 +20,44 @@ if ($groups) {
 	}
 }
 
-echo elgg_view('input/select', array(
+echo elgg_view_field([
+	'#type' => 'select',
+	'#label' => elgg_echo('event_calendar:export:type'),
 	'name' => 'container_guid',
 	'value' => $vars['group_guid'],
-	'options_values' => $options_values
-));
-echo '</div>';
+	'options_values' => $options_values,
+]);
 
-echo '<div class="mbm">' . elgg_echo('event_calendar:filter') . ' ';
-echo elgg_view('input/select', array(
+echo elgg_view_field([
+	'#type' => 'select',
+	'#label' => elgg_echo('event_calendar:filter'),
 	'name' => 'filter',
 	'value' => $vars['filter'],
-	'options_values' => array(
+	'options_values' => [
 		'all' => elgg_echo('event_calendar:show_all'),
 		'mine' => elgg_echo('event_calendar:show_mine'),
-		'friends' => elgg_echo('event_calendar:show_friends')
-	)
-));
-echo '</div>';
+		'friends' => elgg_echo('event_calendar:show_friends'),
+	],
+]);
 
 $region_list = trim(elgg_get_plugin_setting('region_list', 'event_calendar'));
 // make sure that we are using Unix line endings
 $region_list = str_replace("\r\n","\n", $region_list);
 $region_list = str_replace("\r","\n", $region_list);
 if ($region_list) {
-	$options_values = array('-' => elgg_echo('event_calendar:all'));
+	$options_values_region = ['-' => elgg_echo('event_calendar:all')];
 	foreach(explode("\n", $region_list) as $region_item) {
 		$region_item = trim($region_item);
-		$options_values[$region_item] = $region_item;
+		$options_values_region[$region_item] = $region_item;
 	}
 
-	echo '<div class="mbm">' . elgg_echo('event_calendar:region_filter_by_label');
-	echo elgg_view("input/select", array('name' => 'region', 'value' => $vars['region'], 'options_values' => $options_values));
-	echo '</div>';
+	echo elgg_view_field([
+		'#type' => 'select',
+		'#label' => elgg_echo('event_calendar:region_filter_by_label'),
+		'name' => 'region',
+		'value' => $vars['region'],
+		'options_values' => $options_values_region,
+	]);
 }
 
 // determine default dates - start/end based on interval day/week/month
@@ -83,12 +86,23 @@ switch ($vars['interval']) {
 }
 
 // start/end date
-echo '<div class="mbm">' . elgg_echo('event_calendar:start_date') . "<br>";
-echo elgg_view('input/date', array('name' => 'start_date', 'value' => $start_date, 'style' => 'width: 120px'));
-echo '</div>';
+echo elgg_view_field([
+	'#type' => 'date',
+	'#label' => elgg_echo('event_calendar:start_date'),
+	'name' => 'start_date',
+	'value' => $start_date,
+	'style' => 'width: 120px',
+]);
 
-echo '<div class="mbl">' . elgg_echo('event_calendar:end_date') . "<br>";
-echo elgg_view('input/date', array('name' => 'end_date', 'value' => $end_date, 'style' => 'width: 120px;'));
-echo '</div>';
+echo elgg_view_field([
+	'#type' => 'date',
+	'#label' => elgg_echo('event_calendar:end_date'),
+	'name' => 'end_date',
+	'value' => $end_date,
+	'style' => 'width: 120px',
+]);
 
-echo elgg_view('input/submit', array('value' => elgg_echo('event_calendar:export')));
+echo elgg_view_field([
+	'#type' => 'submit',
+	'value' => elgg_echo('event_calendar:export'),
+]);

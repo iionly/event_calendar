@@ -11,13 +11,12 @@ define(function(require) {
 		$(document).on('click', '.event-calendar-repeating-selected', handleRepeatingUnselect);
 		$('#event-calendar-edit').on('submit', handleEditFormSubmit);
 		$('.event-calendar-edit-schedule-type').on('click', handleScheduleType);
+		$("[name='start_date']").datepicker().on('change', handleStartDateChange);
 		handleScheduleType();
 
 		var all_day_field = $('[name="all_day"][type="checkbox"]');
 		if (all_day_field.is(':checked')) {
-			//$('[name="start_time"]').val(0);
 			$('#event-calendar-start-time-wrapper').attr('disabled','disabled');
-			//$('[name="end_time"]').val(0);
 			$('#event-calendar-end-time-wrapper').attr('disabled','disabled');
 		}
 		all_day_field.change(handleAllDayField());
@@ -29,7 +28,6 @@ define(function(require) {
 			$(".event-calendar-edit-date-wrapper").hide();
 			$(".event-calendar-edit-reminder-wrapper").hide();
 			$(".event-calendar-edit-form-membership-block").hide();
-			$(".event-calendar-edit-form-share-block").hide();
 			$("[name='start_date_for_all_day']").hide();
 		} else {
 			$(".event-calendar-edit-reminder-wrapper").show();
@@ -102,6 +100,16 @@ define(function(require) {
 	handlePagedPersonalCalendarToggle = function() {
 		guid = parseInt($(this).attr('id').substring('event_calendar_paged_checkbox_'.length));
 		togglePagedPersonalCalendar(guid);
+	}
+	
+	// on change of start_date check if end_date is not before start_date and change to start_date if it is
+	handleStartDateChange = function(e) {
+		startvalue = $('[name="start_date"]').datepicker("option", "dateFormat", "yy-mm-dd").datepicker("getDate");
+		endvalue = $('[name="end_date"]').datepicker("option", "dateFormat", "yy-mm-dd").datepicker("getDate");
+
+		if (startvalue > endvalue) {
+			$('[name="end_date"]').datepicker("option", "dateFormat", "yy-mm-dd").datepicker("setDate", startvalue);
+		}
 	}
 
 	togglePagedPersonalCalendar = function(guid) {

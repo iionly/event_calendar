@@ -25,7 +25,7 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 	$content = elgg_echo('event_calendar:error_nosuchevent');
 	$title = elgg_echo('event_calendar:generic_error_title');
 } else {
-	$title = elgg_echo('event_calendar:manage_users:title', array($event->title));
+	$title = elgg_echo('event_calendar:manage_users:title', [$event->title]);
 	$event_container = get_entity($event->container_guid);
 	if ($event_container->canEdit()) {
 		if (elgg_instanceof($event_container, 'group')) {
@@ -34,33 +34,33 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 			if ($event_container->canEdit()) {
 				event_calendar_handle_menu($event_guid);
 			}
-			elgg_register_menu_item('title', array(
+			elgg_register_menu_item('title', [
 				'name' => 'remove_from_group_members',
 				'href' => elgg_add_action_tokens_to_url('action/event_calendar/remove_from_group_members?event_guid='.$event_guid),
 				'text' => elgg_echo('event_calendar:remove_from_group_members:button'),
 				'link_class' => 'elgg-button elgg-button-action',
-			));
-			elgg_register_menu_item('title', array(
+			]);
+			elgg_register_menu_item('title', [
 				'name' => 'add_to_group_members',
 				'href' => elgg_add_action_tokens_to_url('action/event_calendar/add_to_group_members?event_guid='.$event_guid),
 				'text' => elgg_echo('event_calendar:add_to_group_members:button'),
 				'link_class' => 'elgg-button elgg-button-action',
-			));
+			]);
 			if(event_calendar_can_add($event_container->getGUID())) {
-				elgg_register_menu_item('title', array(
+				elgg_register_menu_item('title', [
 					'name' => 'add',
 					'href' => "event_calendar/add/".$event_container->getGUID(),
 					'text' => elgg_echo('event_calendar:add'),
 					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
-				));
+				]);
 			}
-			$users = $event_container->getMembers(array('limit' => $limit, 'offset' => $offset));
-			$count = $event_container->getMembers(array('limit' => $limit, 'offset' => $offset, 'count' => true));
+			$users = $event_container->getMembers(['limit' => $limit, 'offset' => $offset]);
+			$count = $event_container->getMembers(['limit' => $limit, 'offset' => $offset, 'count' => true]);
 
 			set_input('guid', $event->guid);
 			elgg_extend_view('user/elements/summary', 'event_calendar/calendar_toggle');
 
-			$options = array(
+			$options = [
 				'full_view' => false,
 				'list_type_toggle' => false,
 				'limit' => $limit,
@@ -68,7 +68,7 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 				'event_calendar_event' => $event,
 				'pagination' => true,
 				'count' => $count,
-			);
+			];
 			$content .= elgg_view_entity_list($users, $options);
 		} else {
 			elgg_push_breadcrumb($event_container->name, 'event_calendar/owner/' . $event_container->username);
@@ -76,15 +76,15 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 				event_calendar_handle_menu($event_guid);
 			}
 			if(event_calendar_can_add()) {
-				elgg_register_menu_item('title', array(
+				elgg_register_menu_item('title', [
 					'name' => 'add',
 					'href' => "event_calendar/add",
 					'text' => elgg_echo('event_calendar:add'),
 					'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
-				));
+				]);
 			}
 			$content = '<p>'.elgg_echo('event_calendar:manage_users:description').'</p>';
-			$content .= elgg_view_form('event_calendar/manage_subscribers', array(), array('event' => $event));
+			$content .= elgg_view_form('event_calendar/manage_subscribers', [], ['event' => $event]);
 		}
 		elgg_push_breadcrumb($event->title, $event->getURL());
 		elgg_push_breadcrumb(elgg_echo('event_calendar:manage_users:breadcrumb'));
@@ -93,7 +93,11 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 		$content = elgg_echo('event_calendar:manage_users:unauthorized');
 	}
 }
-$params = array('title' => $title, 'content' => $content,'filter' => '');
+$params = [
+	'title' => $title,
+	'content' => $content,
+	'filter' => '',
+];
 
 $body = elgg_view_layout("content", $params);
 

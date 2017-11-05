@@ -19,15 +19,15 @@ access_show_hidden_entities(true);
 
 $db_prefix = elgg_get_config('dbprefix');
 
-$batch = new ElggBatch('elgg_get_annotations', array(
+$batch = new ElggBatch('elgg_get_annotations', [
 	'type' => 'object',
 	'subtype' => 'event_calendar',
 	'annotation_name' => 'personal_event',
-	'limit' => false
-));
+	'limit' => false,
+]);
 
 // now collect the ids of the personal_event annotations for later deletion and create a corresponding relationship
-$personal_event_entry_id = array();
+$personal_event_entry_id = [];
 foreach ($batch as $personal_event_annotation) {
 	// collect annotation id for deletion only if addition of relationship was a success
 	if (add_entity_relationship($personal_event_annotation->annotation_value, 'personal_event', $personal_event_annotation->guid)) {

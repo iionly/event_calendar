@@ -14,12 +14,12 @@
 elgg_load_library('elgg:event_calendar');
 
 if ($vars['events']) {
-	$options = array(
+	$options = [
 		'count' => $vars['count'],
 		'offset' => 0,
 		'limit' => 15,
 		'list_type_toggle' => false,
 		'pagination' => false,
-	);
+	];
 	echo elgg_view_entity_list(event_calendar_flatten_event_structure($vars['events']), $options);
 }

@@ -20,14 +20,14 @@ if ($event) {
 		$in_time_window = false;
 	}
 	if ( $in_time_window ) {
-		$button = elgg_view('output/url', array(
+		$button = elgg_view('output/url', [
 			'href' => 'action/event_calendar/join_conference?event_guid='.$event->guid,
 			'text' => elgg_echo('event_calendar:join_conf_button'),
 			'class' => 'elgg-button elgg-button-action',
 			'target' => '_blank',
 			'is_action' => true,
-		));
-	
+		]);
+
 		echo '<div class="event-calendar-conf-join-button">'.$button.'</div>';
 	}
 }

@@ -25,11 +25,11 @@ if (isset($vars['class'])) {
 	$vars['class'] = "elgg-input-date popup_calendar";
 }
 
-$defaults = array(
+$defaults = [
 	'value' => '',
 	'disabled' => false,
 	'timestamp' => false,
-);
+];
 
 $vars = array_merge($defaults, $vars);
 
@@ -37,10 +37,11 @@ $timestamp = $vars['timestamp'];
 unset($vars['timestamp']);
 
 if ($timestamp) {
-	echo elgg_view('input/hidden', array(
+	echo elgg_view_field([
+		'#type' => 'hidden',
 		'name' => $vars['name'],
 		'value' => $vars['value'],
-	));
+	]);
 
 	$vars['class'] = "{$vars['class']} elgg-input-timestamp";
 	$vars['id'] = $vars['name'];

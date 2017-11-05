@@ -26,7 +26,7 @@ function event_calendar_init() {
 	elgg_register_page_handler('event_calendar', 'event_calendar_page_handler');
 
 	// Register granular notification
-	elgg_register_notification_event('object', 'event_calendar', array('create'));
+	elgg_register_notification_event('object', 'event_calendar', ['create']);
 
 	// Set up site menu
 	$site_calendar = elgg_get_plugin_setting('site_calendar', 'event_calendar');
@@ -74,9 +74,9 @@ function event_calendar_init() {
 	// Index page and group profile page widgets and widget title urls if Widget Manager plugin is available
 	if (elgg_is_active_plugin('widget_manager')) {
 		// add index widget for Widget Manager plugin
-		elgg_register_widget_type('index_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), array("index"));
+		elgg_register_widget_type('index_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), ["index"]);
 		if (!$group_calendar || $group_calendar != 'no') {
-			elgg_register_widget_type('groups_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), array("groups"));
+			elgg_register_widget_type('groups_event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'), ["groups"]);
 		}
 		// register title urls for widgets
 		elgg_register_plugin_hook_handler("entity:url", "object", "event_calendar_widget_urls");
@@ -439,13 +439,13 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 		return $return;
 	}
 	if (elgg_is_active_plugin('event_poll') && $entity->canEdit() && $entity->schedule_type == 'poll') {
-		$options = array(
+		$options = [
 			'name' => 'schedule',
 			'text' => elgg_echo('event_poll:schedule_button'),
 			'title' => elgg_echo('event_poll:schedule_button'),
 			'href' => 'event_poll/vote/'.$entity->guid,
 			'priority' => 150,
-		);
+		];
 		$return[] = ElggMenuItem::factory($options);
 	}
 	$user_guid = elgg_get_logged_in_user_guid();
@@ -453,35 +453,35 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 		$calendar_status = event_calendar_personal_can_manage($entity, $user_guid);
 		if ($calendar_status == 'open') {
 			if (event_calendar_has_personal_event($entity->guid, $user_guid)) {
-				$options = array(
+				$options = [
 					'name' => 'personal_calendar',
 					'text' => elgg_echo('event_calendar:remove_from_the_calendar_menu_text'),
 					'title' => elgg_echo('event_calendar:remove_from_my_calendar'),
 					'href' => elgg_add_action_tokens_to_url("action/event_calendar/remove_personal?guid={$entity->guid}"),
 					'priority' => 150,
-				);
+				];
 				$return[] = ElggMenuItem::factory($options);
 			} else {
 				if (!event_calendar_is_full($entity->guid) && !event_calendar_has_collision($entity->guid, $user_guid)) {
-					$options = array(
+					$options = [
 						'name' => 'personal_calendar',
 						'text' => elgg_echo('event_calendar:add_to_the_calendar_menu_text'),
 						'title' => elgg_echo('event_calendar:add_to_my_calendar'),
 						'href' => elgg_add_action_tokens_to_url("action/event_calendar/add_personal?guid={$entity->guid}"),
 						'priority' => 150,
-					);
+					];
 					$return[] = ElggMenuItem::factory($options);
 				}
 			}
 		} else if ($calendar_status == 'closed') {
 			if (!event_calendar_has_personal_event($entity->guid, $user_guid) && !check_entity_relationship($user_guid, 'event_calendar_request', $entity->guid)) {
-				$options = array(
+				$options = [
 					'name' => 'personal_calendar',
 					'text' => elgg_echo('event_calendar:make_request_title'),
 					'title' => elgg_echo('event_calendar:make_request_title'),
 					'href' => elgg_add_action_tokens_to_url("action/event_calendar/request_personal_calendar?guid={$entity->guid}"),
 					'priority' => 150,
-				);
+				];
 				$return[] = ElggMenuItem::factory($options);
 			}
 		}
@@ -490,26 +490,26 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 		if ($count == 1) {
 			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link_one');
 		} else {
-			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link', array($count));
+			$calendar_text = elgg_echo('event_calendar:personal_event_calendars_link', [$count]);
 		}
 
-		$options = array(
+		$options = [
 			'name' => 'calendar_listing',
 			'text' => $calendar_text,
 			'title' => elgg_echo('event_calendar:users_for_event_menu_title'),
 			'href' => "event_calendar/display_users/{$entity->guid}",
 			'priority' => 150,
-		);
+		];
 		$return[] = ElggMenuItem::factory($options);
 
 		if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
 			$url = elgg_get_site_url() . 'action/event_calendar/export?filter=' . $entity->guid;
-			$options = array(
+			$options = [
 				'name' => 'ical_export',
-				'text' => elgg_view('output/img', array('src' => elgg_get_simplecache_url('event_calendar/ics.png'))),
+				'text' => elgg_view('output/img', ['src' => elgg_get_simplecache_url('event_calendar/ics.png')]),
 				'href' => elgg_add_action_tokens_to_url($url),
 				'priority' => 1000,
-			);
+			];
 			$return[] = ElggMenuItem::factory($options);
 		}
 	}
@@ -520,7 +520,7 @@ function event_calendar_entity_menu_setup($hook, $type, $return, $params) {
 function event_calendar_entity_menu_prepare($hook, $type, $return, $params) {
 	// remove access level from listings
 	if (elgg_in_context('event_calendar') && !elgg_in_context('event_calendar:view')) {
-		$new_return = array();
+		$new_return = [];
 		if (isset($return['default']) && is_array($return['default'])) {
 			foreach($return['default'] as $item) {
 				if ($item->getName() != 'access') {
@@ -565,7 +565,15 @@ function event_calendar_handle_join($event, $object_type, $object) {
 	$group = $object['group'];
 	$user = $object['user'];
 	$user_guid = $user->getGUID();
-	$events = event_calendar_get_events_for_group($group->getGUID());
+
+	$options = [
+		'type' => 'object',
+		'subtype' => 'event_calendar',
+		'container_guid' => $group->getGUID(),
+		'limit' => false,
+	];
+	$events = new ElggBatch('elgg_get_entities', $options);
+
 	foreach ($events as $event) {
 		$event_id = $event->getGUID();
 		event_calendar_add_personal_event($event_id, $user_guid);
@@ -577,7 +585,15 @@ function event_calendar_handle_leave($event, $object_type, $object) {
 	$group = $object['group'];
 	$user = $object['user'];
 	$user_guid = $user->getGUID();
-	$events = event_calendar_get_events_for_group($group->getGUID());
+
+	$options = [
+		'type' => 'object',
+		'subtype' => 'event_calendar',
+		'container_guid' => $group->getGUID(),
+		'limit' => false,
+	];
+	$events = new ElggBatch('elgg_get_entities', $options);
+
 	foreach ($events as $event) {
 		$event_id = $event->getGUID();
 		event_calendar_remove_personal_event($event_id, $user_guid);
@@ -605,32 +621,27 @@ function event_calendar_invalidate_cache($hook, $type, $return, $params){
  * @return object Modified notification
  */
 function event_calendar_prepare_notification($hook, $type, $notification, $params) {
-    $entity = $params['event']->getObject();
-    $owner = $params['event']->getActor();
-    $language = $params['language'];
+	$entity = $params['event']->getObject();
+	$owner = $params['event']->getActor();
+	$language = $params['language'];
 
-    // Title for the notification
-    $notification->subject = elgg_echo('event_calendar:notify:subject', array($entity->title), $language);
+	// Title for the notification
+	$notification->subject = elgg_echo('event_calendar:notify:subject', [$entity->title], $language);
 
-    // Message body for the notification
-    $notification->body = elgg_echo('event_calendar:notify:body', array(
-        $owner->name,
-        $entity->title,
-        $entity->description,
-        $entity->getURL()
-    ), $language);
+	// Message body for the notification
+	$notification->body = elgg_echo('event_calendar:notify:body', [$owner->name, $entity->title, $entity->description, $entity->getURL()], $language);
 
-    // The summary text is used e.g. by the site_notifications plugin
-    $notification->summary = elgg_echo('event_calendar:notify:summary', array($entity->title), $language);
+	// The summary text is used e.g. by the site_notifications plugin
+	$notification->summary = elgg_echo('event_calendar:notify:summary', [$entity->title], $language);
 
-    return $notification;
+	return $notification;
 }
 
 function event_calendar_check_pending_upgrades() {
 	elgg_load_library('elgg:event_calendar');
 	elgg_delete_admin_notice('event_calendar_admin_notice_pending_upgrades');
 	if (event_calendar_is_upgrade_available()) {
-		$message = elgg_echo('event_calendar:admin_notice_pending_upgrades', array(elgg_normalize_url('admin/plugin_settings/event_calendar')));
+		$message = elgg_echo('event_calendar:admin_notice_pending_upgrades', [elgg_normalize_url('admin/plugin_settings/event_calendar')]);
 		elgg_add_admin_notice('event_calendar_admin_notice_pending_upgrades', $message);
 	}
 }
@@ -642,14 +653,14 @@ function event_calendar_tool_widgets_handler($hook, $type, $return_value, $param
 
 		if (!empty($entity) && elgg_instanceof($entity, "group")) {
 			if (!is_array($return_value)) {
-				$return_value = array();
+				$return_value = [];
 			}
 
 			if (!isset($return_value["enable"])) {
-				$return_value["enable"] = array();
+				$return_value["enable"] = [];
 			}
 			if (!isset($return_value["disable"])) {
-				$return_value["disable"] = array();
+				$return_value["disable"] = [];
 			}
 
 			if ($entity->event_calendar_enable == "yes") {

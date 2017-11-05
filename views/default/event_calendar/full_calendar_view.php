@@ -9,4 +9,7 @@ $groupguid = $vars['group_guid'];
 $region = $vars['region'];
 
 echo "<div id='calendar' data-timeformat='" . $timeformat . "' data-startdate='" . $startdate . "' data-filter='" . $filter . "' data-groupguid='" . $groupguid . "' data-region='" . $region . "'></div>";
-echo elgg_view('input/hidden', array('id' => 'event-calendar-selected-date'));
+echo elgg_view_field([
+	'#type' => 'hidden',
+	'id' => 'event-calendar-selected-date',
+]);

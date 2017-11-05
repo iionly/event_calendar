@@ -21,18 +21,18 @@ if (!$content) {
 }
 
 if ($content) {
-	$all_link = elgg_view('output/url', array(
+	$all_link = elgg_view('output/url', [
 		'href' => "event_calendar/group/$group->guid",
 		'text' => elgg_echo('link:view:all'),
-	));
-	$new_link = elgg_view('output/url', array(
+	]);
+	$new_link = elgg_view('output/url', [
 		'href' => "event_calendar/add/$group->guid",
 		'text' => elgg_echo('event_calendar:new'),
-	));
-	echo elgg_view('groups/profile/module', array(
+	]);
+	echo elgg_view('groups/profile/module', [
 		'title' => elgg_echo('event_calendar:group'),
 		'content' => $content,
 		'all_link' => $all_link,
 		'add_link' => $new_link,
-	));
+	]);
 }

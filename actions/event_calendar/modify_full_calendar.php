@@ -12,14 +12,14 @@ $iso_date = get_input('iso_date');
 $result = event_calendar_modify_full_calendar($event_guid, $day_delta, $minute_delta, $start_time, $resend, $minutes, $iso_date);
 
 if ($result) {
-	$response = array('success' => true);
+	$response = ['success' => true];
 	// special handling for event polls
 	if (is_array($result)) {
 		$response['minutes'] = $result['minutes'];
 		$response['iso_date'] = $result['iso_date'];
 	}
 } else {
-	$response = array('success' => false, 'message' => elgg_echo('event_calendar:modify_full_calendar:error'));
+	$response = ['success' => false, 'message' => elgg_echo('event_calendar:modify_full_calendar:error')];
 }
 
 echo json_encode($response);

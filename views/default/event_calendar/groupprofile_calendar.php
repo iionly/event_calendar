@@ -26,7 +26,7 @@ if (event_calendar_activated_for_group($page_owner_entity)) {
 	if (is_array($events) && sizeof($events) > 0) {
 
 		foreach($events as $event) {
-			echo elgg_view("object/event_calendar", array('entity' => $event['event']));
+			echo elgg_view("object/event_calendar", ['entity' => $event['event']]);
 		}
 	}
 }

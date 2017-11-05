@@ -1,11 +1,8 @@
 <?php
 
-return array(
-
+return [
 	'item:object:event_calendar' => "Kalenteri",
 	'tag_names:event_tags' => "Tagit",
-	'event_calendar:optional' => "Valinnainen.",
-	'event_calendar:required' => "Pakollinen.",
 	'event_calendar:new_event' => "Uusi tapahtuma",
 	'event_calendar:no_such_event_edit_error' => "Tapahtumaa ei löydy tai sinulla ei ole oikeuksia sen muokkaamiseen.",
 	'event_calendar:add_event_title' => "Lisää tapahtuma",
@@ -14,13 +11,9 @@ return array(
 		."Otsikko, sijainti ja alkamispäivä ovat pakollisia. "
 		."Voit klikata kalenteri-ikonia asettaaksesi aloitus- ja päättymispäivän.",
 	'event_calendar:title_label' => "Otsikko",
-	'event_calendar:title_description' => "Yhdestä neljään sanaa",
-	'event_calendar:brief_description_label' => "Lyhyt kuvaus",
-	'event_calendar:brief_description_description' => "Tapahtuman kuvaus yhdellä lauseella.",
+	'event_calendar:description_label' => "Lyhyt kuvaus",
 	'event_calendar:venue_label' => "Sijainti",
-	'event_calendar:venue_description' => "Missä tapahtuma tullaan pitämään?",
 	'event_calendar:start_date_label' => "Alkamispäivä",
-	'event_calendar:start_date_description'	=> "Milloin tapahtuma alkaa?",
 	'event_calendar:end_date_label' => "Päättymispäivä",
 	'event_calendar:end_date_description'	=> "Milloin tapahtuma päättyy? Aloituspäviää käytetään "
 		."päättymispäivänä, jos tämä on tyhjä.",
@@ -29,16 +22,10 @@ return array(
 	'event_calendar:end_time_label' => "Päättymisaika",
 	'event_calendar:end_time_description'	=> "Mihin kellonaikaan tapahtuma päättyy?",
 	'event_calendar:fees_label' => "Hinta",
-	'event_calendar:fees_description'	=> "Tapahtuman hinta, mikäli tapahtuma sisältää osallistumismaksun.",
 	'event_calendar:contact_label' => "Yhteyshenkilö",
-	'event_calendar:contact_description'	=> "Tapahtuman yhteyshenkilön yhteystiedot "
-			."sisältäen mielellään puhelinnumeron tai sähköpostiosoitteen.",
 	'event_calendar:organiser_label' => "Järjestäjä",
-	'event_calendar:organiser_description'	=> "Tapahtuman järjestävä henkilö tai organisaatio.",
-	'event_calendar:event_tags_label' => "Tagit",
-	'event_calendar:event_tags_description'	=> "Pilkulla eroteltu lista tapahtumaan liittyvistä avainsanoista.",
+	'event_calendar:tags_label' => "Tagit",
 	'event_calendar:long_description_label' => "Kuvaus",
-	'event_calendar:long_description_description'	=> "Tapahtuman vapaa kuvaus.",
 	'event_calendar:manage_event_response' => "Tapahtuma tallennettu.",
 	'event_calendar:add_event_response' => "Tapahtumasi on lisätty.",
 	'event_calendar:manage_event_error' => "Tapahtuman tallentaminen epäonnistui. "
@@ -112,12 +99,10 @@ return array(
 	'event_calendar:settings:region_display:title' => "Lisää alue-kenttä tapahtumiin",
 	'event_calendar:settings:region_list:title' => "Lista alueista (yksi per rivi)",
 	'event_calendar:region_label' => "Alue",
-	'event_calendar:region_description' => "Valitse alue, jossa tapahtuma pidetään.",
 	'event_calendar:settings:type_display:title' => "Lisää tapahtumiin tapahtumatyyppi",
 	'event_calendar:settings:type_list:title' => "Lista tapahtumatyypeistä (yksi per rivi)",
 	'event_calendar:settings:type_list:desc' => 'Voit määrittää jokaiselle tyypille taustaväriksi CSS-värikoodin. Erota tyyppi ja väri | merkillä (esim. "kokous|#00CC33")',
 	'event_calendar:type_label' => "Tyyppi",
-	'event_calendar:type_description' => "Valitse tapahtuman tyyppi.",
 	'event_calendar:all' => "Kaikki",
 	'event_calendar:region_filter_by_label' => "Suodata alueen perusteella: ",
 	'event_calendar:settings:first_date:title' => "Ensimmäinen sallittu päivämäärä (muodossa YYYY-MM-DD)",
@@ -147,7 +132,6 @@ return array(
 	'event_calendar:settings:collision_length:title' => "Tapahtuman oletuskesto (sekunteina), mikäli päättymispäivää ei ole määritetty"
 		."(käytetään päällekkäisten tapahtumien estämiseen). Oletukseni 3600 sekuntia eli 1 tunti.",
 	'event_calendar:spots_label' => "Paikkoja",
-	'event_calendar:spots_description' => "Moniko henkilö voi lisätä tämän tapahtuman kalenteriinsa?",
 	'event_calendar:open' => "Open",
 	'event_calendar:settings:add_users:title' => "Salli ylläpitäjien ja tapahtumien luojien lisätä tapahtuma muiden käyttäjien kalenteriin.",
 	'event_calendar:add_user_label' => "Lisää käyttäjiä",
@@ -258,8 +242,8 @@ Voit hallinnoida tämän tapahtuman kalenteripyyntöjä täällä:
 	'event_calendar:personal_manage:by_event:private' => "Private. You or another event administrator must add this event to personal calendars. There is no way for other users to add or request this event.",
 	'event_calendar:settings:full_calendar:title' => "Tuki kalenterinäkymälle",
 	'event_calendar:modify_full_calendar:error' => "Ei voitu muokata kalenterinäkymää",
-	'event_calendar:from_label' => "Alkaa:",
-	'event_calendar:to_label' => "Päättyy:",
+	'event_calendar:from_label' => "Alkaa",
+	'event_calendar:to_label' => "Päättyy",
 	'event_calendar:settings:timeformat:title' => "Ajan esittämistapa",
 	'event_calendar:time_format:12hour' => "12 tuntia (am/pm)",
 	'event_calendar:time_format:24hour' => "24 tuntia",
@@ -360,4 +344,4 @@ You can visit the event page here:
 
 %s',
 	'event_calendar:notify:summary' => 'Uusi tapahtuma: %s',
-);
+];

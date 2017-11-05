@@ -243,10 +243,6 @@ li.event-calendar-filter-menu-show-only {
 	display: none;
 }
 
-.event-calendar-description {
-	display: none;
-}
-
 .event-calendar-edit-bottom {
 	clear: both;
 	margin-bottom: 5px;

@@ -35,6 +35,7 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 	$event_calendar_type_display = elgg_get_plugin_setting('type_display', 'event_calendar');
 	$event_calendar_spots_display = elgg_get_plugin_setting('spots_display', 'event_calendar');
 	$event_calendar_hide_end = elgg_get_plugin_setting('hide_end', 'event_calendar');
+	$event_calendar_fewer_fields = elgg_get_plugin_setting('fewer_fields', 'event_calendar');
 	$event_calendar_more_required = elgg_get_plugin_setting('more_required', 'event_calendar');
 	$event_calendar_personal_manage = elgg_get_plugin_setting('personal_manage', 'event_calendar');
 	$event_calendar_repeating_events = elgg_get_plugin_setting('repeating_events', 'event_calendar');
@@ -43,27 +44,15 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 	$e->schedule_type = get_input('schedule_type');
 
 	if ($event_calendar_more_required == 'yes') {
-		$required_fields = array('title', 'venue', 'start_date',
-			'brief_description', 'fees', 'contact', 'organiser',
-			'tags');
+		$required_fields = ['title', 'venue', 'description', 'tags'];
 
-		if ($event_calendar_times != 'no') {
-			$required_fields[] = 'start_time';
-			if ($event_calendar_hide_end != 'yes') {
-				$required_fields[] = 'end_time';
-			}
-		}
-		if ($event_calendar_region_display == 'yes') {
-			$required_fields[] = 'region';
-		}
-		if ($event_calendar_type_display == 'yes') {
-			$required_fields[] = 'event_type';
-		}
-		if ($event_calendar_spots_display == 'yes') {
-			$required_fields[] = 'spots';
+		if ($event_calendar_fewer_fields != 'no') {
+			$required_fields[] = 'fees';
+			$required_fields[] = 'contact';
+			$required_fields[] = 'organiser';
 		}
 	} else {
-		$required_fields = array('title');
+		$required_fields = ['title'];
 	}
 
 	if ($event_guid) {
@@ -88,7 +77,7 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 	$repeats = get_input('repeats');
 	if ($repeats == 'yes') {
 		$no_day_selected = true;
-		$dow = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+		$dow = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 		foreach ($dow as $w) {
 			$v = 'event-calendar-repeating-'.$w.'-value';
 			$selected = get_input($v);
@@ -103,6 +92,10 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 	}
 
 	if ($e->schedule_type != 'poll') {
+		// added start_date as required field as sanity check
+		// adding here because event poll events have no start_date at this point
+		$required_fields[] = 'start_date';
+
 		if ($e->schedule_type == 'all_day') {
 			$start_date_text = trim(get_input('start_date_for_all_day'));
 		} else {
@@ -152,7 +145,7 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 	$e->fees = get_input('fees');
 	$e->contact = get_input('contact');
 	$e->organiser = get_input('organiser');
-	$e->tags = string_to_tag_array(get_input('tags'));
+	$e->tags = get_input('tags');
 	$e->long_description = get_input('long_description');
 	$e->send_reminder = get_input('send_reminder');
 	$e->reminder_number = get_input('reminder_number');
@@ -173,9 +166,12 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 		}
 	}
 
+	// Make tags string an array only now after required_fields check
+	$e->tags = string_to_tag_array($e->tags);
+
 	// ok, the input passes the validation so put the values in the real event object
 
-	$keys = array(
+	$keys = [
 		'title',
 		'description',
 		'access_id',
@@ -195,7 +191,7 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 		'web_conference',
 		'real_end_time',
 		'schedule_type',
-	);
+	];
 
 	foreach ($keys as $key) {
 		$event->$key = $e->$key;
@@ -218,7 +214,7 @@ function event_calendar_set_event_from_form($event_guid, $group_guid) {
 		$event->repeats = $repeats;
 		if ($repeats == 'yes') {
 			$event->repeat_interval = get_input('repeat_interval');
-			$dow = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+			$dow = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 			foreach ($dow as $w) {
 				$v = 'event-calendar-repeating-'.$w.'-value';
 				$event->$v = get_input($v);
@@ -265,11 +261,11 @@ function event_calendar_get_events_between($start_date, $end_date, $is_count=fal
 // that there might be events but no repeating events or that there are neither events nor repeating events in the corresponding
 // function parameter variables.
 function event_calendar_merge_repeating_events($events, $repeating_events) {
-	$non_repeating_events = array(); // temp array to collect non-repeating events
+	$non_repeating_events = []; // temp array to collect non-repeating events
 	if (is_array($events) && count($events) > 0) { // do we have any events?
 		foreach($events as $e) {
 			if ($e->repeats != 'yes') { // is it non-repeating?
-				$non_repeating_events[] = array('event' => $e,'data' => array(array('start_time' => $e->start_date, 'end_time' => $e->real_end_time)));
+				$non_repeating_events[] = ['event' => $e,'data' => [['start_time' => $e->start_date, 'end_time' => $e->real_end_time]]];
 			}
 		}
 		if (is_array($repeating_events) && count($repeating_events) > 0) { // do we have also repeating events?
@@ -291,22 +287,15 @@ function event_calendar_get_repeating_events_between($start_date, $end_date, $co
 	// game plan: get all repeating events with start date <= $end_date and then generate all possible events
 	// sanity check
 	if ($start_date <= $end_date) {
-		$options = array(
+		$options = [
 			'type' => 'object',
 			'subtype' => 'event_calendar',
 			'limit' => false,
-			'metadata_name_value_pairs' => array(
-				array(
-					'name' => 'start_date',
-					'value' => $end_date,
-					'operand' => '<='
-				),
-				array(
-					'name' => 'repeats',
-					'value' => 'yes'
-				),
-			)
-		);
+			'metadata_name_value_pairs' => [
+				['name' => 'start_date', 'value' => $end_date, 'operand' => '<='],
+				['name' => 'repeats', 'value' => 'yes'],
+			],
+		];
 		if ($container_guid) {
 			if (is_array($container_guid)) {
 				$options['container_guids'] = $container_guid;
@@ -316,10 +305,10 @@ function event_calendar_get_repeating_events_between($start_date, $end_date, $co
 		}
 
 		if ($region && $region != '-') {
-			$options['metadata_name_value_pairs'][] = array(
+			$options['metadata_name_value_pairs'][] = [
 				'name' => 'region',
 				'value' => sanitize_string($region)
-			);
+			];
 		}
 
 		$events = elgg_get_entities_from_metadata($options);
@@ -328,12 +317,12 @@ function event_calendar_get_repeating_events_between($start_date, $end_date, $co
 }
 
 function event_calendar_get_repeating_event_structure($events, $start_date, $end_date) {
-	$dow = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-	$repeating_events = array();
+	$dow = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+	$repeating_events = [];
 	if ($events) {
 		foreach($events as $e) {
-			$incs = array();
-			$repeat_data = array();
+			$incs = [];
+			$repeat_data = [];
 			$day_num = date('N', $e->start_date)-1;
 			for($d=0;$d<7;$d++) {
 				$fn = 'event-calendar-repeating-'.$dow[$d].'-value';
@@ -371,10 +360,10 @@ function event_calendar_get_repeating_event_structure($events, $start_date, $end
 								break;
 							}
 							if ($this_start_time >= $event_start_time) {
-								$repeat_data[] = array (
+								$repeat_data[] = [
 									'start_time' => $this_start_time,
 									'end_time' => $this_end_time,
-								);
+								];
 							}
 						}
 						// repeat_interval weeks later
@@ -385,7 +374,7 @@ function event_calendar_get_repeating_event_structure($events, $start_date, $end
 					} while ($repeat_times < 1000 && $more_to_do);
 				}
 			}
-			$repeating_events[] = array('event' => $e,'data' => $repeat_data);
+			$repeating_events[] = ['event' => $e, 'data' => $repeat_data];
 		}
 	}
 	return $repeating_events;
@@ -407,8 +396,8 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 	$db_prefix = elgg_get_config('dbprefix');
 	$meta_max = 'spots';
 	$relationship_name = 'personal_event';
-	$joins = array();
-	$wheres = array();
+	$joins = [];
+	$wheres = [];
 
 	$meta_max_n = elgg_get_metastring_id($meta_max);
 	if (!$meta_max_n) {
@@ -425,24 +414,17 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 
 	// sanity check
 	if ($start_date <= $end_date) {
-		$options = array(
+		$options = [
 			'type' => 'object',
 			'subtype' => 'event_calendar',
 			'limit' => false,
-			'metadata_name_value_pairs' => array(
-				array(
-					'name' => 'start_date',
-					'value' => $end_date,
-					'operand' => '<='
-				),
-				array(
-					'name' => 'repeats',
-					'value' => 'yes'
-				),
-			),
+			'metadata_name_value_pairs' => [
+				['name' => 'start_date', 'value' => $end_date, 'operand' => '<='],
+				['name' => 'repeats', 'value' => 'yes'],
+			],
 			'joins' => $joins,
 			'wheres' => $wheres,
-		);
+		];
 
 		if ($container_guid) {
 			if (is_array($container_guid)) {
@@ -453,10 +435,10 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 		}
 
 		if ($region && $region != '-') {
-			$options['metadata_name_value_pairs'][] = array(
+			$options['metadata_name_value_pairs'][] = [
 				'name' => 'region',
-				'value' => sanitize_string($region)
-			);
+				'value' => sanitize_string($region),
+			];
 		}
 
 		$events = elgg_get_entities_from_metadata($options);
@@ -465,31 +447,25 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 }
 
 function event_calendar_get_events_for_user_between($start_date, $end_date, $is_count, $limit=10, $offset=0, $user_guid, $container_guid=0, $region='-') {
-	$options = array(
+	$options = [
 		'type' => 'object',
 		'subtype' => 'event_calendar',
 		'relationship' => 'personal_event',
 		'relationship_guid' => $user_guid,
-		'metadata_name_value_pairs' => array(
-			array(
-				'name' => 'start_date',
-				'value' => $start_date,
-				'operand' => '>='),
-			array(
-				'name' => 'real_end_time',
-				'value' => $end_date,
-				'operand' => '<=')
-		),
-	);
+		'metadata_name_value_pairs' => [
+			['name' => 'start_date', 'value' => $start_date, 'operand' => '>='],
+			['name' => 'real_end_time', 'value' => $end_date, 'operand' => '<='],
+		],
+	];
 
 	if ($container_guid) {
 		$options['container_guid'] = $container_guid;
 	}
 	if ($region && $region != '-') {
-		$options['metadata_name_value_pairs'][] = array(
+		$options['metadata_name_value_pairs'][] = [
 			'name' => 'region',
-			'value' => sanitize_string($region)
-		);
+			'value' => sanitize_string($region),
+		];
 	}
 	if ($is_count) {
 		$options['count'] = true;
@@ -498,13 +474,9 @@ function event_calendar_get_events_for_user_between($start_date, $end_date, $is_
 	} else {
 		$options['limit'] = $limit;
 		$options['offset'] = $offset;
-		$options['order_by_metadata'] = array(
-			array(
-				'name' => 'start_date',
-				'direction' => 'ASC',
-				'as' => 'integer'
-			)
-		);
+		$options['order_by_metadata'] = [
+			['name' => 'start_date', 'direction' => 'ASC', 'as' => 'integer'],
+		];
 		$events = elgg_get_entities_from_relationship($options);
 		$repeating_events = event_calendar_get_repeating_events_for_user_between($user_guid, $start_date, $end_date, $container_guid, $region);
 		$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
@@ -513,23 +485,16 @@ function event_calendar_get_events_for_user_between($start_date, $end_date, $is_
 }
 
 function event_calendar_get_repeating_events_for_user_between($user_guid, $start_date, $end_date, $container_guid, $region) {
-	$options = array(
+	$options = [
 		'type' => 'object',
 		'subtype' => 'event_calendar',
 		'relationship' => 'personal_event',
 		'relationship_guid' => $user_guid,
-		'metadata_name_value_pairs' => array(
-			array(
-				'name' => 'start_date',
-				'value' => $end_date,
-				'operand' => '<='
-			),
-			array(
-				'name' => 'repeats',
-				'value' => 'yes'
-			),
-		)
-	);
+		'metadata_name_value_pairs' => [
+			['name' => 'start_date', 'value' => $end_date, 'operand' => '<='],
+			['name' => 'repeats', 'value' => 'yes'],
+		],
+	];
 
 	if ($container_guid) {
 		if (is_array($container_guid)) {
@@ -540,10 +505,10 @@ function event_calendar_get_repeating_events_for_user_between($user_guid, $start
 	}
 
 	if ($region && $region != '-') {
-		$options['metadata_name_value_pairs'][] = array(
+		$options['metadata_name_value_pairs'][] = [
 			'name' => 'region',
-			'value' => sanitize_string($region)
-		);
+			'value' => sanitize_string($region),
+		];
 	}
 
 	$events = elgg_get_entities_from_relationship($options);
@@ -553,23 +518,16 @@ function event_calendar_get_repeating_events_for_user_between($user_guid, $start
 function event_calendar_get_repeating_events_for_friends_between($user_guid, $friend_list, $start_date, $end_date, $container_guid=0, $region='-') {
 
 	$db_prefix = elgg_get_config('dbprefix');
-	$options = 	array(
+	$options = 	[
 		'type' => 'object',
 		'subtype' => 'event_calendar',
-		'metadata_name_value_pairs' => array(
-			array(
-				'name' => 'start_date',
-				'value' => $end_date,
-				'operand' => '<='
-			),
-			array(
-				'name' => 'repeats',
-				'value' => 'yes'
-			)
-		),
-		'joins' => array("JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid)"),
-		'wheres' => array("r.relationship = 'personal_event'","r.guid_one IN ($friend_list)"),
-	);
+		'metadata_name_value_pairs' => [
+			['name' => 'start_date', 'value' => $end_date, 'operand' => '<='],
+			['name' => 'repeats', 'value' => 'yes'],
+		],
+		'joins' => ["JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid)"],
+		'wheres' => ["r.relationship = 'personal_event'","r.guid_one IN ($friend_list)"],
+	];
 
 	if ($container_guid) {
 		if (is_array($container_guid)) {
@@ -579,10 +537,10 @@ function event_calendar_get_repeating_events_for_friends_between($user_guid, $fr
 		}
 	}
 	if ($region && $region != '-') {
-		$options['metadata_name_value_pairs'][] = array(
+		$options['metadata_name_value_pairs'][] = [
 			'name' => 'region',
-			'value' => sanitize_string($region)
-		);
+			'value' => sanitize_string($region),
+		];
 	}
 
 	$events = elgg_get_entities_from_relationship($options);
@@ -593,43 +551,35 @@ function event_calendar_get_events_for_friends_between($start_date, $end_date, $
 	if ($user_guid) {
 		$user = get_user($user_guid);
 
-		$friends = $user->getFriends(array('limit' => false));
+		$friends = $user->getFriends(['limit' => false]);
 
 		if ($friends) {
-			$friend_guids = array();
+			$friend_guids = [];
 			foreach($friends as $friend) {
 				$friend_guids[] = $friend->getGUID();
 			}
 			$friend_list = implode(",", $friend_guids);
 			// elgg_get_entities_from_relationship does not take multiple relationship guids, so need some custom joins and wheres
 			$db_prefix = elgg_get_config('dbprefix');
-			$options = array(
+			$options = [
 				'type' => 'object',
 				'subtype' => 'event_calendar',
-				'metadata_name_value_pairs' => array(
-					array(
-						'name' => 'start_date',
-						'value' => $start_date,
-						'operand' => '>='
-					),
-					array(
-						'name' => 'real_end_time',
-						'value' => $end_date,
-						'operand' => '<='
-					)
-				),
-				'joins' => array("JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid)"),
-				'wheres' => array("r.relationship = 'personal_event'","r.guid_one IN ($friend_list)"),
-			);
+				'metadata_name_value_pairs' => [
+					['name' => 'start_date', 'value' => $start_date, 'operand' => '>='],
+					['name' => 'real_end_time', 'value' => $end_date, 'operand' => '<='],
+				],
+				'joins' => ["JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid)"],
+				'wheres' => ["r.relationship = 'personal_event'","r.guid_one IN ($friend_list)"],
+			];
 
 			if ($container_guid) {
 				$options['container_guid'] = $container_guid;
 			}
 			if ($region && $region != '-') {
-				$options['metadata_name_value_pairs'][] = array(
+				$options['metadata_name_value_pairs'][] = [
 					'name' => 'region',
-					'value' => sanitize_string($region)
-				);
+					'value' => sanitize_string($region),
+				];
 			}
 			if ($is_count) {
 				$options['count'] = true;
@@ -638,13 +588,13 @@ function event_calendar_get_events_for_friends_between($start_date, $end_date, $
 			} else {
 				$options['limit'] = $limit;
 				$options['offset'] = $offset;
-				$options['order_by_metadata'] = array(
-					array(
+				$options['order_by_metadata'] = [
+					[
 						'name' => 'start_date',
 						'direction' => 'ASC',
-						'as' => 'integer'
-					)
-				);
+						'as' => 'integer',
+					],
+				];
 				$events = elgg_get_entities_from_metadata($options);
 				$repeating_events = event_calendar_get_repeating_events_for_friends_between($user_guid, $friend_list, $start_date, $end_date, $container_guid, $region);
 				$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
@@ -652,14 +602,14 @@ function event_calendar_get_events_for_friends_between($start_date, $end_date, $
 			}
 		}
 	}
-	return array();
+	return [];
 }
 
 function event_calendar_vsort($original, $field, $descending = false) {
 	if (!$original) {
 		return $original;
 	}
-	$sortArr = array();
+	$sortArr = [];
 
 	foreach ( $original as $key => $item ) {
 		$sortArr[ $key ] = $item->$field;
@@ -671,7 +621,7 @@ function event_calendar_vsort($original, $field, $descending = false) {
 		asort( $sortArr );
 	}
 
-	$resultArr = array();
+	$resultArr = [];
 	foreach ( $sortArr as $key => $value ) {
 		$resultArr[ $key ] = $original[ $key ];
 	}
@@ -682,18 +632,18 @@ function event_calendar_vsort($original, $field, $descending = false) {
 // adds any related events (has the display_on_group relation) that meet the appropriate criteria
 function event_calendar_get_entities_from_metadata_between_related($start_date, $end_date, $owner_guid=0, $container_guid=0, $limit=10, $offset=0, $filter=false, $count=false, $region='-', $main_events) {
 
-	$main_list = array();
+	$main_list = [];
 	if ($main_events) {
 		foreach ($main_events as $event) {
 			$main_list[$event->guid] = $event;
 		}
 	}
-	$related_list = array();
-	$related_events = elgg_get_entities_from_relationship(array(
+	$related_list = [];
+	$related_events = elgg_get_entities_from_relationship([
 		'relationship' => 'display_on_group',
 		'relationship_guid' => $container_guid,
 		'inverse_relationship' => true,
-	));
+	]);
 	if ($related_events) {
 		foreach ($related_events as $event) {
 			$related_list[$event->guid] = $event;
@@ -747,22 +697,14 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 		}
 	}
 
-	$options = array(
+	$options = [
 		'type' => 'object',
 		'subtype' => 'event_calendar',
-		'metadata_name_value_pairs' => array(
-			array(
-				'name' => 'start_date',
-				'value' => $start_date,
-				'operand' => '>=',
-			),
-			array(
-				'name' => 'end_date',
-				'value' => $end_date,
-				'operand' => '<=',
-			),
-		),
-		);
+		'metadata_name_value_pairs' => [
+			['name' => 'start_date', 'value' => $start_date, 'operand' => '>='],
+			['name' => 'end_date', 'value' => $end_date, 'operand' => '<='],
+		],
+	];
 
 	if ($region && $region != '-') {
 		$region = sanitize_string($region);
@@ -775,10 +717,10 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 				return false;
 			}
 		} else {
-			$options['metadata_name_value_pairs'][] = array(
+			$options['metadata_name_value_pairs'][] = [
 				'name' => 'region',
 				'value' => $region,
-			);
+			];
 		}
 	}
 
@@ -790,8 +732,8 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 		}
 	}
 
-	$joins = array();
-	$wheres = array();
+	$joins = [];
+	$wheres = [];
 	$db_prefix = elgg_get_config('dbprefix');
 
 	if ($filter) {
@@ -841,13 +783,13 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 	} else {
 		$options['limit'] = (int)$limit;
 		$options['offset'] = (int)$offset;
-		$options['order_by_metadata'] = array(
-			array(
+		$options['order_by_metadata'] = [
+			[
 				'name' => 'start_date',
 				'direction' => 'ASC',
 				'as' => 'integer',
-			),
-		);
+			],
+		];
 		$entities = elgg_get_entities_from_metadata($options);
 
 		if (elgg_get_plugin_setting('add_to_group_calendar', 'event_calendar') == 'yes') {
@@ -884,7 +826,7 @@ function event_calendar_add_personal_event($event_guid, $user_guid) {
 function event_calendar_add_personal_events_from_group($event_guid, $group_guid) {
 	$group = get_entity($group_guid);
 
-	$members = $group->getMembers(array('limit' => false));
+	$members = $group->getMembers(['limit' => false]);
 
 	foreach($members as $member) {
 		event_calendar_add_personal_event($event_guid, $member->guid);
@@ -895,38 +837,14 @@ function event_calendar_remove_personal_event($event_guid, $user_guid) {
 	remove_entity_relationship($user_guid, 'personal_event', $event_guid);
 }
 
-function event_calendar_get_personal_events_for_user($user_guid, $limit) {
-	$events = elgg_get_entities_from_relationship(array(
-		'type' => 'object',
-		'subtype' => 'event_calendar',
-		'relationship' => 'personal_event',
-		'relationship_guid' => $user_guid,
-		'limit' => false,
-	));
-
-	$final_events = array();
-	if ($events) {
-		$now = time();
-		$one_day = 60*60*24;
-		// don't show events that have been over for more than a day
-		foreach($events as $event) {
-			if (($event->start_date > $now-$one_day) || ($event->end_date && ($event->end_date > $now-$one_day))) {
-				$final_events[] = $event;
-			}
-		}
-	}
-	$sorted = event_calendar_vsort($final_events, 'start_date');
-	return array_slice($sorted, 0, $limit);
-}
-
 function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_count=false) {
-	$options = array(
+	$options = [
 		'type' => 'user',
 		'relationship' => 'personal_event',
 		'relationship_guid' => $event_guid,
 		'inverse_relationship' => true,
 		'limit' => false,
-	);
+	];
 	if ($is_count) {
 		$options ['count'] = true;
 		$count = elgg_get_entities_from_relationship($options);
@@ -935,16 +853,6 @@ function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_
 		$users = elgg_get_entities_from_relationship($options);
 		return $users;
 	}
-}
-
-function event_calendar_get_events_for_group($group_guid, $limit = 0) {
-	$options = array(
-		'type' => 'object',
-		'subtype' => 'event_calendar',
-		'container_guid' => $group_guid,
-		'limit' => $limit,
-	);
-	return elgg_get_entities($options);
 }
 
 function event_calendar_convert_time($time) {
@@ -1025,7 +933,7 @@ function event_calendar_get_formatted_full_items($event) {
 	$time_bit = event_calendar_get_formatted_time($event);
 	$event_calendar_region_display = elgg_get_plugin_setting('region_display', 'event_calendar');
 	$event_calendar_type_display = elgg_get_plugin_setting('type_display', 'event_calendar');
-	$event_items = array();
+	$event_items = [];
 	if ($time_bit) {
 		$item = new stdClass();
 		$item->title = elgg_echo('event_calendar:when_label');
@@ -1096,8 +1004,8 @@ function event_calendar_get_formatted_time($event) {
 	}
 
 	if ($event->repeats == 'yes') {
-		$dow = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-		$r = array();
+		$dow = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+		$r = [];
 		foreach ($dow as $w) {
 			$fn = 'event-calendar-repeating-'.$w.'-value';
 			if ($event->$fn) {
@@ -1106,11 +1014,11 @@ function event_calendar_get_formatted_time($event) {
 		}
 		$week_bit = implode(", ", $r);
 		if ($event->repeat_interval > 1) {
-			$week_bit .= ' '.elgg_echo('event_calendar:repeated_event:week_interval', array($event->repeat_interval));
+			$week_bit .= ' '.elgg_echo('event_calendar:repeated_event:week_interval', [$event->repeat_interval]);
 		} else {
 			$week_bit .= ' '.elgg_echo('event_calendar:repeated_event:week_single');
 		}
-		$time_bit = elgg_echo('event_calendar:repeated_event:format', array($time_bit, $week_bit));
+		$time_bit = elgg_echo('event_calendar:repeated_event:format', [$time_bit, $week_bit]);
 	}
 
 	return $time_bit;
@@ -1166,7 +1074,7 @@ function event_calendar_get_end_time($event) {
 	$end_date = $event->end_date;
 	if($end_date) {
 		if ($end_time) {
-			$end_time = $end_date+$end_time*60;
+			$end_time = $end_date + $end_time*60;
 		} else if ($start_time == $end_date) {
 			$end_time = $end_date + $default_length;
 		} else {
@@ -1180,7 +1088,7 @@ function event_calendar_get_end_time($event) {
 				$end_time = $start_time + $end_time*60;
 			}
 		} else {
-			$end_time = $end_date + $default_length;
+			$end_time = $start_time + $default_length;
 		}
 	}
 
@@ -1199,7 +1107,7 @@ function event_calendar_view_entity_list($entities, $count, $offset, $limit, $fu
 
 	$context = elgg_get_context();
 
-	$html = elgg_view('event_calendar/entities/entity_list',array(
+	$html = elgg_view('event_calendar/entities/entity_list', [
 		'entities' => $entities,
 		'count' => $count,
 		'offset' => $offset,
@@ -1209,8 +1117,8 @@ function event_calendar_view_entity_list($entities, $count, $offset, $limit, $fu
 		'context' => $context,
 		'list_type_toggle' => $list_type_toggle,
 		'viewtype' => get_input('search_viewtype','list'),
-		'pagination' => $pagination
-	));
+		'pagination' => $pagination,
+	]);
 
 	return $html;
 }
@@ -1245,17 +1153,17 @@ function event_calendar_send_event_request($event, $user_guid) {
 	if(add_entity_relationship($user_guid, 'event_calendar_request', $event->guid)) {
 		$event_owner = get_user($event->owner_guid);
 		$event_owner_language = ($event_owner->language) ? $event_owner->language : (($site_language = elgg_get_config('language')) ? $site_language : 'en');
-		$subject = elgg_echo('event_calendar:request_subject', array(), $event_owner_language);
+		$subject = elgg_echo('event_calendar:request_subject', [], $event_owner_language);
 		$name = get_entity($user_guid)->name;
 		$title = $event->title;
 		$url = $event->getUrl();
 		$link = elgg_get_site_url().'event_calendar/review_requests/'.$event->guid;
-		$message = elgg_echo('event_calendar:request_message', array($name, $title, $url, $link), $event_owner_language);
-		notify_user($event->owner_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
+		$message = elgg_echo('event_calendar:request_message', [$name, $title, $url, $link], $event_owner_language);
+		notify_user($event->owner_guid, elgg_get_logged_in_user_guid(), $subject, $message, [
 			'object' => $event,
 			'action' => 'request',
-			'summary' => $subject
-		));
+			'summary' => $subject,
+		]);
 		$result = true;
 	}
 	return $result;
@@ -1280,7 +1188,7 @@ function event_calendar_prepare_edit_form_vars($event = null, $page_type = '', $
 	}
 	$start_time = floor(($now-$now_midnight)/60) + 60;
 	$start_time = floor($start_time/5)*5;
-	$values = array(
+	$values = [
 		'title' => null,
 		'description' => null,
 		'venue' => null,
@@ -1320,7 +1228,7 @@ function event_calendar_prepare_edit_form_vars($event = null, $page_type = '', $
 		'long_description' => null,
 		'access_id' => ACCESS_DEFAULT,
 		'group_guid' => null,
-	);
+	];
 
 	if ($page_type == 'schedule') {
 		$values['schedule_type'] = 'poll';
@@ -1425,17 +1333,17 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 		$start_ts = strtotime($start_date);
 		if ($mode == "day") {
 			$end_ts = strtotime($end_date)+$day-1;
-			$subtitle = elgg_echo('event_calendar:day_label_with_separator', array(date('j', $start_ts), elgg_echo("event_calendar:month:".date('m', $start_ts)), date('Y', $start_ts)));
+			$subtitle = elgg_echo('event_calendar:day_label_with_separator', [date('j', $start_ts), elgg_echo("event_calendar:month:".date('m', $start_ts)), date('Y', $start_ts)]);
 		} else if ($mode == "week") {
 			// KJ - fix for end date bug
 			//$end_ts = $start_ts + 6*$day;
 			$end_ts = $start_ts + 7*$day;
-			$subtitle = elgg_echo('event_calendar:week_label_with_separator', array(date('j',$start_ts), elgg_echo("event_calendar:month:".date('m', $start_ts)), date('j',$end_ts), elgg_echo("event_calendar:month:".date('m', $end_ts)), date('Y',$end_ts)));
+			$subtitle = elgg_echo('event_calendar:week_label_with_separator', [date('j',$start_ts), elgg_echo("event_calendar:month:".date('m', $start_ts)), date('j',$end_ts), elgg_echo("event_calendar:month:".date('m', $end_ts)), date('Y',$end_ts)]);
 		} else {
 			// KJ - fix for end date bug
 			//$end_ts = strtotime($end_date);
 			$end_ts = strtotime($end_date)+24*60*60-1;
-			$subtitle = elgg_echo("event_calendar:month_label_with_separator", array(elgg_echo("event_calendar:month:".date('m', $start_ts)), date('Y', $start_ts)));
+			$subtitle = elgg_echo("event_calendar:month_label_with_separator", [elgg_echo("event_calendar:month:".date('m', $start_ts)), date('Y', $start_ts)]);
 		}
 	}
 
@@ -1492,7 +1400,7 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 		$events = event_calendar_get_events_for_user_between($start_ts, $end_ts, false, $limit, $offset, $user_guid, $container_guid, $region);
 	}
 
-	$vars = array(
+	$vars = [
 		'original_start_date' => $original_start_date,
 		'start_date' => $start_date,
 		'end_date' => $end_date,
@@ -1507,7 +1415,7 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 		'filter' => $filter,
 		'region' => $region,
 		'listing_format' => $event_calendar_listing_format,
-	);
+	];
 
 	$content = elgg_view('event_calendar/show_events', $vars);
 
@@ -1524,12 +1432,12 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 			switch ($page_type) {
 				case 'group':
 				case 'owner':
-					$title = elgg_echo('event_calendar:upcoming_events_listing_title:user', array($container->name));
+					$title = elgg_echo('event_calendar:upcoming_events_listing_title:user', [$container->name]);
 					break;
 				default:
 					switch ($filter) {
 						case 'mine':
-							$title = elgg_echo('event_calendar:upcoming_events_listing_title:user', array($container->name));
+							$title = elgg_echo('event_calendar:upcoming_events_listing_title:user', [$container->name]);
 							break;
 						default:
 							$title = elgg_echo('event_calendar:upcoming_events_listing_title:'.$filter);
@@ -1540,12 +1448,12 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 			switch ($page_type) {
 				case 'group':
 				case 'owner':
-					$title = elgg_echo('event_calendar:listing_title:user', array($container->name));
+					$title = elgg_echo('event_calendar:listing_title:user', [$container->name]);
 					break;
 				default:
 					switch ($filter) {
 						case 'mine':
-							$title = elgg_echo('event_calendar:listing_title:user', array($container->name));
+							$title = elgg_echo('event_calendar:listing_title:user', [$container->name]);
 							break;
 						default:
 							$title = elgg_echo('event_calendar:listing_title:'.$filter);
@@ -1556,12 +1464,12 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 			switch ($page_type) {
 				case 'group':
 				case 'owner':
-					$title = elgg_echo('event_calendar:listing_title:user', array($container->name)). ' ('.$subtitle.')';
+					$title = elgg_echo('event_calendar:listing_title:user', [$container->name]). ' ('.$subtitle.')';
 					break;
 				default:
 					switch ($filter) {
 						case 'mine':
-							$title = elgg_echo('event_calendar:listing_title:user', array($container->name)). ' ('.$subtitle.')';
+							$title = elgg_echo('event_calendar:listing_title:user', [$container->name]). ' ('.$subtitle.')';
 							break;
 						default:
 							$title = elgg_echo('event_calendar:listing_title:'.$filter). ' ('.$subtitle.')';
@@ -1569,12 +1477,12 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 			}
 	}
 
-	$params = array(
+	$params = [
 		'title' => $title,
 		'content' => $content,
 		'filter_override' => $filter_override,
-		'sidebar' => elgg_view('event_calendar/sidebar', array('page' => $sidebar))
-	);
+		'sidebar' => elgg_view('event_calendar/sidebar', ['page' => $sidebar]),
+	];
 
 	elgg_set_ignore_access($access_status);
 	return $params;
@@ -1776,8 +1684,8 @@ function event_calendar_modify_full_calendar($event_guid, $day_delta, $minute_de
 // TODO: find another solution for displaying repeated events
 
 function event_calendar_flatten_event_structure($events) {
-	$flattened = array();
-	$guids = array();
+	$flattened = [];
+	$guids = [];
 	foreach($events as $e) {
 		$this_event = $e['event'];
 		$guid = $this_event->guid;
@@ -1847,12 +1755,12 @@ function event_calendar_repeat_reminder_log($e, $start) {
 }
 
 function event_calendar_repeat_reminder_logged($e, $start) {
-	$options = array(
+	$options = [
 		'guid' => $e->guid,
 		'annotation_name' => 'repeat_reminder_log_item',
 		'annotation_value' => $start,
-		'limit' => 1
-	);
+		'limit' => 1,
+	];
 
 	if (elgg_get_annotations($options)) {
 		return true;
@@ -1863,9 +1771,9 @@ function event_calendar_repeat_reminder_logged($e, $start) {
 
 function event_calendar_queue_reminder($e) {
 	elgg_load_library('elgg:message_queue');
-	$subject = elgg_echo('event_calendar:reminder:subject', array($e->title));
+	$subject = elgg_echo('event_calendar:reminder:subject', [$e->title]);
 	$time_string = event_calendar_get_formatted_time($e);
-	$body = elgg_echo('event_calendar:reminder:body', array($e->title, $time_string, $e->getURL()));
+	$body = elgg_echo('event_calendar:reminder:body', [$e->title, $time_string, $e->getURL()]);
 	$m = message_queue_create_message($subject, $body);
 	if ($m) {
 		$users = event_calendar_get_users_for_event($e->guid,0);
@@ -1883,7 +1791,7 @@ function event_calendar_bbb_api($api_function, $params=null) {
 	$bbb_server_url = rtrim(elgg_get_plugin_setting('bbb_server_url', 'event_calendar'), '/') . '/';
 	if ($bbb_security_salt) {
 		if (isset($params) && is_array($params) && count($params) > 0) {
-			$query = array();
+			$query = [];
 			foreach($params as $k => $v) {
 				$query[] = $k.'='.rawurlencode($v);
 			}
@@ -1925,7 +1833,7 @@ function event_calendar_create_bbb_conf($event) {
 	$duration = (int)(($event->real_end_time-$now)/60)+$day_in_minutes;
 	if ($duration > 0) {
 		$title = urlencode($event->title);
-		$output = event_calendar_bbb_api('create', array('meetingID' => $event->guid, 'name' => $title, 'duration' => $duration));
+		$output = event_calendar_bbb_api('create', ['meetingID' => $event->guid, 'name' => $title, 'duration' => $duration]);
 		if ($output) {
 			$xml = new SimpleXMLElement($output);
 			if ($xml->returncode == 'SUCCESS') {
@@ -1945,7 +1853,7 @@ function event_calendar_create_bbb_conf($event) {
 
 // checks to see if a BBB conference is actually running
 function event_calendar_is_conference_running($event) {
-	$output = event_calendar_bbb_api('isMeetingRunning', array('meetingID' => $event->guid));
+	$output = event_calendar_bbb_api('isMeetingRunning', ['meetingID' => $event->guid]);
 	if (!$output) {
 		return false;
 	} else {
@@ -1960,7 +1868,7 @@ function event_calendar_is_conference_running($event) {
 
 // checks to see if a BBB conference exists
 function event_calendar_conference_exists($event) {
-	$output = event_calendar_bbb_api('getMeetingInfo', array('meetingID' => $event->guid, 'password' => $event->bbb_moderator_password));
+	$output = event_calendar_bbb_api('getMeetingInfo', ['meetingID' => $event->guid, 'password' => $event->bbb_moderator_password]);
 	if (!$output) {
 		return false;
 	} else {

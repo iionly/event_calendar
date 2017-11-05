@@ -6,13 +6,13 @@ $page_type = elgg_extract('page_type', $vars);
 $guid = elgg_extract('guid', $vars, 0);
 $start_date = elgg_extract('start_date', $vars, '');
 
-$vars = array();
+$vars = [];
 $vars['id'] = 'event-calendar-edit';
 $vars['name'] = 'event_calendar_edit';
 // just in case a feature adds an image upload
 $vars['enctype'] = 'multipart/form-data';
 
-$body_vars = array();
+$body_vars = [];
 
 elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), 'event_calendar/list');
 
@@ -62,7 +62,11 @@ if ($page_type == 'edit') {
 	}
 }
 
-$params = array('title' => $title, 'content' => $content, 'filter' => '');
+$params = [
+	'title' => $title,
+	'content' => $content,
+	'filter' => '',
+];
 
 $body = elgg_view_layout("content", $params);
 

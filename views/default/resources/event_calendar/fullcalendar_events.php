@@ -19,7 +19,7 @@ if ($filter == 'all') {
 	$user_guid = elgg_get_logged_in_user_guid();
 	$events = event_calendar_get_events_for_user_between($start_ts, $end_ts, false, 0, 0, $user_guid, $container_guid, $region);
 }
-$event_array = array();
+$event_array = [];
 $times_supported = elgg_get_plugin_setting('times', 'event_calendar') != 'no';
 $type_display = elgg_get_plugin_setting('type_display', 'event_calendar');
 $polls_supported = elgg_is_active_plugin('event_poll');
@@ -29,12 +29,12 @@ foreach($events as $e) {
 	$event_data = $e['data'];
 	$c = count($event_data);
 	foreach($event_data as $ed) {
-		$event_item = array(
+		$event_item = [
 			'guid' => $event->guid,
 			'title' => $event->title,
 			'start' => date('c', $ed['start_time']),
 			'end' => date('c', $ed['end_time']),
-		);
+		];
 		if (!$times_supported || ($event->schedule_type == 'all_day')) {
 			$event_item['allDay'] = true;
 		} else {
@@ -64,7 +64,7 @@ foreach($events as $e) {
 		}
 
 		// Allow other plugins to modify the data
-		$params = array('entity' => $event);
+		$params = ['entity' => $event];
 		$event_item = elgg_trigger_plugin_hook('prepare', 'event_calendar:json', $params, $event_item);
 
 		$event_array[] = $event_item;

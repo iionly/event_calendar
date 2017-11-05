@@ -26,7 +26,7 @@ if ($vars['events']) {
 		$event_list = elgg_view('event_calendar/full_calendar_view', $vars);
 	} else {
 		$vars['events'] = event_calendar_flatten_event_structure($vars['events']);
-		$options = array(
+		$options = [
 			'list_class' => 'elgg-list-entity',
 			'full_view' => false,
 			'pagination' => true,
@@ -34,7 +34,7 @@ if ($vars['events']) {
 			'list_type_toggle' => false,
 			'offset' => $vars['offset'],
 			'limit' => $vars['limit'],
-		);
+		];
 		$event_list = elgg_view_entity_list($vars['events'], $options);
 	}
 } else {
@@ -42,7 +42,7 @@ if ($vars['events']) {
 		// show the empty calendar
 		$event_list = elgg_view('event_calendar/full_calendar_view', $vars);
 	} else {
-		$event_list = '<p>'.elgg_echo('event_calendar:no_events_found').'</p>';
+		$event_list = '<p>' . elgg_echo('event_calendar:no_events_found') . '</p>';
 	}
 }
 if ($listing_format == 'paged' || $listing_format == 'full') {

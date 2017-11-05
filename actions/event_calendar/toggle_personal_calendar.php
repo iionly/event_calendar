@@ -18,7 +18,7 @@ if ($other) {
 
 if (event_calendar_has_personal_event($event_guid, $user_guid)) {
 	event_calendar_remove_personal_event($event_guid, $user_guid);
-	$response = array('success' => true, 'message' => $remove_response);
+	$response = ['success' => true, 'message' => $remove_response];
 } else {
 	if (event_calendar_add_personal_event($event_guid, $user_guid)) {
 		$event_calendar_add_users_notify = elgg_get_plugin_setting('add_users_notify', 'event_calendar');
@@ -26,19 +26,19 @@ if (event_calendar_has_personal_event($event_guid, $user_guid)) {
 			if ($user_guid != elgg_get_logged_in_user_guid()) {
 				$user = get_user($user_guid);
 				$user_language = ($user->language) ? $user->language : (($site_language = elgg_get_config('language')) ? $site_language : 'en');
-				$subject = elgg_echo('event_calendar:add_users_notify:subject', array(), $user_language);
+				$subject = elgg_echo('event_calendar:add_users_notify:subject', [], $user_language);
 				$event = get_entity($event_guid);
-				$message = elgg_echo('event_calendar:add_users_notify:body', array($user->name, $event->title, $event->getURL()), $user_language);
-				notify_user($user_guid, elgg_get_logged_in_user_guid(), $subject, $message, array(
+				$message = elgg_echo('event_calendar:add_users_notify:body', [$user->name, $event->title, $event->getURL()], $user_language);
+				notify_user($user_guid, elgg_get_logged_in_user_guid(), $subject, $message, [
 					'object' => $event,
 					'action' => 'subscribe',
-					'summary' => $subject
-				));
+					'summary' => $subject,
+				]);
 			}
 		}
-		$response = array('success' => true, 'message' => $add_response);
+		$response = ['success' => true, 'message' => $add_response];
 	} else {
-		$response = array('success' => false, 'message' => $add_error);
+		$response = ['success' => false, 'message' => $add_error];
 	}
 }
 

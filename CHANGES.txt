@@ -1,6 +1,22 @@
 Changelog
 =========
 
+2.3.2 (iionly)
+--------------
+
+- Updated to iCalcreator v2.22.5 (classes construction now fully compatible with PHP 7 - and still works on PHP 5.6),
+- Minor cleanup of API library code,
+- Code cleanup,
+- Forms polished,
+- Fix in import action to correctly fetch event description,
+- Fix in export action to correctly export event tags,
+- Fix for event creation to work with event times selection disabled,
+- Fix of checks of required input fields containing data (only check enabled fields depending on plugin settings),
+- Consistence in all widget's event listing (next events in chronologial order with oldest event displayed from yesterday at the earliest),
+- On "Set day/time" option check end date on change of start date automatically during input and change end date to start date if it's before,
+- With Event Poll plugin enabled allow for selection of Read access level of an event also with the schedule option on event creation selected,
+- Removal of calendar selection option on addition or editing an event: from now on if in group context the corresponding group calendar is used as container of the event and outside of a group context it's the side-wide calendar. This removal of the calendar container selection is consistent with other type of content (e.g. you can't change it for blogs, files etc. either by default) and it's also much simpler to understand/ to handle for user regarding who will have access / can see an event. For event editing the removal of the calendar selection option has even less impact because changing of the container never worked anyway. 
+
 2.3.1 (iionly)
 --------------
 

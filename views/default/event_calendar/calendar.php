@@ -26,20 +26,20 @@ if ($first_date || $last_date) {
 	if (substr($first_date,0,7) == substr($last_date, 0, 7)) {
 		$range_bit .= "changeMonth: false,\n";
 	}
-	
+
 	if (substr($first_date,0,4) == substr($last_date, 0, 4)) {
 		$range_bit .= "changeYear: false,\n";
 	}
 }
 
-$body .= elgg_view("input/datepicker_inline", array(
+$body .= elgg_view("input/datepicker_inline", [
 	'name' => 'my_datepicker',
 	'mode' => $vars['mode']?$vars['mode']:'month',
 	'start_date' => $vars['start_date'],
 	'end_date' => $vars['end_date'],
 	'group_guid' => $vars['group_guid'],
 	'range_bit' => $range_bit,
-));
+]);
 
 $body .= '<div id="calendarmenucontainer">';
 $body .= '<ul id="calendarmenu">';
