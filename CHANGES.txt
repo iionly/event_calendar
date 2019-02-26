@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.3.3 (iionly)
+--------------
+
+- Fix: correct usage of 'ASC' constant with apostrophes in function calls instead of without as this would fail otherwise on future versions of PHP (deprecation warning).
+
 2.3.2 (iionly)
 --------------
 

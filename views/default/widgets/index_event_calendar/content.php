@@ -20,7 +20,7 @@ $options = [
 	'metadata_name_value_pairs_operator' => 'OR',
 	'order_by_metadata' => [
 		'name' => 'start_date',
-		'direction' => ASC,
+		'direction' => 'ASC',
 		'as' => 'integer',
 	],
 	'limit' => $num,
