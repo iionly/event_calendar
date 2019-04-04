@@ -83,6 +83,23 @@ define(function(require) {
 		}
 	}
 
+    handleEventResizeStop = function(event, dayDelta, minutes, revertFunc) {
+		// does not handle resizing events by days yet
+        if (dayDelta != 0) {
+            revertFunc();
+        }
+        else if (!event.is_event_poll && !confirm(elgg.echo('event_calendar:are_you_sure'))) {
+            revertFunc();
+        } else {
+            data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minutes: minutes};
+            elgg.action('event_calendar/modify_full_calendar', {
+                data: data,
+                success: function (res) {
+                }
+            });
+        }
+    }
+
 	getISODate = function(d) {
 		var year = d.getFullYear();
 		var month = d.getMonth()+1;

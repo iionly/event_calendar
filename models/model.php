@@ -1667,11 +1667,13 @@ function event_calendar_modify_full_calendar($event_guid, $day_delta, $minute_de
 			//$inc = 24*60*60*$day_delta+60*$minute_delta;
 
 			//$event->real_end_time += $inc;
-			$event->real_end_time = strtotime("$day_delta days", $event->real_end_time)+60*$minute_delta;
+			// update real_end_time when dragging/resizing event time
+			$event->real_end_time = strtotime("$day_delta days", $event->real_end_time)+60*$minute_delta+60*$minutes;
 			if ($times != 'no') {
 				$event->start_time += $minute_delta;
 				if ($event->end_time) {
-					$event->end_time += $minute_delta;
+					//update new end_time when dragging or resizing
+					$event->end_time += $minute_delta + $minutes;
 				}
 			}
 			return true;
