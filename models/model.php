@@ -1257,7 +1257,7 @@ function event_calendar_prepare_edit_form_vars($event = null, $page_type = '', $
 }
 
 function event_calendar_generate_listing_params($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-') {
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
+        $event_calendar_listing_format = get_input('format', elgg_get_plugin_setting('listing_format', 'event_calendar'));	
 	$event_calendar_spots_display = trim(elgg_get_plugin_setting('spots_display', 'event_calendar'));
 	$event_calendar_first_date = trim(elgg_get_plugin_setting('first_date', 'event_calendar'));
 	$event_calendar_last_date = trim(elgg_get_plugin_setting('last_date', 'event_calendar'));
@@ -1489,7 +1489,7 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 }
 
 function event_calendar_get_ical_events($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-') {
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
+        $event_calendar_listing_format = get_input('format', elgg_get_plugin_setting('listing_format', 'event_calendar'));	
 	$event_calendar_first_date = trim(elgg_get_plugin_setting('first_date', 'event_calendar'));
 	$event_calendar_last_date = trim(elgg_get_plugin_setting('last_date', 'event_calendar'));
 
