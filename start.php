@@ -15,9 +15,6 @@ elgg_register_plugin_hook_handler("setting", "plugin", "event_calendar_invalidat
 
 function event_calendar_init() {
 
-	elgg_register_library('elgg:event_calendar', elgg_get_plugins_path() . 'event_calendar/models/model.php');
-	elgg_register_library('event_calendar:ical', elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
-
 	elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
 	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
 	elgg_register_plugin_hook_handler('prepare', 'notification:create:object:event_calendar', 'event_calendar_prepare_notification');
@@ -135,7 +132,7 @@ function event_calendar_init() {
  * Add a menu item to an ownerblock
  */
 function event_calendar_owner_block_menu($hook, $type, $return, $params) {
-	elgg_load_library('elgg:event_calendar');
+	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	if (elgg_instanceof($params['entity'], 'group')) {
 		if (event_calendar_activated_for_group($params['entity'])) {
 			$url = "event_calendar/group/{$params['entity']->guid}";
@@ -195,7 +192,7 @@ function event_calendar_page_handler($page) {
 	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
 		set_input('ical_calendar_title_menu', true);
 	}
-	elgg_load_library('elgg:event_calendar');
+	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	$page_type = $page[0];
 	$resource_vars = [];
 	switch ($page_type) {
@@ -561,7 +558,7 @@ function event_calendar_widget_urls($hook_name, $entity_type, $return_value, $pa
 }
 
 function event_calendar_handle_join($event, $object_type, $object) {
-	elgg_load_library('elgg:event_calendar');
+	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	$group = $object['group'];
 	$user = $object['user'];
 	$user_guid = $user->getGUID();
@@ -581,7 +578,7 @@ function event_calendar_handle_join($event, $object_type, $object) {
 }
 
 function event_calendar_handle_leave($event, $object_type, $object) {
-	elgg_load_library('elgg:event_calendar');
+	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	$group = $object['group'];
 	$user = $object['user'];
 	$user_guid = $user->getGUID();
@@ -601,7 +598,7 @@ function event_calendar_handle_leave($event, $object_type, $object) {
 }
 
 function event_calendar_handle_reminders_cron() {
-	elgg_load_library('elgg:event_calendar');
+	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	event_calendar_queue_reminders();
 }
 
@@ -638,7 +635,7 @@ function event_calendar_prepare_notification($hook, $type, $notification, $param
 }
 
 function event_calendar_check_pending_upgrades() {
-	elgg_load_library('elgg:event_calendar');
+	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	elgg_delete_admin_notice('event_calendar_admin_notice_pending_upgrades');
 	if (event_calendar_is_upgrade_available()) {
 		$message = elgg_echo('event_calendar:admin_notice_pending_upgrades', [elgg_normalize_url('admin/plugin_settings/event_calendar')]);

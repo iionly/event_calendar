@@ -1,6 +1,6 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 if (event_calendar_is_upgrade_available()) {
 	echo '<div class="elgg-admin-notices mbl">';

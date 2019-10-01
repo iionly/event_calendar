@@ -11,7 +11,7 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $page_owner_entity = elgg_get_page_owner_entity();
 
