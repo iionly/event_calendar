@@ -111,6 +111,11 @@ div.event_calendar_paged {
 	text-transform:uppercase;
 }
 
+.event_calendar_agenda table {
+	width: 100%;
+	min-width: 20em;
+}
+
 td.event_calendar_paged_date {
 	width: 5em;
 }
@@ -127,6 +132,7 @@ td.event_calendar_paged_calendar {
 
 table.event_calendar_paged_table {
 	min-width:40em;
+	width:100%;
 	border-collapse:collapse;
 	border-bottom-width:1px;
 	border-bottom-style:solid;
