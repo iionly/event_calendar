@@ -62,6 +62,14 @@ td.ui-datepicker-unselectable {
 	min-height: 300px;
 }
 
+div#calendar {
+	overflow: auto;
+}
+
+div.event_calendar_paged {
+	overflow: auto;
+}
+
 div.event_calendar_agenda_date_section {
 	margin-bottom: 10px;
 }
@@ -77,7 +85,7 @@ th.agenda_header {
 }
 
 td.event_calendar_agenda_time {
-	width: 120px;
+	width: 7em;
 }
 
 .event_calendar_agenda_title a {
@@ -85,11 +93,15 @@ td.event_calendar_agenda_time {
 }
 
 td.event_calendar_agenda_title {
-	width: 180px;
+	min-width: 10em;
 }
 
 .event_calendar_agenda_venue {
 	margin-bottom: 5px;
+}
+
+div.event_calendar_paged {
+	overflow: auto;
 }
 
 .event_calendar_paged_month {
@@ -100,13 +112,13 @@ td.event_calendar_agenda_title {
 }
 
 td.event_calendar_paged_date {
-	width: 80px;
+	width: 5em;
 }
 td.event_calendar_paged_time {
-	width: 60px;
+	width: 3em;
 }
 td.event_calendar_paged_title {
-	width: 280px;
+	min-width: 10em;
 }
 
 td.event_calendar_paged_calendar {
@@ -114,7 +126,7 @@ td.event_calendar_paged_calendar {
 }
 
 table.event_calendar_paged_table {
-	width:100%;
+	min-width:40em;
 	border-collapse:collapse;
 	border-bottom-width:1px;
 	border-bottom-style:solid;
