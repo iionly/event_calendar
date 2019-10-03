@@ -19,8 +19,8 @@ function event_calendar_init() {
 	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
 	elgg_register_plugin_hook_handler('prepare', 'notification:create:object:event_calendar', 'event_calendar_prepare_notification');
 
-	// Register a page handler, so we can have nice URLs
-	elgg_register_page_handler('event_calendar', 'event_calendar_page_handler');
+	// Register Elgg Routes
+	event_calendar_routes();
 
 	// Register granular notification
 	elgg_register_notification_event('object', 'event_calendar', ['create']);
@@ -59,11 +59,7 @@ function event_calendar_init() {
 
 	// add to the css
 	elgg_extend_view('css/elgg', 'event_calendar/css');
-
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
-	if (elgg_is_active_plugin('event_poll') || ($event_calendar_listing_format == 'full')) {
-		elgg_extend_view('css/elgg', 'fullcalendar/css');
-	}
+	elgg_extend_view('css/elgg', 'fullcalendar/css');
 
 	// add a widget
 	elgg_register_widget_type('event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'));
@@ -126,6 +122,9 @@ function event_calendar_init() {
 	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
 		elgg_register_plugin_hook_handler('register', 'menu:title', 'ec_ical_titlemenu');
 	}
+
+	// Add display modes to page menu
+    event_calendar_page_menu();
 }
 
 /**
@@ -168,214 +167,6 @@ function event_calendar_url($hook, $type, $url, $params) {
 	return "event_calendar/view/{$entity->guid}/$friendly_title";
 }
 
-/**
- * Dispatches event calendar pages.
- *
- * URLs take the form of
- *  Site event calendar:			event_calendar/list/<start_date>/<display_mode>/<filter_context>/<region>
- *  Single event:       			event_calendar/view/<event_guid>/<title>
- *  New event:        				event_calendar/add
- *  Edit event:       				event_calendar/edit/<event_guid>
- *  Group event calendar:  			event_calendar/group/<group_guid>/<start_date>/<display_mode>/<filter_context>/<region>
- *  Add group event:   				event_calendar/add/<group_guid>
- *  Review requests:				event_calendar/review_requests/<event_guid>
- *  Display event subscribers:		event_calendar/display_users/<event_guid>
- *  Events for a user's calendar:	event_calendar/owner/<username>/<start_date>/<display_mode>/<filter_context>/<region>
- *
- * Title is ignored
- *
- * @param array $page
- * @return null
- */
-function event_calendar_page_handler($page) {
-
-	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
-		set_input('ical_calendar_title_menu', true);
-	}
-	require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
-	$page_type = $page[0];
-	$resource_vars = [];
-	switch ($page_type) {
-		case 'list':
-			if (isset($page[1])) {
-				$resource_vars['start_date'] = $page[1];
-				set_input('ical_date', $page[1]);
-				if (isset($page[2])) {
-					$resource_vars['display_mode'] = $page[2];
-					set_input('ical_interval', $page[2]);
-					if (isset($page[3])) {
-						$resource_vars['filter_mode'] = $page[3];
-						switch($page[3]) {
-							case 'mine':
-								set_input('ical_calendar_filter', 'mine');
-								break;
-							case 'friends':
-								set_input('ical_calendar_filter', 'friends');
-								break;
-							default:
-								set_input('ical_calendar_filter', 'all');
-								break;
-						}
-						if (isset($page[4])) {
-							$resource_vars['region'] = $page[4];
-							set_input('ical_region', $page[4]);
-						} else {
-							$resource_vars['region'] = '-';
-							set_input('ical_region', '');
-						}
-					} else {
-						$resource_vars['filter_mode'] = '';
-						set_input('ical_calendar_filter', 'all');
-					}
-				} else {
-					$resource_vars['display_mode'] = '';
-					set_input('ical_interval', '');
-				}
-			} else {
-				$resource_vars['start_date'] = 0;
-				set_input('ical_date', 0);
-			}
-			echo elgg_view_resource('event_calendar/list', $resource_vars);
-			break;
-		case 'view':
-			elgg_entity_gatekeeper($page[1], 'object', 'event_calendar');
-			elgg_group_gatekeeper();
-			$resource_vars['event_guid'] = $page[1];
-			echo elgg_view_resource('event_calendar/view', $resource_vars);
-			break;
-		case 'display_users':
-			elgg_entity_gatekeeper($page[1], 'object', 'event_calendar');
-			elgg_group_gatekeeper();
-			$resource_vars['event_guid'] = $page[1];
-			echo elgg_view_resource('event_calendar/display_users', $resource_vars);
-			break;
-		case 'manage_users':
-			elgg_entity_gatekeeper($page[1], 'object', 'event_calendar');
-			elgg_group_gatekeeper();
-			$resource_vars['event_guid'] = $page[1];
-			echo elgg_view_resource('event_calendar/manage_users', $resource_vars);
-			break;
-		case 'schedule':
-		case 'add':
-			$resource_vars['page_type'] = $page_type;
-			if (isset($page[1])) {
-				elgg_group_gatekeeper();
-				$resource_vars['guid'] =  $page[1];
-				$resource_vars['start_date'] = elgg_extract(2, $page, '');
-			} else {
-				elgg_gatekeeper();
-				$resource_vars['guid'] = 0;
-			}
-			echo elgg_view_resource('event_calendar/edit', $resource_vars);
-			break;
-		case 'edit':
-			elgg_gatekeeper();
-			$resource_vars['page_type'] = $page_type;
-			$resource_vars['guid'] = $page[1];
-			echo elgg_view_resource('event_calendar/edit', $resource_vars);
-			break;
-		case 'group':
-			elgg_group_gatekeeper();
-			if (isset($page[1])) {
-				$resource_vars['container_guid'] = $page[1];
-				set_input('ical_group_guid', $page[1]);
-				if (isset($page[2])) {
-					$resource_vars['start_date'] = $page[2];
-					set_input('ical_date', $page[2]);
-					if (isset($page[3])) {
-						$resource_vars['display_mode'] = $page[3];
-						set_input('ical_interval', $page[3]);
-						if (isset($page[4])) {
-							$resource_vars['filter_mode'] = $page[4];
-							switch($page[4]) {
-								case 'mine':
-									set_input('ical_calendar_filter', 'mine');
-									break;
-								case 'friends':
-									set_input('ical_calendar_filter', 'friends');
-									break;
-								default:
-									set_input('ical_calendar_filter', 'all');
-									break;
-							}
-							if (isset($page[5])) {
-								$resource_vars['region'] = $page[5];
-								set_input('ical_region', $page[5]);
-							} else {
-								$resource_vars['region'] = '-';
-								set_input('ical_region', '');
-							}
-						} else {
-							$resource_vars['filter_mode'] = '';
-							set_input('ical_calendar_filter', 'all');
-						}
-					} else {
-						$resource_vars['display_mode'] = '';
-						set_input('ical_interval', '');
-					}
-				} else {
-					$resource_vars['start_date'] = '';
-					set_input('ical_date', 0);
-				}
-			} else {
-				$resource_vars['container_guid'] = elgg_get_page_owner_guid();
-				set_input('ical_group_guid', $page[1], $resource_vars['container_guid']);
-			}
-			echo elgg_view_resource('event_calendar/group', $resource_vars);
-			break;
-		case 'owner':
-			if (isset($page[1])) {
-				$username = $page[1];
-				$user = get_user_by_username($username);
-				$resource_vars['container_guid'] = $user->guid;
-				if (isset($page[2])) {
-					$resource_vars['start_date'] = $page[2];
-					if (isset($page[3])) {
-					$resource_vars['display_mode'] = $page[3];
-					if (isset($page[4])) {
-						$resource_vars['filter_mode'] = $page[4];
-						if (isset($page[5])) {
-							$resource_vars['region'] = $page[5];
-						} else {
-							$resource_vars['region'] = '-';
-						}
-					} else {
-						$resource_vars['filter_mode'] = '';
-					}
-					} else {
-						$resource_vars['display_mode'] = '';
-					}
-				} else {
-					$resource_vars['start_date'] = '';
-				}
-			} else {
-				elgg_gatekeeper();
-				$resource_vars['container_guid'] = elgg_get_logged_in_user_guid();
-			}
-			echo elgg_view_resource('event_calendar/owner', $resource_vars);
-			break;
-		case 'review_requests':
-			elgg_gatekeeper();
-			$resource_vars['event_guid'] = $page[1];
-			echo elgg_view_resource('event_calendar/review_requests', $resource_vars);
-			break;
-		case 'get_fullcalendar_events':
-			$resource_vars['start_date'] = $page[1];
-			$resource_vars['end_date'] = $page[2];
-			$resource_vars['filter'] = $page[3];
-			$resource_vars['container_guid'] = (int)$page[4];
-			$resource_vars['region'] = $page[5];
-			echo elgg_view_resource('event_calendar/fullcalendar_events', $resource_vars);
-			break;
-		case 'ical':
-			$resource_vars['action_type'] = $page[1];
-			echo elgg_view_resource('event_calendar/export', $resource_vars);
-			break;
-		default:
-			return false;
-	}
-	return true;
-}
 
 // If iCal import/export is enabled add corresponding action buttons in title area
 function ec_ical_titlemenu($hook, $type, $return, $params) {
@@ -524,8 +315,8 @@ function event_calendar_entity_menu_prepare($hook, $type, $return, $params) {
 					$new_return[] = $item;
 				}
 			}
+			$return['default'] = $new_return;
 		}
-		$return['default'] = $new_return;
 	}
 
 	return $return;
@@ -669,4 +460,227 @@ function event_calendar_tool_widgets_handler($hook, $type, $return_value, $param
 	}
 
 	return $return_value;
+}
+
+/*
+ * Register elgg routes
+ *  URLs take the form of
+ *  Site event calendar:			event_calendar/list/<start_date>/<display_mode>/<filter_context>/<region>
+ *  Single event:       			event_calendar/view/<event_guid>/<title>
+ *  New event:        				event_calendar/add
+ *  Edit event:       				event_calendar/edit/<event_guid>
+ *  Group event calendar:  			event_calendar/group/<group_guid>/<start_date>/<display_mode>/<filter_context>/<region>
+ *  Add group event:   				event_calendar/add/<group_guid>
+ *  Review requests:				event_calendar/review_requests/<event_guid>
+ *  Display event subscribers:		event_calendar/display_users/<event_guid>
+ *  Events for a user's calendar:	event_calendar/owner/<username>/<start_date>/<display_mode>/<filter_context>/<region>
+ *
+ * Title is ignored
+ */
+function event_calendar_routes() {
+	elgg_register_route(
+		'list:event_calendar',
+		[
+			path => '/event_calendar/list/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
+			resource => 'event_calendar/list',
+			defaults => [
+				region => '-',
+				filter_mode => 'all',
+				display_mode => '',
+				start_date => '',
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'view:event_calendar',
+		[
+			path => '/event_calendar/view/{guid}/{title?}',
+			defaults => [
+				title => ''
+			],
+			resource => 'event_calendar/view',
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'display_users:event_calendar',
+		[
+			path => '/event_calendar/display_users/{guid}',
+			resource => 'event_calendar/display_users',
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'manage_users:event_calendar',
+		[
+			path => '/event_calendar/manage_users/{guid}',
+			resource => 'event_calendar/manage_users',
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'add:event_calendar',
+		[
+			path => '/event_calendar/add/{guid?}/{start_date?}',
+			resource => 'event_calendar/edit',
+			defaults => [
+				'page_type' => 'add'
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'edit:event_calendar',
+		[
+			path => '/event_calendar/edit/{guid?}/{start_date?}',
+			resource => 'event_calendar/edit',
+			defaults => [
+				'page_type' => 'edit'
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'group:event_calendar',
+		[
+			path => '/event_calendar/group/{container_guid?}/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
+			resource => 'event_calendar/group',
+			defaults => [
+				region => '-',
+				filter_mode => 'all',
+				display_mode => '',
+				start_date => '',
+				container_guid => elgg_get_page_owner_guid()
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'review_requests:event_calendar',
+		[
+			path => '/event_calendar/review_requests/{guid}',
+			resource => 'event_calendar/review_requests',
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'get_fullcalendar_events:event_calendar',
+		[
+			path => '/event_calendar/get_fullcalendar_events/{start_date}/{end_date}/{filter}/{container_guid}/{region}',
+			resource => 'event_calendar/fullcalendar_events',
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'ical:event_calendar',
+		[
+			path => '/event_calendar/ical/{action_type}',
+			resource => 'event_calendar/export',
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+
+	// Default filter routes
+
+	elgg_register_route(
+		'all:event_calendar',
+		[
+			path => '/event_calendar/all',
+			resource => 'event_calendar/list',
+			defaults => [
+				region => '-',
+				filter_mode => 'all',
+				display_mode => '',
+				start_date => '',
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'owner:event_calendar',
+		[
+			path => '/event_calendar/owner/{username?}/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
+			resource => 'event_calendar/owner',
+			defaults => [
+				region => '-',
+				filter_mode => 'owner',
+				display_mode => '',
+				start_date => '',
+				container_guid => elgg_get_logged_in_user_guid()
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+	elgg_register_route(
+		'friends:event_calendar',
+		[
+			path => '/event_calendar/friends/{username?}',
+			resource => 'event_calendar/list',
+			defaults => [
+				region => '-',
+				filter_mode => 'friends',
+				display_mode => '',
+				start_date => '',
+				container_guid => elgg_get_logged_in_user_guid()
+			],
+			middleware => [
+				\Elgg\Router\Middleware\Gatekeeper::class
+			]
+		]
+	);
+}
+
+/**
+ * Add additional views to event calendar title menu
+ */
+function event_calendar_page_menu() {
+    elgg_register_menu_item(
+        'page',
+        [
+            name => 'paged',
+            text => elgg_echo('event_calendar:settings:paged'),
+            href => elgg_get_site_url() . 'event_calendar/list/?format=paged'
+        ]
+    );
+    elgg_register_menu_item(
+        'page',
+        [
+            name => 'agenda',
+            text => elgg_echo('event_calendar:settings:agenda'),
+            href => elgg_get_site_url() . 'event_calendar/list/?format=agenda'
+        ]
+    );
+    elgg_register_menu_item(
+        'page',
+        [
+            name => 'full',
+            text => elgg_echo('event_calendar:settings:full'),
+            href => elgg_get_site_url() . 'event_calendar/list/?format=full'
+        ]
+    );
 }

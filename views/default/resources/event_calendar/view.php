@@ -1,6 +1,8 @@
 <?php
 
-$event_guid = elgg_extract('event_guid', $vars, '');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
+$event_guid = elgg_extract('guid', $vars, '');
 
 // add personal calendar button and links
 elgg_push_context('event_calendar:view');

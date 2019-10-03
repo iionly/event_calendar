@@ -1,6 +1,8 @@
 <?php
 
-$event_guid = elgg_extract('event_guid', $vars);
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
+$event_guid = elgg_extract('guid', $vars);
 $event = get_entity($event_guid);
 
 elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), 'event_calendar/list');

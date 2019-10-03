@@ -1257,7 +1257,7 @@ function event_calendar_prepare_edit_form_vars($event = null, $page_type = '', $
 }
 
 function event_calendar_generate_listing_params($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-') {
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
+	$event_calendar_listing_format = get_input('format', elgg_get_plugin_setting('listing_format', 'event_calendar'));
 	$event_calendar_spots_display = trim(elgg_get_plugin_setting('spots_display', 'event_calendar'));
 	$event_calendar_first_date = trim(elgg_get_plugin_setting('first_date', 'event_calendar'));
 	$event_calendar_last_date = trim(elgg_get_plugin_setting('last_date', 'event_calendar'));
@@ -1480,16 +1480,24 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 	$params = [
 		'title' => $title,
 		'content' => $content,
-		'filter_override' => $filter_override,
-		'sidebar' => elgg_view('event_calendar/sidebar', ['page' => $sidebar]),
+		'sidebar' => elgg_view('event_calendar/sidebar', array_merge($vars, ['page' => $sidebar])),
+		'filter_id' => 'event_calendar',
+		'filter_context' => $filter,
+		'page_menu_params' => [
+			'selected_item_name' => $event_calendar_listing_format
+		]
 	];
+
+	if ($filter_override != '') {
+		$params['filter_override'] = $filter_override;
+	}
 
 	elgg_set_ignore_access($access_status);
 	return $params;
 }
 
 function event_calendar_get_ical_events($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-') {
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
+	$event_calendar_listing_format = get_input('format', elgg_get_plugin_setting('listing_format', 'event_calendar'));
 	$event_calendar_first_date = trim(elgg_get_plugin_setting('first_date', 'event_calendar'));
 	$event_calendar_last_date = trim(elgg_get_plugin_setting('last_date', 'event_calendar'));
 

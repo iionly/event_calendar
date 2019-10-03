@@ -1,5 +1,7 @@
 <?php
 
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
 $start_date = elgg_extract('start_date', $vars);
 $end_date = elgg_extract('end_date', $vars);
 $filter = elgg_extract('filter', $vars, 'all');
