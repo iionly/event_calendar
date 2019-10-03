@@ -122,9 +122,6 @@ function event_calendar_init() {
 	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
 		elgg_register_plugin_hook_handler('register', 'menu:title', 'ec_ical_titlemenu');
 	}
-
-	// Add display modes to page menu
-    event_calendar_page_menu();
 }
 
 /**
@@ -653,34 +650,4 @@ function event_calendar_routes() {
 			]
 		]
 	);
-}
-
-/**
- * Add additional views to event calendar title menu
- */
-function event_calendar_page_menu() {
-    elgg_register_menu_item(
-        'page',
-        [
-            name => 'paged',
-            text => elgg_echo('event_calendar:settings:paged'),
-            href => elgg_get_site_url() . 'event_calendar/list/?format=paged'
-        ]
-    );
-    elgg_register_menu_item(
-        'page',
-        [
-            name => 'agenda',
-            text => elgg_echo('event_calendar:settings:agenda'),
-            href => elgg_get_site_url() . 'event_calendar/list/?format=agenda'
-        ]
-    );
-    elgg_register_menu_item(
-        'page',
-        [
-            name => 'full',
-            text => elgg_echo('event_calendar:settings:full'),
-            href => elgg_get_site_url() . 'event_calendar/list/?format=full'
-        ]
-    );
 }

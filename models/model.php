@@ -1493,6 +1493,9 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 	}
 
 	elgg_set_ignore_access($access_status);
+
+	event_calendar_page_menu();
+
 	return $params;
 }
 
@@ -2206,4 +2209,34 @@ function event_calendar_get_first_day_of_week($language) {
 	}
 	
 	return 1;
+}
+
+/**
+ * Add additional views to event calendar title menu
+ */
+function event_calendar_page_menu() {
+    elgg_register_menu_item(
+        'page',
+        [
+            name => 'paged',
+            text => elgg_echo('event_calendar:settings:paged'),
+            href => elgg_get_site_url() . 'event_calendar/list/?format=paged'
+        ]
+    );
+    elgg_register_menu_item(
+        'page',
+        [
+            name => 'agenda',
+            text => elgg_echo('event_calendar:settings:agenda'),
+            href => elgg_get_site_url() . 'event_calendar/list/?format=agenda'
+        ]
+    );
+    elgg_register_menu_item(
+        'page',
+        [
+            name => 'full',
+            text => elgg_echo('event_calendar:settings:full'),
+            href => elgg_get_site_url() . 'event_calendar/list/?format=full'
+        ]
+    );
 }
