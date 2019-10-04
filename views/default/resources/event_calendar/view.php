@@ -46,10 +46,6 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 
 	elgg_push_breadcrumb($event->title);
 	$content = elgg_view_entity($event, ['full_view' => true]);
-	//check to see if comment are on - TODO - add this feature to all events
-	if ($event->comments_on != 'Off') {
-		$content .= elgg_view_comments($event);
-	}
 }
 
 $params = [
