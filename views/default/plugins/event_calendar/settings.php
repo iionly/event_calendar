@@ -385,4 +385,13 @@ $body .= elgg_view_field([
 	'value' => $event_calendar_bbb_security_salt,
 ]);
 
+$event_calendar_allow_view_change = elgg_get_plugin_setting('allow_view_change', 'event_calendar', 'no');
+$body .= elgg_view_field([
+	'#type' => 'radio',
+	'#label' => elgg_echo('event_calendar:settings:allow_view_change:title'),
+	'name' => 'params[allow_view_change]',
+	'value' => $event_calendar_allow_view_change,
+	'options' => $yn_options,
+]);
+
 echo $body;

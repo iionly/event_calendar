@@ -2214,29 +2214,32 @@ function event_calendar_get_first_day_of_week($language) {
 /**
  * Add additional views to event calendar title menu
  */
-function event_calendar_page_menu() {
-    elgg_register_menu_item(
-        'page',
-        [
-            name => 'paged',
-            text => elgg_echo('event_calendar:settings:paged'),
-            href => elgg_get_site_url() . 'event_calendar/list/?format=paged'
-        ]
-    );
-    elgg_register_menu_item(
-        'page',
-        [
-            name => 'agenda',
-            text => elgg_echo('event_calendar:settings:agenda'),
-            href => elgg_get_site_url() . 'event_calendar/list/?format=agenda'
-        ]
-    );
-    elgg_register_menu_item(
-        'page',
-        [
-            name => 'full',
-            text => elgg_echo('event_calendar:settings:full'),
-            href => elgg_get_site_url() . 'event_calendar/list/?format=full'
-        ]
-    );
+function event_calendar_page_menu()
+{
+	if (elgg_get_plugin_setting('allow_view_change', 'event_calendar', 'no') == 'yes') {
+		elgg_register_menu_item(
+			'page',
+			[
+				name => 'paged',
+				text => elgg_echo('event_calendar:settings:paged'),
+				href => elgg_get_site_url() . 'event_calendar/list/?format=paged'
+			]
+		);
+		elgg_register_menu_item(
+			'page',
+			[
+				name => 'agenda',
+				text => elgg_echo('event_calendar:settings:agenda'),
+				href => elgg_get_site_url() . 'event_calendar/list/?format=agenda'
+			]
+		);
+		elgg_register_menu_item(
+			'page',
+			[
+				name => 'full',
+				text => elgg_echo('event_calendar:settings:full'),
+				href => elgg_get_site_url() . 'event_calendar/list/?format=full'
+			]
+		);
+	}
 }
