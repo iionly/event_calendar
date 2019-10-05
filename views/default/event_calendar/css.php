@@ -117,7 +117,7 @@ div.event_calendar_paged {
 }
 
 td.event_calendar_paged_date {
-	width: 5em;
+	width: 6em;
 }
 td.event_calendar_paged_time {
 	width: 3em;
