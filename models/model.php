@@ -311,7 +311,7 @@ function event_calendar_get_repeating_events_between($start_date, $end_date, $co
 			];
 		}
 
-		$events = elgg_get_entities_from_metadata($options);
+		$events = elgg_get_entities($options);
 	}
 	return event_calendar_get_repeating_event_structure($events, $start_date, $end_date);
 }
@@ -441,7 +441,7 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 			];
 		}
 
-		$events = elgg_get_entities_from_metadata($options);
+		$events = elgg_get_entities($options);
 	}
 	return event_calendar_get_repeating_event_structure($events, $start_date, $end_date);
 }
@@ -469,15 +469,15 @@ function event_calendar_get_events_for_user_between($start_date, $end_date, $is_
 	}
 	if ($is_count) {
 		$options['count'] = true;
-		$count = elgg_get_entities_from_relationship($options);
+		$count = elgg_get_entities($options);
 		return $count;
 	} else {
 		$options['limit'] = $limit;
 		$options['offset'] = $offset;
 		$options['order_by_metadata'] = [
-			['name' => 'start_date', 'direction' => 'ASC', 'as' => 'integer'],
+			'name' => 'start_date', 'direction' => 'ASC', 'as' => 'integer',
 		];
-		$events = elgg_get_entities_from_relationship($options);
+		$events = elgg_get_entities($options);
 		$repeating_events = event_calendar_get_repeating_events_for_user_between($user_guid, $start_date, $end_date, $container_guid, $region);
 		$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
 		return $all_events;
@@ -511,7 +511,7 @@ function event_calendar_get_repeating_events_for_user_between($user_guid, $start
 		];
 	}
 
-	$events = elgg_get_entities_from_relationship($options);
+	$events = elgg_get_entities($options);
 	return event_calendar_get_repeating_event_structure($events, $start_date, $end_date);
 }
 
@@ -543,7 +543,7 @@ function event_calendar_get_repeating_events_for_friends_between($user_guid, $fr
 		];
 	}
 
-	$events = elgg_get_entities_from_relationship($options);
+	$events = elgg_get_entities($options);
 	return event_calendar_get_repeating_event_structure($events, $start_date, $end_date);
 }
 
@@ -583,19 +583,17 @@ function event_calendar_get_events_for_friends_between($start_date, $end_date, $
 			}
 			if ($is_count) {
 				$options['count'] = true;
-				$count = elgg_get_entities_from_metadata($options);
+				$count = elgg_get_entities($options);
 				return $count;
 			} else {
 				$options['limit'] = $limit;
 				$options['offset'] = $offset;
 				$options['order_by_metadata'] = [
-					[
-						'name' => 'start_date',
-						'direction' => 'ASC',
-						'as' => 'integer',
-					],
+					'name' => 'start_date',
+					'direction' => 'ASC',
+					'as' => 'integer',
 				];
-				$events = elgg_get_entities_from_metadata($options);
+				$events = elgg_get_entities($options);
 				$repeating_events = event_calendar_get_repeating_events_for_friends_between($user_guid, $friend_list, $start_date, $end_date, $container_guid, $region);
 				$all_events = event_calendar_merge_repeating_events($events, $repeating_events);
 				return $all_events;
@@ -639,7 +637,7 @@ function event_calendar_get_entities_from_metadata_between_related($start_date, 
 		}
 	}
 	$related_list = [];
-	$related_events = elgg_get_entities_from_relationship([
+	$related_events = elgg_get_entities([
 		'relationship' => 'display_on_group',
 		'relationship_guid' => $container_guid,
 		'inverse_relationship' => true,
@@ -778,19 +776,17 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 	
 	if ($is_count) {
 		$options['count'] = true;
-		$count = elgg_get_entities_from_metadata($options);
+		$count = elgg_get_entities($options);
 		return $count;
 	} else {
 		$options['limit'] = (int)$limit;
 		$options['offset'] = (int)$offset;
 		$options['order_by_metadata'] = [
-			[
-				'name' => 'start_date',
-				'direction' => 'ASC',
-				'as' => 'integer',
-			],
+			'name' => 'start_date',
+			'direction' => 'ASC',
+			'as' => 'integer',
 		];
-		$entities = elgg_get_entities_from_metadata($options);
+		$entities = elgg_get_entities($options);
 
 		if (elgg_get_plugin_setting('add_to_group_calendar', 'event_calendar') == 'yes') {
 			if ($container_guid && !is_array($container_guid) && (get_entity($container_guid) instanceOf ElggGroup)) {
@@ -847,10 +843,10 @@ function event_calendar_get_users_for_event($event_guid, $limit, $offset=0, $is_
 	];
 	if ($is_count) {
 		$options ['count'] = true;
-		$count = elgg_get_entities_from_relationship($options);
+		$count = elgg_get_entities($options);
 		return $count;
 	} else {
-		$users = elgg_get_entities_from_relationship($options);
+		$users = elgg_get_entities($options);
 		return $users;
 	}
 }
