@@ -478,15 +478,15 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'list:event_calendar',
 		[
-			path => '/event_calendar/list/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
-			resource => 'event_calendar/list',
-			defaults => [
-				region => '-',
-				filter_mode => 'all',
-				display_mode => '',
-				start_date => '',
+			'path' => '/event_calendar/list/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
+			'resource' => 'event_calendar/list',
+			'defaults' => [
+				'region' => '-',
+				'filter_mode' => 'all',
+				'display_mode' => '',
+				'start_date' => '',
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -494,12 +494,12 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'view:event_calendar',
 		[
-			path => '/event_calendar/view/{guid}/{title?}',
-			defaults => [
-				title => ''
+			'path' => '/event_calendar/view/{guid}/{title?}',
+			'defaults' => [
+				'title' => ''
 			],
-			resource => 'event_calendar/view',
-			middleware => [
+			'resource' => 'event_calendar/view',
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -507,9 +507,9 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'display_users:event_calendar',
 		[
-			path => '/event_calendar/display_users/{guid}',
-			resource => 'event_calendar/display_users',
-			middleware => [
+			'path' => '/event_calendar/display_users/{guid}',
+			'resource' => 'event_calendar/display_users',
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -517,9 +517,9 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'manage_users:event_calendar',
 		[
-			path => '/event_calendar/manage_users/{guid}',
-			resource => 'event_calendar/manage_users',
-			middleware => [
+			'path' => '/event_calendar/manage_users/{guid}',
+			'resource' => 'event_calendar/manage_users',
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -527,12 +527,12 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'add:event_calendar',
 		[
-			path => '/event_calendar/add/{guid?}/{start_date?}',
-			resource => 'event_calendar/edit',
-			defaults => [
+			'path' => '/event_calendar/add/{guid?}/{start_date?}',
+			'resource' => 'event_calendar/edit',
+			'defaults' => [
 				'page_type' => 'add'
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -540,12 +540,12 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'edit:event_calendar',
 		[
-			path => '/event_calendar/edit/{guid?}/{start_date?}',
-			resource => 'event_calendar/edit',
-			defaults => [
+			'path' => '/event_calendar/edit/{guid?}/{start_date?}',
+			'resource' => 'event_calendar/edit',
+			'defaults' => [
 				'page_type' => 'edit'
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -553,16 +553,16 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'group:event_calendar',
 		[
-			path => '/event_calendar/group/{container_guid?}/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
-			resource => 'event_calendar/group',
-			defaults => [
-				region => '-',
-				filter_mode => 'all',
-				display_mode => '',
-				start_date => '',
-				container_guid => elgg_get_page_owner_guid()
+			'path' => '/event_calendar/group/{container_guid?}/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
+			'resource' => 'event_calendar/group',
+			'defaults' => [
+				'region' => '-',
+				'filter_mode' => 'all',
+				'display_mode' => '',
+				'start_date' => '',
+				'container_guid' => elgg_get_page_owner_guid()
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -570,9 +570,9 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'review_requests:event_calendar',
 		[
-			path => '/event_calendar/review_requests/{guid}',
-			resource => 'event_calendar/review_requests',
-			middleware => [
+			'path' => '/event_calendar/review_requests/{guid}',
+			'resource' => 'event_calendar/review_requests',
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -580,9 +580,9 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'get_fullcalendar_events:event_calendar',
 		[
-			path => '/event_calendar/get_fullcalendar_events/{start_date}/{end_date}/{filter}/{container_guid}/{region}',
-			resource => 'event_calendar/fullcalendar_events',
-			middleware => [
+			'path' => '/event_calendar/get_fullcalendar_events/{start_date}/{end_date}/{filter}/{container_guid}/{region}',
+			'resource' => 'event_calendar/fullcalendar_events',
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -590,9 +590,9 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'ical:event_calendar',
 		[
-			path => '/event_calendar/ical/{action_type}',
-			resource => 'event_calendar/export',
-			middleware => [
+			'path' => '/event_calendar/ical/{action_type}',
+			'resource' => 'event_calendar/export',
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -603,15 +603,15 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'all:event_calendar',
 		[
-			path => '/event_calendar/all',
-			resource => 'event_calendar/list',
-			defaults => [
-				region => '-',
-				filter_mode => 'all',
-				display_mode => '',
-				start_date => '',
+			'path' => '/event_calendar/all',
+			'resource' => 'event_calendar/list',
+			'defaults' => [
+				'region' => '-',
+				'filter_mode' => 'all',
+				'display_mode' => '',
+				'start_date' => '',
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -619,16 +619,16 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'owner:event_calendar',
 		[
-			path => '/event_calendar/owner/{username?}/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
-			resource => 'event_calendar/owner',
-			defaults => [
-				region => '-',
-				filter_mode => 'owner',
-				display_mode => '',
-				start_date => '',
-				container_guid => elgg_get_logged_in_user_guid()
+			'path' => '/event_calendar/owner/{username?}/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
+			'resource' => 'event_calendar/owner',
+			'defaults' => [
+				'region' => '-',
+				'filter_mode' => 'owner',
+				'display_mode' => '',
+				'start_date' => '',
+				'container_guid' => elgg_get_logged_in_user_guid()
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
@@ -636,16 +636,16 @@ function event_calendar_routes() {
 	elgg_register_route(
 		'friends:event_calendar',
 		[
-			path => '/event_calendar/friends/{username?}',
-			resource => 'event_calendar/list',
-			defaults => [
-				region => '-',
-				filter_mode => 'friends',
-				display_mode => '',
-				start_date => '',
-				container_guid => elgg_get_logged_in_user_guid()
+			'path' => '/event_calendar/friends/{username?}',
+			'resource' => 'event_calendar/list',
+			'defaults' => [
+				'region' => '-',
+				'filter_mode' => 'friends',
+				'display_mode' => '',
+				'start_date' => '',
+				'container_guid' => elgg_get_logged_in_user_guid()
 			],
-			middleware => [
+			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class
 			]
 		]
