@@ -1392,8 +1392,8 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 		$events = event_calendar_get_events_for_friends_between($start_ts, $end_ts, false, $limit, $offset, $user_guid, $container_guid, $region);
 	} else if ($filter == 'mine') {
 		$container = elgg_get_logged_in_user_entity();
-		$count = event_calendar_get_events_for_user_between($start_ts, $end_ts, true, $limit, $offset, $user_guid, $container_guid, $region);
-		$events = event_calendar_get_events_for_user_between($start_ts, $end_ts, false, $limit, $offset, $user_guid, $container_guid, $region);
+		$count = event_calendar_get_events_for_user_between($start_ts, $end_ts, true, $limit, $offset, $user_guid, 0, $region);
+		$events = event_calendar_get_events_for_user_between($start_ts, $end_ts, false, $limit, $offset, $user_guid, 0, $region);
 	}
 
 	$vars = [
