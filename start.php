@@ -168,8 +168,7 @@ function ec_ical_titlemenu($hook, $type, $return, $params) {
 		return $return;
 	}
 
-	$use_titlemenu = get_input('ical_calendar_title_menu', false);
-	if ($use_titlemenu && elgg_is_logged_in()) {
+	if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes" && elgg_is_logged_in()) {
 		$filter = get_input('ical_calendar_filter', false);
 		$date = get_input('ical_date', false);
 		$interval = get_input('ical_interval', false);
