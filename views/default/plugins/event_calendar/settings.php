@@ -394,4 +394,13 @@ $body .= elgg_view_field([
 	'options' => $yn_options,
 ]);
 
+$event_calendar_set_organizer = elgg_get_plugin_setting('set_organizer', 'event_calendar', 'yes');
+$body .= elgg_view_field([
+	'#type' => 'radio',
+	'#label' => elgg_echo('event_calendar:settings:set_organizer:title'),
+	'name' => 'params[set_organizer]',
+	'value' => $event_calendar_set_organizer,
+	'options' => $yn_options,
+]);
+
 echo $body;

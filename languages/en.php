@@ -83,6 +83,7 @@ return [
 	'event_calendar:settings:type_display:title' => "Add event type to events?",
 	'event_calendar:settings:type_list:title' => "List of event types (one per line):",
 	'event_calendar:settings:type_list:desc' => '(You can associate each type with a css color value that will be used as event background color in full calendar view. Separate type and color with | character. Example: "meeting|#00CC33")',
+	'event_calendar:settings:set_organizer:title' => "Set the organizer field when exporting events to iCal?",
 	'event_calendar:type_label' => "Type",
 	'event_calendar:all' => "All",
 	'event_calendar:region_filter_by_label' => "Filter by region: ",

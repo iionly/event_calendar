@@ -101,7 +101,8 @@ foreach($events as $event) {
 	}
 
 	$vevent->setProperty('description', $description);
-	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
+	if (elgg_get_plugin_setting('set_organizer', 'event_calendar', 'yes') == 'yes') 
+		$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
 	$vevent->setProperty( "X-PROP-REGION", $event->region );
 	$vevent->setProperty( "X-PROP-TYPE", $event->event_type );
 	$vevent->setProperty( "X-PROP-FEES", $event->fees );
