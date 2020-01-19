@@ -359,4 +359,6 @@ You can visit the event page here:
 	'event_calendar:administer:error_no_interval' => "Error: you haven't selected a time period for deletion of events older than this period.",
 	'event_calendar:administer:error_invalid_interval' => "Sorry: an unknown error occured.",
 	'event_calendar:administer:delete_past_events_result' => "Deletion of past events finished. There were %s past events removed. For %s events the removal failed.",
+
+    'collection:object:event_calendar' => 'Calendar items',
 ];

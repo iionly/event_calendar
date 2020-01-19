@@ -358,4 +358,6 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	'event_calendar:administer:error_no_interval' => "Fehler: Du hast keine Zeitspanne ausgewählt, die die zu löschenden Events mindestens zurückliegen müssen.",
 	'event_calendar:administer:error_invalid_interval' => "Entschuldigung: ein unbekannter Fehler ist aufgetreten.",
 	'event_calendar:administer:delete_past_events_result' => "Das Löschen der zurückliegenden Events ist abgeschlossen. Es wurden %s Events gelöscht. Bei %s Events ist das Löschen fehlgeschlagen.",
+
+    'collection:object:event_calendar' => 'Kalendereinträge',
 ];
