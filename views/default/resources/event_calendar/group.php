@@ -1,5 +1,7 @@
 <?php
 
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
 elgg_require_js('event_calendar/event_calendar');
 elgg_register_rss_link();
 
@@ -8,6 +10,12 @@ $start_date = elgg_extract('start_date', $vars, '');
 $display_mode = elgg_extract('display_mode', $vars, '');
 $filter = elgg_extract('filter_mode', $vars, '');
 $region = elgg_extract('region', $vars, '-');
+
+set_input('ical_group_id', $container_guid);
+set_input('ical_date', $start_date);
+set_input('ical_interval', $display_mode);
+set_input('ical_region', $region == '-' ? '' : $region );
+set_input('ical_calendar_filter', $filter_mode == '' ? 'all' : $filter_mode);
 
 if (!$container_guid) {
 	elgg_gatekeeper();
@@ -34,27 +42,6 @@ if(event_calendar_can_add($container_guid)) {
 
 $params = event_calendar_generate_listing_params('group', $container_guid, $start_date, $display_mode, $filter, $region);
 $title = $params['title'];
-
-if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
-	$url = current_page_url();
-	if (substr_count($url, '?')) {
-		$url .= "&view=ical";
-	} else {
-		$url .= "?view=ical";
-	}
-
-	$url = elgg_format_url($url);
-	$menu_options = [
-		'name' => 'ical',
-		'id' => 'event-calendar-ical-link',
-		'text' => '<img src="' . elgg_get_simplecache_url('event_calendar/ics.png') . '" />',
-		'href' => $url,
-		'title' => elgg_echo('feed:ical'),
-		'priority' => 800,
-	];
-	$menu_item = ElggMenuItem::factory($menu_options);
-	elgg_register_menu_item('extras', $menu_item);
-}
 
 $body = elgg_view_layout("content", $params);
 

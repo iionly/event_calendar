@@ -11,7 +11,7 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $event = $vars['entity'];
 $full = elgg_extract('full_view', $vars, false);

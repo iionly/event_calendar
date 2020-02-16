@@ -83,6 +83,7 @@ return [
 	'event_calendar:settings:type_display:title' => "Event-Typ-Auswahlfeld zu Events hinzufügen?",
 	'event_calendar:settings:type_list:title' => "Event-Typ-Liste (ein Typ pro Zeile):",
 	'event_calendar:settings:type_list:desc' => '(Du kannst zu jedem Event-Typ einen CSS-Farbwert angeben, damit die zugehörige Farbe im Kalender-Detailmodus als Hintergrundfarbe für Events des jeweiligen Typs verwendet wird. Trenne Typ und Farbe durch | . Beispiel: "meeting|#00CC33")',
+	'event_calendar:settings:set_organizer:title' => "Das Organizer-Feld beim iCal-Export setzen?",
 	'event_calendar:type_label' => "Event-Typ",
 	'event_calendar:all' => "Alle",
 	'event_calendar:region_filter_by_label' => "Nach Region filtern: ",
@@ -272,6 +273,7 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:repeated_event:format' => "Beginnend am %s und wiederholend am %s",
 	'event_calendar:settings:repeated_events:title' => "Wiederholende Events erlauben (funktioniert derzeit nur im Kalender-Detailmodus zufriendenstellend)?",
 	'event_calendar:settings:reminders:title' => "Erlaube das Versenden von Erinnerungen (benötigt das Message Queue-Plugin)?",
+	'event_calendar:settings:allow_view_change:title' => "Dem Benutzer erlauben, die Ansicht zu wechseln?",
 	'event_calendar:reminder:subject' => "Erinnerung an Event: %s",
 	'event_calendar:reminder:body' => "Das Event
 
@@ -356,4 +358,6 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	'event_calendar:administer:error_no_interval' => "Fehler: Du hast keine Zeitspanne ausgewählt, die die zu löschenden Events mindestens zurückliegen müssen.",
 	'event_calendar:administer:error_invalid_interval' => "Entschuldigung: ein unbekannter Fehler ist aufgetreten.",
 	'event_calendar:administer:delete_past_events_result' => "Das Löschen der zurückliegenden Events ist abgeschlossen. Es wurden %s Events gelöscht. Bei %s Events ist das Löschen fehlgeschlagen.",
+
+    'collection:object:event_calendar' => 'Kalendereinträge',
 ];

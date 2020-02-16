@@ -1,5 +1,7 @@
 <?php
 
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
 elgg_require_js('event_calendar/event_calendar');
 
 $page_type = elgg_extract('page_type', $vars);

@@ -1,12 +1,14 @@
 <?php
 
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
 // display a list of all the members of the container of $event_guid and allowing
 // adding or removing them
 
 // TODO: make this an optional feature, toggled off
 elgg_require_js('event_calendar/event_calendar');
 
-$event_guid = elgg_extract('event_guid', $vars, '');
+$event_guid = elgg_extract('guid', $vars, '');
 
 $event = get_entity($event_guid);
 $limit = 10;

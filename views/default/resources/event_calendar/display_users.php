@@ -1,8 +1,10 @@
 <?php
 
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
 elgg_require_js('event_calendar/event_calendar');
 
-$event_guid = elgg_extract('event_guid', $vars, '');
+$event_guid = elgg_extract('guid', $vars, '');
 
 $event = get_entity($event_guid);
 

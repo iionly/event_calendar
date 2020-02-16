@@ -1,7 +1,7 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-elgg_load_library('event_calendar:ical');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+require_once(elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
 
 $container_guid = (int) get_input('container_guid', 0);
 $import_timezone = get_input('timezone', date_default_timezone_get());

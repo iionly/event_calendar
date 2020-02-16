@@ -83,6 +83,7 @@ return [
 	'event_calendar:settings:type_display:title' => "Add event type to events?",
 	'event_calendar:settings:type_list:title' => "List of event types (one per line):",
 	'event_calendar:settings:type_list:desc' => '(You can associate each type with a css color value that will be used as event background color in full calendar view. Separate type and color with | character. Example: "meeting|#00CC33")',
+	'event_calendar:settings:set_organizer:title' => "Set the organizer field when exporting events to iCal?",
 	'event_calendar:type_label' => "Type",
 	'event_calendar:all' => "All",
 	'event_calendar:region_filter_by_label' => "Filter by region: ",
@@ -119,6 +120,8 @@ return [
 
 	'event_calendar:settings:personal_manage:title' => "Calendar permissions?",
 	'event_calendar:settings:personal_manage:description' => "(Determines whether people can add events to their personal calendars (open), need to request the event creator to do so (closed), have no option at all (private), or allow event creators to determine this for each event (by event) (Note: if you set this to private you should probably activate the option above to allow event creators and site admins to add their events to other personal calendars)",
+
+	'event_calendar:settings:allow_view_change:title' => "Allow the user to change the calendar view?",
 
 	'event_calendar:request_event_response' => "Your request to be added to this event has been sent.",
 	'event_calendar:request_event_error' => "Error: Could not send your request to be added to this event.",
@@ -356,4 +359,6 @@ You can visit the event page here:
 	'event_calendar:administer:error_no_interval' => "Error: you haven't selected a time period for deletion of events older than this period.",
 	'event_calendar:administer:error_invalid_interval' => "Sorry: an unknown error occured.",
 	'event_calendar:administer:delete_past_events_result' => "Deletion of past events finished. There were %s past events removed. For %s events the removal failed.",
+
+    'collection:object:event_calendar' => 'Calendar items',
 ];

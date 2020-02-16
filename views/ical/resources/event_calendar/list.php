@@ -1,7 +1,8 @@
 <?php
 
 elgg_require_js('event_calendar/event_calendar');
-elgg_load_library('event_calendar:ical');
+require_once(elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $start_date = elgg_extract('start_date', $vars, '');
 $display_mode = elgg_extract('display_mode', $vars, '');
@@ -100,7 +101,8 @@ foreach($events as $event) {
 	}
 
 	$vevent->setProperty('description', $description);
-	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
+	if (elgg_get_plugin_setting('set_organizer', 'event_calendar', 'yes') == 'yes') 
+		$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
 	$vevent->setProperty( "X-PROP-REGION", $event->region );
 	$vevent->setProperty( "X-PROP-TYPE", $event->event_type );
 	$vevent->setProperty( "X-PROP-FEES", $event->fees );
