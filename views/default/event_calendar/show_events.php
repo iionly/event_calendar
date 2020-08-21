@@ -11,7 +11,7 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $listing_format = $vars['listing_format'];
 
@@ -45,21 +45,5 @@ if ($vars['events']) {
 		$event_list = '<p>' . elgg_echo('event_calendar:no_events_found') . '</p>';
 	}
 }
-if ($listing_format == 'paged' || $listing_format == 'full') {
-	echo $event_list;
-} else {
-?>
-	<div style="width:100%">
-		<div id="event_list" style="float:left;">
-			<?php
-			echo $event_list;
-			?>
-		</div>
-		<div style="float:right;">
-			<?php
-			echo elgg_view('event_calendar/calendar', $vars);
-			?>
-		</div>
-	</div>
-<?php
-}
+
+echo $event_list;

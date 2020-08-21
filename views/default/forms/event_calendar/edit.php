@@ -286,12 +286,14 @@ if ($event_calendar_region_display == 'yes' || $event_calendar_type_display == '
 	$body .= '</div>';
 }
 
-$body .= elgg_view_field([
+$body .= '</div>';
+
+echo $body;
+
+$footer = elgg_view_field([
 	'#type' => 'submit',
 	'value' => elgg_echo('event_calendar:submit'),
 	'name' => 'submit',
 ]);
 
-$body .= '</div>';
-
-echo $body;
+elgg_set_form_footer($footer);

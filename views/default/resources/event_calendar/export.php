@@ -1,5 +1,7 @@
 <?php
 
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
 elgg_gatekeeper();
 
 $action_type = elgg_extract('action_type', $vars);

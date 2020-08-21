@@ -1,6 +1,6 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 if (event_calendar_is_upgrade_available()) {
 	echo '<div class="elgg-admin-notices mbl">';
@@ -383,6 +383,15 @@ $body .= elgg_view_field([
 	'#label' => elgg_echo('event_calendar:bbb_security_salt'),
 	'name' => 'params[bbb_security_salt]',
 	'value' => $event_calendar_bbb_security_salt,
+]);
+
+$event_calendar_allow_view_change = elgg_get_plugin_setting('allow_view_change', 'event_calendar', 'no');
+$body .= elgg_view_field([
+	'#type' => 'radio',
+	'#label' => elgg_echo('event_calendar:settings:allow_view_change:title'),
+	'name' => 'params[allow_view_change]',
+	'value' => $event_calendar_allow_view_change,
+	'options' => $yn_options,
 ]);
 
 echo $body;

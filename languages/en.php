@@ -120,6 +120,8 @@ return [
 	'event_calendar:settings:personal_manage:title' => "Calendar permissions?",
 	'event_calendar:settings:personal_manage:description' => "(Determines whether people can add events to their personal calendars (open), need to request the event creator to do so (closed), have no option at all (private), or allow event creators to determine this for each event (by event) (Note: if you set this to private you should probably activate the option above to allow event creators and site admins to add their events to other personal calendars)",
 
+	'event_calendar:settings:allow_view_change:title' => "Allow the user to change the calendar view?",
+
 	'event_calendar:request_event_response' => "Your request to be added to this event has been sent.",
 	'event_calendar:request_event_error' => "Error: Could not send your request to be added to this event.",
 	'event_calendar:request_subject' => "You have received an event request",
