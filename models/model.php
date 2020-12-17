@@ -399,8 +399,7 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 	$joins = [];
 	$wheres = [];
 
-	$meta_max_n = elgg_get_metastring_id($meta_max);
-	if (!$meta_max_n) {
+	if (!$meta_max) {
 		if ($count) {
 			return 0;
 		} else {
@@ -408,9 +407,8 @@ function event_calendar_get_open_repeating_events_between($start_date, $end_date
 		}
 	}
 
-	$joins[] = "LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name_id = $meta_max_n)";
-	$joins[] = "LEFT JOIN {$db_prefix}metastrings ms4 ON (m4.value_id = ms4.id)";
-	$wheres[] = "((ms4.string IS NULL) OR (ms4.string = \"\") OR (CONVERT(ms4.string,SIGNED) > (SELECT COUNT(id) FROM {$db_prefix}entity_relationships rela WHERE rela.guid_two = e.guid AND rela.relationship = \"{$relationship_name}\" GROUP BY rela.guid_two)))";
+	$joins[] = "LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name = $meta_max)";
+	$wheres[] = "((m4.value IS NULL) OR (m4.value = \"\") OR (CONVERT(m4.value,SIGNED) > (SELECT COUNT(id) FROM {$db_prefix}entity_relationships rela WHERE rela.guid_two = e.guid AND rela.relationship = \"{$relationship_name}\" GROUP BY rela.guid_two)))";
 
 	// sanity check
 	if ($start_date <= $end_date) {
@@ -706,9 +704,8 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 
 	if ($region && $region != '-') {
 		$region = sanitize_string($region);
-		$region_n = elgg_get_metastring_id('region');
-		$region_value_n = elgg_get_metastring_id($region);
-		if (!$region_n || !$region_value_n) {
+		$region_n = 'region';
+		if (!$region|| !$region_n) {
 			if ($is_count) {
 				return 0;
 			} else {
@@ -736,11 +733,10 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 
 	if ($filter) {
 		$joins[] = "JOIN {$db_prefix}entity_relationships r ON (r.guid_two = e.guid)";
-		$joins[] = "JOIN {$db_prefix}metastrings ms ON (r.guid_one = ms.id)";
 		if (is_array($owner_guid)) {
-			$wheres[] = "ms.string IN (".implode(",", $owner_guid).")";
+			$wheres[] = "r.value IN (".implode(",", $owner_guid).")";
 		} else if ($owner_guid > 0) {
-			$wheres[] = "ms.string = {$owner_guid}";
+			$wheres[] = "r.value = {$owner_guid}";
 		}
 
 		$wheres[] = "r.relationship = 'personal_event'";
@@ -758,17 +754,15 @@ function event_calendar_get_entities_from_metadata_between($start_date, $end_dat
 		// This groups events for which the meta max name is defined
 		// perhaps this should be a left join and accept null values?
 		// so it would return groups with no spots defined as well
-		$meta_max_n = elgg_get_metastring_id($meta_max);
-		if (!$meta_max_n) {
+		if (!$meta_max) {
 			if ($is_count) {
 				return 0;
 			} else {
 				return false;
 			}
 		}
-		$joins[] = "LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name_id = $meta_max_n)";
-		$joins[] = "LEFT JOIN {$db_prefix}metastrings ms4 ON (m4.value_id = ms4.id)";
-		$wheres[] = "((ms4.string IS NULL) OR (ms4.string = \"\") OR (CONVERT(ms4.string,SIGNED) > (SELECT COUNT(id) FROM {$db_prefix}entity_relationships rela WHERE rela.guid_two = e.guid AND rela.relationship = \"{$relationship_name}\" GROUP BY rela.guid_two)))";
+		$joins[] = "LEFT JOIN {$db_prefix}metadata m4 ON (e.guid = m4.entity_guid AND m4.name = $meta_max)";
+		$wheres[] = "((m4.value IS NULL) OR (m4.value = \"\") OR (CONVERT(m4.value,SIGNED) > (SELECT COUNT(id) FROM {$db_prefix}entity_relationships rela WHERE rela.guid_two = e.guid AND rela.relationship = \"{$relationship_name}\" GROUP BY rela.guid_two)))";
 	}
 
 	$options['joins'] = $joins;

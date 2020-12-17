@@ -1,26 +1,39 @@
 <?php
 
-//Seri 6/19/2020 - added this to set the value of ical_calendar_title_menu
-if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
-	set_input('ical_calendar_title_menu', true);
-}
+require_once(dirname(__FILE__) . '/models/model.php');
+require_once(dirname(__FILE__) . '/lib/hooks.php');
 
 return [
+	'bootstrap' => \EventCalendarBootstrap::class,
+	'entities' => [
+		[
+			'type' => 'object',
+			'subtype' => 'event_calendar',
+			'searchable' => true,
+		],
+	],
+	'actions' => [
+		"event_calendar/edit" => [],
+		"event_calendar/delete" => [],
+		"event_calendar/add_personal" => [],
+		"event_calendar/remove_personal" => [],
+		"event_calendar/request_personal_calendar" => [],
+		"event_calendar/toggle_personal_calendar" => [],
+		"event_calendar/killrequest" => [],
+		"event_calendar/addtocalendar" => [],
+		"event_calendar/add_to_group" => [],
+		"event_calendar/remove_from_group" => [],
+		"event_calendar/add_to_group_members" => [],
+		"event_calendar/remove_from_group_members" => [],
+		"event_calendar/manage_subscribers" => [],
+		"event_calendar/modify_full_calendar" => [],
+		"event_calendar/join_conference" => [],
+		"event_calendar/upgrade" => ['admin'],
+		"event_calendar/delete_past_events" => ['admin'],
+		"event_calendar/import" => [],
+		'event_calendar/export' => [],
+	],
     'routes' => [
-        /**
-         * URLs take the form of
-         *  Site event calendar:			event_calendar/list/<start_date>/<display_mode>/<filter_context>/<region>
-         *  Single event:       			event_calendar/view/<event_guid>/<title>
-         *  New event:        				event_calendar/add
-         *  Edit event:       				event_calendar/edit/<event_guid>
-         *  Group event calendar:  			event_calendar/group/<group_guid>/<start_date>/<display_mode>/<filter_context>/<region>
-         *  Add group event:   				event_calendar/add/<group_guid>
-         *  Review requests:				event_calendar/review_requests/<event_guid>
-         *  Display event subscribers:		event_calendar/display_users/<event_guid>
-         *  Events for a user's calendar:	event_calendar/owner/<username>/<start_date>/<display_mode>/<filter_context>/<region>
-         *
-         * Title is ignored
-         */
         'list:event_calendar' => [
             'path' => '/event_calendar/list/{start_date?}/{display_mode?}/{filter_mode?}/{region?}',
             'resource' => 'event_calendar/list',
@@ -152,9 +165,14 @@ return [
             ]
         ]
     ],
-    'views' => [
-        'default' => [
-            'event_calendar/' => __DIR__ . '/graphics',
-        ],
-    ]
+	'widgets' => [
+		'event_calendar' => [
+			'context' => ['profile', 'index', 'dashboard'],
+		],
+	],
+	'views' => [
+		'default' => [
+			'event_calendar/' => __DIR__ . '/graphics',
+		],
+	],
 ];
