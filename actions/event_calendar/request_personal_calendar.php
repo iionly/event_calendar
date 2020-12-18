@@ -1,7 +1,7 @@
 <?php
 // asks the event owner to add you to the event
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $event_guid = get_input('guid', 0);
 $user_guid = elgg_get_logged_in_user_guid();

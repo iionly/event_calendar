@@ -1,7 +1,8 @@
 <?php
 
 elgg_require_js('event_calendar/event_calendar');
-elgg_load_library('event_calendar:ical');
+require_once(elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $container_guid = elgg_extract('container_guid', $vars, 0);
 $start_date = elgg_extract('start_date', $vars, '');

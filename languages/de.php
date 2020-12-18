@@ -272,6 +272,7 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:repeated_event:format' => "Beginnend am %s und wiederholend am %s",
 	'event_calendar:settings:repeated_events:title' => "Wiederholende Events erlauben (funktioniert derzeit nur im Kalender-Detailmodus zufriendenstellend)?",
 	'event_calendar:settings:reminders:title' => "Erlaube das Versenden von Erinnerungen (benötigt das Message Queue-Plugin)?",
+	'event_calendar:settings:allow_view_change:title' => "Dem Benutzer erlauben, die Ansicht zu wechseln?",
 	'event_calendar:reminder:subject' => "Erinnerung an Event: %s",
 	'event_calendar:reminder:body' => "Das Event
 

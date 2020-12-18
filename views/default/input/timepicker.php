@@ -42,11 +42,11 @@ if ($time_format == '12') {
 		'pm' => 'pm'
 	];
 	for($h=1;$h<=12;$h++) {
-		$hours[$h] = $h;
+		$hours[$h] = "$h";
 	}
 } else {
 	for($h=0;$h<=23;$h++) {
-		$hours[$h] = $h;
+		$hours[$h] = "$h";
 	}
 }
 

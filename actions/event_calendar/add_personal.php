@@ -1,6 +1,6 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $event_guid = get_input('guid', 0);
 $event = get_entity($event_guid);

@@ -11,7 +11,7 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 // start a new sticky form session in case of failure
 elgg_make_sticky_form('event_calendar');
