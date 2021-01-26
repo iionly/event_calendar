@@ -1,8 +1,5 @@
 <?php
 
-// Load event calendar model
-elgg_load_library('elgg:event_calendar');
-
 //the number of events to display
 $num = (int) $vars['entity']->events_count;
 if (!$num) {
@@ -12,14 +9,32 @@ if (!$num) {
 // Get the events
 $owner = elgg_get_page_owner_entity();
 if(elgg_instanceof($owner, 'group')) {
-	$events = event_calendar_get_events_for_group($owner->getGUID(), $num);
+	$one_day = time() - 60*60*24;
+	$options = [
+		'type' => 'object',
+		'subtype' => 'event_calendar',
+		'container_guid' => $owner->getGUID(),
+		'metadata_name_value_pairs' => [
+			['name' => 'start_date', 'value' => $one_day,  'operand' => '>'],
+			['name' => 'end_date', 'value' => $one_day,  'operand' => '>'],
+		],
+		'metadata_name_value_pairs_operator' => 'OR',
+		'order_by_metadata' => [
+			'name' => 'start_date',
+			'direction' => 'ASC',
+			'as' => 'integer',
+		 ],
+		'limit' => $num,
+	];
+
+	$events = elgg_get_entities_from_metadata($options);
 }
 
 // If there are any events to view, view them
 if (is_array($events) && sizeof($events) > 0) {
 	echo "<div id=\"widget_calendar\">";
 	foreach($events as $event) {
-		echo elgg_view("object/event_calendar", array('entity' => $event));
+		echo elgg_view("object/event_calendar", ['entity' => $event]);
 	}
 	echo "</div>";
 } else {
@@ -29,9 +44,9 @@ if (is_array($events) && sizeof($events) > 0) {
 if (elgg_is_logged_in()) {
 	$group = get_entity(elgg_get_page_owner_guid());
 	if ($group->isMember(elgg_get_logged_in_user_entity())) {
-		echo elgg_view('output/url', array(
+		echo elgg_view('output/url', [
 			'href' => "event_calendar/add/$group->guid",
 			'text' => elgg_echo('event_calendar:new'),
-		));
+		]);
 	}
 }

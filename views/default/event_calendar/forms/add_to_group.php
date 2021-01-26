@@ -11,29 +11,29 @@ $event_container = $vars['event']->container_guid;
 // get the list of all groups:
 
 if (elgg_is_admin_logged_in()) {
-	$groups = elgg_get_entities(array(
+	$groups = elgg_get_entities([
 		'type' => 'group',
 		'limit' => 5000,
-	));
+	]);
 } else {
-	$groups = elgg_get_entities(array(
+	$groups = elgg_get_entities([
 		'type' => 'group',
 		'owner_guid' => elgg_get_logged_in_user_guid(),
 		'limit' => 5000,
-	));
+	]);
 }
 
 // split the group list into two lists
 
-$add_options = array();
-$remove_options = array();
-$remove_group = elgg_get_entities_from_relationship(array(
+$add_options = [];
+$remove_options = [];
+$remove_group = elgg_get_entities_from_relationship([
 	'relationship' => 'display_on_group',
 	'relationship_guid' => $event_id,
 	'inverse_relationship' => false,
 	'limit' => 5000,
-));
-$remove_group_ids = array();
+]);
+$remove_group_ids = [];
 foreach ($remove_group as $group) {
 	$remove_group_ids[] = $group->guid;
 	if ($group->guid != $event_container && $group->canEdit()) {
@@ -56,20 +56,47 @@ if ($remove_group) {
 }
 
 if ($add_options || $remove_options) {
-	echo '<div class="mtl" >';
-	$event_bit = elgg_view('input/hidden', array("name" => "event_id","value" => $event_id));
+	echo '<div class="mtl"><div class="event-calendar-edit-form-block"></div>';
+	$event_bit = elgg_view_field([
+		'#type' => 'hidden',
+		'name' => 'event_id',
+		'value' => $event_id,
+	]);
+
 	if ($add_options) {
-		echo "<h4>".elgg_echo('event_calendar:add_to_group:add_group_title')."</h4>";
-		$add_pulldown = elgg_view("input/select", array("name" => "group_id", "options_values" => $add_options));
-		$submit_button = "<p>".elgg_view("input/submit", array("value" => elgg_echo('event_calendar:add_to_group:add_group_button')))."</p>";
-		echo elgg_view ('input/form', array("body" => $event_bit.$add_pulldown.$submit_button, "action" => elgg_get_site_url()."action/event_calendar/add_to_group"));
+		$add_pulldown = elgg_view_field([
+			'#type' => 'select',
+			'#label' => elgg_echo('event_calendar:add_to_group:add_group_title'),
+			'name' => 'group_id',
+			'options_values' => $add_options,
+		]);
+		$submit_add = elgg_view_field([
+			'#type' => 'submit',
+			'value' => elgg_echo('event_calendar:add_to_group:add_group_button'),
+			'class' => 'mbl',
+		]);
+		echo elgg_view('input/form', [
+			"body" => $event_bit.$add_pulldown.$submit_add,
+			"action" => elgg_get_site_url()."action/event_calendar/add_to_group",
+		]);
 	}
 	
 	if ($remove_options) {
-		echo "<h4>".elgg_echo('event_calendar:add_to_group:remove_group_title')."</h4>";
-		$remove_pulldown = elgg_view("input/select", array("name" => "group_id", "options_values" => $remove_options));
-		$submit_button = "<p>".elgg_view("input/submit", array("value" => elgg_echo('event_calendar:add_to_group:remove_group_button')))."</p>";
-		echo elgg_view ('input/form', array("body" => $event_bit.$remove_pulldown.$submit_button, "action" => elgg_get_site_url()."action/event_calendar/remove_from_group"));
+		$remove_pulldown = elgg_view_field([
+			'#type' => 'select',
+			'#label' => elgg_echo('event_calendar:add_to_group:remove_group_title'),
+			'name' => 'group_id',
+			'options_values' => $remove_options,
+		]);
+		$submit_remove = elgg_view_field([
+			'#type' => 'submit',
+			'value' => elgg_echo('event_calendar:add_to_group:remove_group_button'),
+			'class' => 'mbl',
+		]);
+		echo elgg_view('input/form', [
+			"body" => $event_bit.$remove_pulldown.$submit_remove,
+			"action" => elgg_get_site_url()."action/event_calendar/remove_from_group",
+		]);
 	}
-	echo '</div>';
+	echo '<div class="event-calendar-edit-form-block"></div></div>';
 }

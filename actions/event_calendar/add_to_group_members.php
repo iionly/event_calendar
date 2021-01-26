@@ -1,13 +1,13 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 $event_guid = get_input("event_guid", 0);
 $event = get_entity($event_guid);
 $group = get_entity($event->container_guid);
 
 if (elgg_instanceof($group, 'group') && elgg_instanceof($event, 'object', 'event_calendar') && $group->canEdit()) {
-	$members = $group->getMembers(array('limit' => false));
+	$members = $group->getMembers(['limit' => false]);
 	foreach($members as $member) {
 		event_calendar_add_personal_event($event->guid, $member->guid);
 	}

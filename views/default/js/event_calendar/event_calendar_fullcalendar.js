@@ -1,6 +1,8 @@
 define(function(require) {
 	var elgg = require("elgg");
 	var $ = require("jquery");
+	require("event_calendar/fullcalendar");
+	var lightbox = require('elgg/lightbox');
 
 	var goToDateFlag = 0;
 
@@ -9,7 +11,9 @@ define(function(require) {
 			if (event.is_event_poll) {
 				window.location.href = event.url;
 			} else {
-				$.colorbox({'href':event.url});
+				//Seri 6/18/2020 - replaced colorbox with lightbox
+				lightbox.open({'href':event.url});
+				//$.colorbox({'href':event.url});
 			}
 			return false;
 		}
@@ -79,6 +83,22 @@ define(function(require) {
 					}
 				}
 			);
+		}
+	}
+
+	handleEventResizeStop = function(event, dayDelta, minutes, revertFunc) {
+		if (dayDelta != 0) {
+			revertFunc();
+		}
+		else if (!event.is_event_poll && !confirm(elgg.echo('event_calendar:are_you_sure'))) {
+			revertFunc();
+		} else {
+			data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minutes: minutes};
+			elgg.action('event_calendar/modify_full_calendar', {
+				data: data,
+				success: function (res) {
+				}
+			});
 		}
 	}
 
@@ -171,6 +191,7 @@ define(function(require) {
 				slotMinutes: 15,
 				eventRender: handleEventRender,
 				eventDrop: handleEventDrop,
+				eventResize: handleEventResizeStop,
 				eventClick: handleEventClick,
 				dayClick: handleDayClick,
 				events: handleGetEvents,

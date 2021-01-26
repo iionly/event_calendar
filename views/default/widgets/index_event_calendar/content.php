@@ -9,16 +9,22 @@ if (!$num) {
 // Display $num (personal and group) events
 // but don't show events that have been over for more than a day
 // TODO How to deal with recurring events?
-// TODO Instead of only checking start_date it might be better to check (start_date OR end_date) like in event_calendar_get_personal_events_for_user()
-// but how to do that without fetching all events first?
-$now = time();
-$one_day = 60*60*24;
-$options = array(
+$one_day = time() - 60*60*24;
+$options = [
 	'type' => 'object',
 	'subtype' => 'event_calendar',
-	'metadata_name_value_pair' => array('name' => 'start_date', 'value' => $now-$one_day,  'operand' => '>'),
+	'metadata_name_value_pairs' => [
+		['name' => 'start_date', 'value' => $one_day,  'operand' => '>'],
+		['name' => 'end_date', 'value' => $one_day,  'operand' => '>'],
+	],
+	'metadata_name_value_pairs_operator' => 'OR',
+	'order_by_metadata' => [
+		'name' => 'start_date',
+		'direction' => 'ASC',
+		'as' => 'integer',
+	],
 	'limit' => $num,
-);
+];
 
 $events = elgg_get_entities_from_metadata($options);
 
@@ -26,7 +32,7 @@ $events = elgg_get_entities_from_metadata($options);
 if (is_array($events) && sizeof($events) > 0) {
 	echo "<div id=\"widget_calendar\">";
 	foreach($events as $event) {
-		echo elgg_view("object/event_calendar", array('entity' => $event));
+		echo elgg_view("object/event_calendar", ['entity' => $event]);
 	}
 	echo "</div>";
 } else {

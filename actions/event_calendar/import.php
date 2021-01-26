@@ -1,7 +1,7 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-elgg_load_library('event_calendar:ical');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+require_once(elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
 
 $container_guid = (int) get_input('container_guid', 0);
 $import_timezone = get_input('timezone', date_default_timezone_get());
@@ -34,12 +34,12 @@ if (!$moved) {
 
 $path = pathinfo($thumb->getFilenameOnFilestore());
 
-$config = array(
+$config = [
 	'unique_id' => elgg_get_site_url(),
 	'delimiter' => '/',
 	'directory' => $path['dirname'],
-	'filename' => $_FILES['ical_file']['name']
-);
+	'filename' => $_FILES['ical_file']['name'],
+];
 
 $v = new vcalendar($config);
 $v->parse();
@@ -58,7 +58,7 @@ $event_calendar_more_required = elgg_get_plugin_setting('more_required', 'event_
 // for now, turn off the more_required setting during import
 elgg_set_plugin_setting('more_required', 'no', 'event_calendar');
 
-$created = array(); // an array to hold all of the created events
+$created = []; // an array to hold all of the created events
 while ($vevent = $v->getComponent()) {
 	if ($vevent instanceof vevent) {
 		$dtstart = $vevent->getProperty('dtstart');
@@ -119,7 +119,7 @@ while ($vevent = $v->getComponent()) {
 		$long_description = $vevent->getProperty( 'X-PROP-LONG-DESC' );
 
 		if (empty($long_description[1])) {
-			$long_description = array(1 => $description);
+			$long_description = [1 => $description];
 		}
 
 		set_input('event_action', 'add_event');
@@ -145,7 +145,7 @@ while ($vevent = $v->getComponent()) {
 		$enddate = $endtime->format('Y-m-d');
 		set_input('end_date', $enddate);
 
-		set_input('brief_description', nl2br($description));
+		set_input('description', nl2br($description));
 
 		if ($event_calendar_region_display == 'yes') {
 			set_input('region', $region[1]);
@@ -164,12 +164,12 @@ while ($vevent = $v->getComponent()) {
 
 		if ($result) {
 			$created[] = $result;
-			elgg_create_river_item(array(
+			elgg_create_river_item([
 				'view' => 'river/object/event_calendar/create',
 				'action_type' => 'create',
 				'subject_guid' => elgg_get_logged_in_user_guid(),
 				'object_guid' => $result->guid,
-			));
+			]);
 		} else {
 			$error = true;
 			break;

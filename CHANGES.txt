@@ -1,6 +1,50 @@
 Changelog
 =========
 
+2.3.3 (iionly)
+--------------
+
+- Fix: correct usage of 'ASC' constant with apostrophes in function calls instead of without as this would fail otherwise on future versions of PHP (deprecation warning).
+
+2.3.2 (iionly)
+--------------
+
+- Updated to iCalcreator v2.22.5 (classes construction now fully compatible with PHP 7 - and still works on PHP 5.6),
+- Minor cleanup of API library code,
+- Code cleanup,
+- Forms polished,
+- Fix in import action to correctly fetch event description,
+- Fix in export action to correctly export event tags,
+- Fix for event creation to work with event times selection disabled,
+- Fix of checks of required input fields containing data (only check enabled fields depending on plugin settings),
+- Consistence in all widget's event listing (next events in chronologial order with oldest event displayed from yesterday at the earliest),
+- On "Set day/time" option check end date on change of start date automatically during input and change end date to start date if it's before,
+- With Event Poll plugin enabled allow for selection of Read access level of an event also with the schedule option on event creation selected,
+- Removal of calendar selection option on addition or editing an event: from now on if in group context the corresponding group calendar is used as container of the event and outside of a group context it's the side-wide calendar. This removal of the calendar container selection is consistent with other type of content (e.g. you can't change it for blogs, files etc. either by default) and it's also much simpler to understand/ to handle for user regarding who will have access / can see an event. For event editing the removal of the calendar selection option has even less impact because changing of the container never worked anyway. 
+
+2.3.1 (iionly)
+--------------
+
+- Minimum Elgg version required is 2.3.0,
+- Added missing language string for end date label to English, German and Spanish language file,
+- French translations added (thanks to Facyla),
+- Fixed deprecation issue with $autofeed by using elgg_register_rss_link(),
+- No longer use deprecated 'page', 'setup' plugin hook for registering menu items,
+- Clean up of plugin settings page code,
+- Clean up of model.php code,
+- Populate 'entity' attribute on calling object/elements/full view,
+- Redirect correctly on lack of access permissions for full view of event instead of WSOD when logged out,
+- Drop (apparently?) unnecessary usage of elgg_push_context('group') in views,
+- Move views used in pagehandler out of model.php into resource views,
+- Usage of output/longtext view for displaying event description/long description to correctly display (allowed) html formatting like table styling,
+- No longer load Elgg's lightbox JS and CSS because they are loaded by core on all pages now anyway,
+- Dependency of fullcalendar AMD module declared within the module to prevent race condition on loading,
+- Rework of event popup view code,
+- Fixed inline datepicker weekly view month selection,
+- First day of week either Monday or Sunday depending of region of logged-in user (as determined by user language used),
+- Updated to iCalcreator v2.22.1,
+- Rework of ical event export for consistency in included event attributes regardless if using title section export button or sidebar extra menu button.
+
 2.0.0 (iionly)
 --------------
 

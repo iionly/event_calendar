@@ -33,17 +33,20 @@ if (isset($vars['hours']) && $vars['hours']) {
 	}
 }
 
-$hours = array();
-$minutes = array();
+$hours = [];
+$minutes = [];
 
 if ($time_format == '12') {
-	$meridians = array('am'=>'am','pm'=>'pm');
+	$meridians = [
+		'am' => 'am',
+		'pm' => 'pm'
+	];
 	for($h=1;$h<=12;$h++) {
-		$hours[$h] = $h;
+		$hours[$h] = "$h";
 	}
 } else {
 	for($h=0;$h<=23;$h++) {
-		$hours[$h] = $h;
+		$hours[$h] = "$h";
 	}
 }
 
@@ -52,9 +55,21 @@ for($m=0;$m<60;$m=$m+5) {
 	$minutes[$m] = $mt;
 }
 
-echo elgg_view('input/select', array('name' => $vars['name'].'_hour', 'value' => $hour, 'options_values' => $hours));
+echo elgg_view('input/select', [
+	'name' => $vars['name'].'_hour',
+	'value' => $hour,
+	'options_values' => $hours,
+]);
 echo " <b>:</b> ";
-echo elgg_view('input/select', array('name' => $vars['name'].'_minute', 'value' => $minute, 'options_values' => $minutes));
+echo elgg_view('input/select', [
+	'name' => $vars['name'].'_minute',
+	'value' => $minute,
+	'options_values' => $minutes,
+]);
 if ($time_format == '12') {
-	echo elgg_view('input/select', array('name' => $vars['name'].'_meridian', 'value' => $meridian, 'options_values' => $meridians));
+	echo elgg_view('input/select', [
+		'name' => $vars['name'].'_meridian',
+		'value' => $meridian,
+		'options_values' => $meridians,
+	]);
 }

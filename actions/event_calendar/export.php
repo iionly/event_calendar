@@ -1,7 +1,7 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-elgg_load_library('event_calendar:ical');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+require_once(elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
 
 $filter = get_input('filter', 'mine');
 $container_guid = get_input('container_guid', 0);
@@ -29,7 +29,7 @@ switch ($filter) {
 		$events = false;
 		$event = get_entity($filter);
 		if (elgg_instanceof($event, 'object', 'event_calendar')) {
-			$events = array(array('event' => $event));
+			$events = [['event' => $event]];
 		}
 		break;
 }
@@ -41,23 +41,25 @@ if (!$events) {
 
 $events = event_calendar_flatten_event_structure($events);
 
-$timezone = date_default_timezone_get(); //get_plugin_setting('timezone', 'event_connector');
+$timezone = date_default_timezone_get();
 
-$config = array(
-	'UNIQUE_ID' => elgg_get_site_url(),
-	'FILENAME'=> 'Calendar.ics',
-	'TZID' => $timezone
-);
+$config = [
+	'unique_id' => elgg_get_site_url(),
+	'filename'=> 'Calendar.ics',
+	'TZID' => $timezone,
+];
 
 $v = new vcalendar($config);
 
 $v->setProperty( 'method', 'PUBLISH' );
-$v->setProperty( "X-WR-TIMEZONE", date_default_timezone_get() );
 $v->setProperty( "calscale", "GREGORIAN" );
+$v->setProperty( "X-WR-TIMEZONE", date_default_timezone_get() );
 $v->setProperty( "version", "2.0" );
-$v->setProperty( "X-WR-CALNAME", elgg_get_logged_in_user_entity()->username. "Calendar" );
+$v->setProperty( "X-WR-CALNAME", elgg_get_logged_in_user_entity()->username . "Calendar" );
+$v->setProperty( "X-WR-CALDESC", elgg_get_logged_in_user_entity()->username . "Calendar" );
 
-iCalUtilityFunctions::createTimezone($v, $timezone);
+$xprops = [ "X-LIC-LOCATION" => $timezone ];
+iCalUtilityFunctions::createTimezone($v, $timezone, $xprops);
 
 foreach($events as $event) {
 	//set default beginning and ending time
@@ -75,6 +77,8 @@ foreach($events as $event) {
 	}
 
 	$vevent = $v->newComponent('vevent');
+	
+	$vevent->setProperty('uid', elgg_get_site_url() . 'event_calendar/view/' . $event->guid);
 
 	if (!isset($event->end_date)) {
 		$event_end_date = $event->start_date;
@@ -82,44 +86,46 @@ foreach($events as $event) {
 		$event_end_date = $event->end_date;
 	}
 
-	$start = array(
+	$start = [
 		'year' => date('Y', (int)$event->start_date),
 		'month' => date('m', (int)$event->start_date),
 		'day' => date('d', (int)$event->start_date),
 		'hour' => $hb,
 		'min' => $mb,
-		'sec' => $sb
-	);
+		'sec' => $sb,
+	];
 
 	$vevent->setProperty('dtstart', $start);
 
-	$end = array(
+	$end = [
 		'year' => date('Y', (int)$event_end_date),
 		'month' => date('m', (int)$event_end_date),
 		'day' => date('d', (int)$event_end_date),
 		'hour' => $he,
 		'min' => $me,
-		'sec' => $se
-	);
+		'sec' => $se,
+	];
 
 	$vevent->setProperty('dtend', $end);
 	$vevent->setProperty('LOCATION', $event->venue);
 	$vevent->setProperty('LAST_MODIFIED', $event->time_updated);
 	$vevent->setProperty('summary', $event->title);
-	$description = (isset($event->description) && $event->description != "") ? $event->description : null;
 
+	$description = (isset($event->description) && $event->description != "") ? $event->description : '';
 	if (!$description && $event->long_description) {
 		$description = $event->long_description;
 	}
 
-	if (is_string($event->tags)) {
+	$organiser = (isset($event->organiser) && $event->organiser != "") ? $event->organiser : $event->getOwnerEntity()->name;
+
+	if (is_array($event->tags)) {
 		$tags = implode(',' , $event->tags);
 	} else {
 		$tags = '';
 	}
 
 	$vevent->setProperty('description', $description);
-	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, array('CN' => $event->organiser));
+	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
 	$vevent->setProperty( "X-PROP-REGION", $event->region );
 	$vevent->setProperty( "X-PROP-TYPE", $event->event_type );
 	$vevent->setProperty( "X-PROP-FEES", $event->fees );
@@ -129,3 +135,4 @@ foreach($events as $event) {
 }
 
 $v->returnCalendar();
+exit();

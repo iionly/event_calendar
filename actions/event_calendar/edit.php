@@ -11,7 +11,7 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
 
 // start a new sticky form session in case of failure
 elgg_make_sticky_form('event_calendar');
@@ -39,12 +39,12 @@ if ($event) {
 		system_message(elgg_echo('event_calendar:add_event_response'));
 	}
 
-	elgg_create_river_item(array(
+	elgg_create_river_item([
 		'view' => "river/object/event_calendar/$action",
 		'action_type' => $action,
 		'subject_guid' => $user_guid,
 		'object_guid' => $event->guid,
-	));
+	]);
 
 	if ($event->schedule_type == 'poll') {
 		forward('event_poll/add/'.$event->guid);

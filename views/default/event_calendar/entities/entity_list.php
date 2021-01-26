@@ -21,12 +21,12 @@ $html = "";
 $nav = "";
 
 if ($pagination) {
-	$nav .= elgg_view('navigation/pagination', array(
+	$nav .= elgg_view('navigation/pagination', [
 		'base_url' => $base_url,
 		'offset' => $offset,
 		'count' => $count,
 		'limit' => $limit,
-	));
+	]);
 }
 
 $html .= $nav;

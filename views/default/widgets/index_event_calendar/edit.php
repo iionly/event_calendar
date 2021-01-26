@@ -5,8 +5,12 @@ if(empty($count)){
 	$count = 4;
 }
 
-?>
-<div>
-	<?php echo elgg_echo("event_calendar:num_display"); ?><br />
-	<?php echo elgg_view("input/text", array("name" => "params[events_count]", "value" => $count, "size" => "4", "maxlength" => "4")); ?>
-</div>
+echo elgg_view_field([
+	'#type' => 'number',
+	'#label' => elgg_echo("event_calendar:num_display"),
+	'name' => 'params[events_count]',
+	'value' => $count,
+	'min' => '1',
+	'max' => '20',
+	'step' => '1',
+]);

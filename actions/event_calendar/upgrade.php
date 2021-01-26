@@ -20,7 +20,7 @@ $base_dir = "{$plugins_path}event_calendar/upgrades";
 
 // taken from engine/lib/version.php
 if ($handle = opendir($base_dir)) {
-	$upgrades = array();
+	$upgrades = [];
 
 	while ($updatefile = readdir($handle)) {
 		// Look for upgrades and add to upgrades list

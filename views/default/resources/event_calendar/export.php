@@ -1,6 +1,8 @@
 <?php
 
-gatekeeper();
+require_once(elgg_get_plugins_path() . 'event_calendar/models/model.php');
+
+elgg_gatekeeper();
 
 $action_type = elgg_extract('action_type', $vars);
 
@@ -30,30 +32,30 @@ elgg_push_breadcrumb(elgg_echo('event_calendar:' . $action_type));
 
 $title = elgg_echo('event_calendar:title:' . $action_type);
 
-$form_vars = array();
+$form_vars = [];
 if ($action_type == 'import') {
 	$form_vars['enctype'] = 'multipart/form-data';
 }
 
-$content = elgg_view_form('event_calendar/' . $action_type, $form_vars, array(
+$content = elgg_view_form('event_calendar/' . $action_type, $form_vars, [
 	'filter' => $filter,
 	'group_guid' => $group_guid,
 	'date' => $date,
 	'interval' => $interval,
-	'region' => $region
-));
+	'region' => $region,
+]);
 
-$layout = elgg_view_layout('content', array(
+$layout = elgg_view_layout('content', [
 	'title' => $title,
-	'filter' => elgg_view('event_calendar/ical_tabs', array(
+	'filter' => elgg_view('event_calendar/ical_tabs', [
 		'filter_type' => $action_type,
 		'filter' => $filter,
 		'group_guid' => $group_guid,
 		'date' => $date,
 		'interval' => $interval,
-		'region' => $region
-	)),
-	'content' => $content
-));
+		'region' => $region,
+	]),
+	'content' => $content,
+]);
 
 echo elgg_view_page($title, $layout);

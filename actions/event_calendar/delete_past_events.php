@@ -11,7 +11,7 @@ set_time_limit(0);
 $delete_upper_limit = get_input('delete_upper_limit');
 
 if (!$delete_upper_limit) {
-	$response = array('success' => false, 'message' => elgg_echo('event_calendar:administer:error_no_interval'));
+	$response = ['success' => false, 'message' => elgg_echo('event_calendar:administer:error_no_interval')];
 	echo json_encode($response);
 	exit;
 }
@@ -47,17 +47,14 @@ if ($upper_limit && ($upper_limit > 0)) {
 
 	// Fetching events with start_date < $upper_limit here because repeating events have no meaningful real_end_time metadata value
 	// Non-scheduled event poll events are not retrieved here because they don't have any fixed start_date metadata value yet
-	$options = array(
+	$options = [
 		'type' => 'object',
 		'subtype' => 'event_calendar',
 		'limit' => false,
-		'metadata_name_value_pairs' => array(
-			array(
-				'name' => 'start_date',
-				'value' => $upper_limit,
-				'operand' => '<'
-		)),
-	);
+		'metadata_name_value_pairs' => [
+			['name' => 'start_date', 'value' => $upper_limit, 'operand' => '<']
+		],
+	];
 	$past_events = new ElggBatch('elgg_get_entities_from_metadata', $options);
 	$past_events->setIncrementOffset(false);
 
@@ -85,9 +82,9 @@ if ($upper_limit && ($upper_limit > 0)) {
 		}
 	}
 
-	$response = array('success' => true, 'message' => elgg_echo('event_calendar:administer:delete_past_events_result', array($success_count, $error_count)));
+	$response = ['success' => true, 'message' => elgg_echo('event_calendar:administer:delete_past_events_result', [$success_count, $error_count])];
 } else {
-	$response = array('success' => false, 'message' => elgg_echo('event_calendar:administer:error_invalid_interval'));
+	$response = ['success' => false, 'message' => elgg_echo('event_calendar:administer:error_invalid_interval')];
 }
 
 elgg_set_ignore_access($ia);

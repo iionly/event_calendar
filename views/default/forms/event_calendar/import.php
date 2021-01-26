@@ -5,15 +5,13 @@ echo '<h3>' . elgg_echo('event_calendar:import:settings') . '</h3>';
 echo '</div>';
 
 // import into which calendar
-echo '<div class="mbm">' . elgg_echo('event_calendar:import:type') . ' ';
-
-$options_values = array();
+$options_values = [];
 
 if (event_calendar_can_add()) {
 	$options_values[0] = elgg_echo('event_calendar:site_calendar');
 }
 
-$groups = elgg_get_logged_in_user_entity()->getGroups(array('limit' => false));
+$groups = elgg_get_logged_in_user_entity()->getGroups(['limit' => false]);
 if ($groups) {
 	foreach ($groups as $group) {
 		if (event_calendar_can_add($group->guid)) {
@@ -22,18 +20,21 @@ if ($groups) {
 	}
 }
 
-echo elgg_view('input/select', array(
+echo elgg_view_field([
+	'#type' => 'select',
+	'#label' => elgg_echo('event_calendar:import:type'),
 	'name' => 'container_guid',
 	'value' => $vars['group_guid'],
-	'options_values' => $options_values
-));
-echo '</div>';
+	'options_values' => $options_values,
+]);
 
-echo '<div class="mbm">' . elgg_echo('event_calendar:file:upload') . '<br>';
-echo elgg_view('input/file', array('name' => 'ical_file'));
-echo '</div>';
+echo elgg_view_field([
+	'#type' => 'file',
+	'#label' => elgg_echo('event_calendar:file:upload'),
+	'name' => 'ical_file',
+]);
 
-echo '<div class="mbm">' . elgg_echo('event_calendar:timezone') . '<br>';
+echo '<div class="mbm"><label for="timezone">' . elgg_echo('event_calendar:timezone') . '</label><br>';
 echo '<select name="timezone">';
 $timezone_identifiers = DateTimeZone::listIdentifiers();
 foreach($timezone_identifiers as $value ) {
@@ -53,11 +54,16 @@ foreach($timezone_identifiers as $value ) {
 	}
 }
 echo '</optgroup></select>';
-echo '<br>' . elgg_view('output/longtext', array('value' => elgg_echo('event_calendar:timezone:help'), 'class' => 'elgg-subtext'));
+echo '<br>' . elgg_view('output/longtext', ['value' => elgg_echo('event_calendar:timezone:help'), 'class' => 'elgg-subtext mtn']);
 echo '</div>';
 
-echo '<div class="mbl">' . elgg_echo('event_calendar:import:access') . ' ';
-echo elgg_view('input/access', array('name' => 'access_id'));
-echo '</div>';
+echo elgg_view_field([
+	'#type' => 'access',
+	'#label' => elgg_echo('event_calendar:import:access'),
+	'name' => 'access_id',
+]);
 
-echo elgg_view('input/submit', array('value' => elgg_echo('event_calendar:import')));
+echo elgg_view_field([
+	'#type' => 'submit',
+	'value' => elgg_echo('event_calendar:import'),
+]);
