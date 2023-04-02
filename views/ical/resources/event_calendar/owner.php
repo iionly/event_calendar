@@ -8,13 +8,14 @@ $start_date = elgg_extract('start_date', $vars, '');
 $display_mode = elgg_extract('display_mode', $vars, '');
 $filter = elgg_extract('filter_mode', $vars, '');
 $region = elgg_extract('region', $vars, '-');
+$format = elgg_extract('format', $vars, false);
 
 if (!$container_guid) {
 	elgg_gatekeeper();
 	$container_guid = elgg_get_logged_in_user_guid();
 }
 
-$events = event_calendar_get_ical_events('owner', $container_guid, $start_date, $display_mode, $filter, $region);
+$events = event_calendar_get_ical_events('owner', $container_guid, $start_date, $display_mode, $filter, $region, $format);
 
 if (!$events) {
 	register_error(elgg_echo('event_calendar:no_events_found'));
@@ -106,7 +107,9 @@ foreach($events as $event) {
 	}
 
 	$vevent->setProperty('description', $description);
-	$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
+	if (elgg_get_plugin_setting('set_organizer', 'event_calendar', 'yes') == 'yes') {
+		$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
+	}
 	$vevent->setProperty( "X-PROP-REGION", $event->region );
 	$vevent->setProperty( "X-PROP-TYPE", $event->event_type );
 	$vevent->setProperty( "X-PROP-FEES", $event->fees );

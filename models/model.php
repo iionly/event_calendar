@@ -1256,8 +1256,19 @@ function event_calendar_prepare_edit_form_vars($event = null, $page_type = '', $
 	return $values;
 }
 
-function event_calendar_generate_listing_params($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-') {
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
+function event_calendar_generate_listing_params($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-', $format) {
+	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar', 'month');
+	$event_calendar_listing_format_allow_user_change = elgg_get_plugin_setting('listing_format_allow_user_change', 'event_calendar', 'yes');
+	if ($event_calendar_listing_format_allow_user_change == 'yes') {
+		if ($format && in_array($format, ['paged', 'agenda', 'month', 'full'])) {
+			$event_calendar_listing_format = $format;
+		} else {
+			$user = elgg_get_logged_in_user_entity();
+			if ($user->event_calendar_format && in_array($user->event_calendar_format, ['paged', 'agenda', 'month', 'full'])) {
+				$event_calendar_listing_format = $user->event_calendar_format;
+			}
+		}
+	}
 	$event_calendar_spots_display = trim(elgg_get_plugin_setting('spots_display', 'event_calendar'));
 	$event_calendar_first_date = trim(elgg_get_plugin_setting('first_date', 'event_calendar'));
 	$event_calendar_last_date = trim(elgg_get_plugin_setting('last_date', 'event_calendar'));
@@ -1488,8 +1499,19 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 	return $params;
 }
 
-function event_calendar_get_ical_events($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-') {
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
+function event_calendar_get_ical_events($page_type, $container_guid, $original_start_date, $display_mode, $filter, $region='-', $format) {
+	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar', 'month');
+	$event_calendar_listing_format_allow_user_change = elgg_get_plugin_setting('listing_format_allow_user_change', 'event_calendar', 'yes');
+	if ($event_calendar_listing_format_allow_user_change == 'yes') {
+		if ($format && in_array($format, ['paged', 'agenda', 'month', 'full'])) {
+			$event_calendar_listing_format = $format;
+		} else {
+			$user = elgg_get_logged_in_user_entity();
+			if ($user->event_calendar_format && in_array($user->event_calendar_format, ['paged', 'agenda', 'month', 'full'])) {
+				$event_calendar_listing_format = $user->event_calendar_format;
+			}
+		}
+	}
 	$event_calendar_first_date = trim(elgg_get_plugin_setting('first_date', 'event_calendar'));
 	$event_calendar_last_date = trim(elgg_get_plugin_setting('last_date', 'event_calendar'));
 

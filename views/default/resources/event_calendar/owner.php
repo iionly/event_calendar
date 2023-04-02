@@ -8,6 +8,7 @@ $start_date = elgg_extract('start_date', $vars, '');
 $display_mode = elgg_extract('display_mode', $vars, '');
 $filter = elgg_extract('filter_mode', $vars, '');
 $region = elgg_extract('region', $vars, '-');
+$format = elgg_extract('format', $vars, false);
 
 if (!$container_guid) {
 	elgg_gatekeeper();
@@ -28,7 +29,7 @@ if (event_calendar_can_add()) {
 	]);
 }
 
-$params = event_calendar_generate_listing_params('owner', $container_guid, $start_date, $display_mode, $filter, $region);
+$params = event_calendar_generate_listing_params('owner', $container_guid, $start_date, $display_mode, $filter, $region, $format);
 $title = $params['title'];
 
 if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {

@@ -18,9 +18,13 @@ function event_calendar_init() {
 	elgg_register_library('elgg:event_calendar', elgg_get_plugins_path() . 'event_calendar/models/model.php');
 	elgg_register_library('event_calendar:ical', elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
 
+	// extend the account settings form
+	elgg_extend_view('forms/account/settings', 'core/settings/account/event_calendar', 110);
+
 	elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
 	elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
 	elgg_register_plugin_hook_handler('prepare', 'notification:create:object:event_calendar', 'event_calendar_prepare_notification');
+	elgg_register_plugin_hook_handler('usersettings:save', 'user', 'event_calendar_set_user_listing_format');
 
 	// Register a page handler, so we can have nice URLs
 	elgg_register_page_handler('event_calendar', 'event_calendar_page_handler');
@@ -62,11 +66,7 @@ function event_calendar_init() {
 
 	// add to the css
 	elgg_extend_view('css/elgg', 'event_calendar/css');
-
-	$event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
-	if (elgg_is_active_plugin('event_poll') || ($event_calendar_listing_format == 'full')) {
-		elgg_extend_view('css/elgg', 'fullcalendar/css');
-	}
+	elgg_extend_view('css/elgg', 'fullcalendar/css');
 
 	// add a widget
 	elgg_register_widget_type('event_calendar', elgg_echo("event_calendar:widget_title"), elgg_echo('event_calendar:widget:description'));
@@ -238,6 +238,10 @@ function event_calendar_page_handler($page) {
 				$resource_vars['start_date'] = 0;
 				set_input('ical_date', 0);
 			}
+			$format = get_input('format', false);
+			if ($format && in_array($format, ['paged', 'agenda', 'month', 'full'])) {
+				$resource_vars['format'] = $format;
+			}
 			echo elgg_view_resource('event_calendar/list', $resource_vars);
 			break;
 		case 'view':
@@ -324,6 +328,10 @@ function event_calendar_page_handler($page) {
 				$resource_vars['container_guid'] = elgg_get_page_owner_guid();
 				set_input('ical_group_guid', $page[1], $resource_vars['container_guid']);
 			}
+			$format = get_input('format', false);
+			if ($format && in_array($format, ['paged', 'agenda', 'month', 'full'])) {
+				$resource_vars['format'] = $format;
+			}
 			echo elgg_view_resource('event_calendar/group', $resource_vars);
 			break;
 		case 'owner':
@@ -354,6 +362,10 @@ function event_calendar_page_handler($page) {
 			} else {
 				elgg_gatekeeper();
 				$resource_vars['container_guid'] = elgg_get_logged_in_user_guid();
+			}
+			$format = get_input('format', false);
+			if ($format && in_array($format, ['paged', 'agenda', 'month', 'full'])) {
+				$resource_vars['format'] = $format;
 			}
 			echo elgg_view_resource('event_calendar/owner', $resource_vars);
 			break;
@@ -672,4 +684,43 @@ function event_calendar_tool_widgets_handler($hook, $type, $return_value, $param
 	}
 
 	return $return_value;
+}
+
+
+// Save user setting of listing format event calendar should use
+function event_calendar_set_user_listing_format($hook, $type, $return_value, $params) {
+	$event_calendar_format = get_input('event_calendar_format');
+	$user_guid = get_input('guid');
+
+	if (!isset($event_calendar_format)) {
+		return;
+	}
+	
+	if ($user_guid) {
+		$user = get_user($user_guid);
+	} else {
+		$user = elgg_get_logged_in_user_entity();
+	}
+
+	$listing_options = ['paged', 'agenda', 'month', 'full'];
+
+	if ($user && $event_calendar_format) {
+		if (in_array($event_calendar_format, $listing_options)) {
+			if ($user->event_calendar_format === $event_calendar_format) {
+				return true;
+			}
+			$user->event_calendar_format = $event_calendar_format;
+			if ($user->save()) {
+				return true;
+			} else {
+				register_error(elgg_echo('event_calendar:event_calendar_format:fail'));
+			}
+		} else {
+			// no change
+			return;
+		}
+	} else {
+		register_error(elgg_echo('event_calendar:event_calendar_format:fail'));
+	}
+	return false;
 }

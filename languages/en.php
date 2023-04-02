@@ -4,6 +4,8 @@ return [
 	'admin:administer_utilities:event_calendar' => 'Event calendar',
 	'item:object:event_calendar' => "Event calendar",
 	'tag_names:event_tags' => "Tags",
+	'user:set:event_calendar_format' => 'Event Calendar',
+	'user:event_calendar_format:label' => 'Event listing format?',
 	'event_calendar:new_event' => "New event",
 	'event_calendar:add_event_title' => "Add event",
 	'event_calendar:manage_event_title' => "Edit event",
@@ -99,6 +101,7 @@ return [
 	'event_calendar:settings:month' => "by month",
 	'event_calendar:settings:full' => "full view",
 	'event_calendar:settings:listing_format:title' => "Event listing format?",
+	'event_calendar:settings:listing_format_allow_user_change:title' => "Allow users to set or change respectively the event listing format?",
 	'event_calendar:paged:column:date' => "Date",
 	'event_calendar:paged:column:time'	=> "Time",
 	'event_calendar:paged:column:event' => "Event",
@@ -178,6 +181,10 @@ You can manage calendar requests for this event here:
 	'event_calendar:show_open' => "Open events",
 	'event_calendar:show_mine' => "Mine",
 	'event_calendar:show_friends' => "Friends",
+	'event_calendar:format:paged' => "Paged view",
+	'event_calendar:format:agenda' => "Agenda view",
+	'event_calendar:format:month' => "View by month",
+	'event_calendar:format:full' => "Full view",
 
 	'event_calendar:listing_title:all' => "All events",
 	'event_calendar:listing_title:open' => "Open events",
@@ -318,8 +325,8 @@ You can visit the event page here:
 	/**
 	 * Event calendar iCal
 	 **/
-
 	'event_calendar:settings:ical_import_export' => "Allow events to be imported from and exported to iCal?",
+	'event_calendar:settings:set_organizer:title' => "Include the organizer field when exporting events to iCal?",
 	'event_calendar:timezone' => "Import using which timezone?",
 	'event_calendar:timezone:help' => "Depending on the timezone of the server that exported the data the listed dates/times may be off if different from the timezone of this server. If in doubt, leave it as the default which is this servers timezone.",
 	'event_calendar:tooltip' => "Export/Import to iCal",
@@ -356,4 +363,10 @@ You can visit the event page here:
 	'event_calendar:administer:error_no_interval' => "Error: you haven't selected a time period for deletion of events older than this period.",
 	'event_calendar:administer:error_invalid_interval' => "Sorry: an unknown error occured.",
 	'event_calendar:administer:delete_past_events_result' => "Deletion of past events finished. There were %s past events removed. For %s events the removal failed.",
+
+	/**
+	 * Event calendar user settings
+	 **/	
+	'event_calendar:event_calendar_format:success' => 'Your choice for the event calendar listing format successfully saved.',
+	'event_calendar:event_calendar_format:fail' => 'An error occured on saving your choice of the event calendar listing format.',
 ];

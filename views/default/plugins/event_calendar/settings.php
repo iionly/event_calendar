@@ -82,6 +82,15 @@ $body .= elgg_view_field([
 	'options' => $listing_options,
 ]);
 
+$event_calendar_listing_format_allow_user_change = elgg_get_plugin_setting('listing_format_allow_user_change', 'event_calendar', 'yes');
+$body .= elgg_view_field([
+	'#type' => 'radio',
+	'#label' => elgg_echo('event_calendar:settings:listing_format_allow_user_change:title'),
+	'name' => 'params[listing_format_allow_user_change]',
+	'value' => $event_calendar_listing_format_allow_user_change,
+	'options' => $yn_options,
+]);
+
 $event_calendar_repeated_events = elgg_get_plugin_setting('repeated_events', 'event_calendar', 'no');
 $body .= elgg_view_field([
 	'#type' => 'radio',
@@ -358,6 +367,15 @@ $body .= elgg_view_field([
 	'#label' => elgg_echo('event_calendar:settings:ical_import_export'),
 	'name' => 'params[ical_import_export]',
 	'value' => $event_calendar_ical_import_export,
+	'options' => $yn_options,
+]);
+
+$event_calendar_set_organizer = elgg_get_plugin_setting('set_organizer', 'event_calendar', 'yes');
+$body .= elgg_view_field([
+	'#type' => 'radio',
+	'#label' => elgg_echo('event_calendar:settings:set_organizer:title'),
+	'name' => 'params[set_organizer]',
+	'value' => $event_calendar_set_organizer,
 	'options' => $yn_options,
 ]);
 

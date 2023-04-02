@@ -4,6 +4,8 @@ return [
 	'admin:administer_utilities:event_calendar' => 'Event-Kalender',
 	'item:object:event_calendar' => "Event-Kalender",
 	'tag_names:event_tags' => "Tags",
+	'user:set:event_calendar_format' => 'Event-Kalender',
+	'user:event_calendar_format:label' => 'Format der Event-Ansicht?',
 	'event_calendar:new_event' => "Neues Event",
 	'event_calendar:add_event_title' => "Event hinzufügen",
 	'event_calendar:manage_event_title' => "Event bearbeiten",
@@ -99,6 +101,7 @@ return [
 	'event_calendar:settings:month' => "Events nach Monat sortiert",
 	'event_calendar:settings:full' => "Detailmodus",
 	'event_calendar:settings:listing_format:title' => "Format der Event-Ansicht?",
+	'event_calendar:settings:listing_format_allow_user_change:title' => "Benutzer erlauben, die Event-Ansicht selbst festzulegen bzw.  zu ändern?",
 	'event_calendar:paged:column:date' => "Datum",
 	'event_calendar:paged:column:time'	=> "Zeit",
 	'event_calendar:paged:column:event' => "Event",
@@ -178,6 +181,10 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:show_open' => "Events mit freien Plätzen",
 	'event_calendar:show_mine' => "Meine",
 	'event_calendar:show_friends' => "Freunde",
+	'event_calendar:format:paged' => "Listen-Ansicht",
+	'event_calendar:format:agenda' => "Agenda-Ansicht",
+	'event_calendar:format:month' => "Monats-Ansicht",
+	'event_calendar:format:full' => "Detail-Ansicht",
 
 	'event_calendar:listing_title:all' => "Alle Events",
 	'event_calendar:listing_title:open' => "Events mit freien Plätzen",
@@ -318,8 +325,8 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	/**
 	 * Event calendar iCal
 	 **/
-
 	'event_calendar:settings:ical_import_export' => "Importieren von Events im iCal-Format bzw. Exportieren von Events ins iCal-Format erlauben?",
+	'event_calendar:settings:set_organizer:title' => "Soll das Organizer-Feld beim iCal-Export befüllt werden?",
 	'event_calendar:timezone' => "Welche Zeitzone soll beim Importieren verwendet werden?",
 	'event_calendar:timezone:help' => "Abhängig von der verwendeten Zeitzone des Computers, auf dem die iCal-Datei erzeugt wurde, kann es beim Datum bzw. der Zeit der importierten Events zu Abweichungen kommen, wenn der Server, auf diese Community-Seite gehostet ist, eine andere Zeitzone verwendet. Wenn Du nicht sicher bist, welche Zeitzone Du auswählen sollst, belasse es bei der Voreinstellung, die der Zeitzone dieses Servers entspricht.",
 	'event_calendar:tooltip' => "Exportieren in /Importieren von iCal",
@@ -356,4 +363,10 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	'event_calendar:administer:error_no_interval' => "Fehler: Du hast keine Zeitspanne ausgewählt, die die zu löschenden Events mindestens zurückliegen müssen.",
 	'event_calendar:administer:error_invalid_interval' => "Entschuldigung: ein unbekannter Fehler ist aufgetreten.",
 	'event_calendar:administer:delete_past_events_result' => "Das Löschen der zurückliegenden Events ist abgeschlossen. Es wurden %s Events gelöscht. Bei %s Events ist das Löschen fehlgeschlagen.",
+	
+	/**
+	 * Event calendar user settings
+	 **/	
+	'event_calendar:event_calendar_format:success' => 'Deine Auswahl für das Anzeigeformat, das Event Calendar verwenden soll, wurde gespeichert.',
+	'event_calendar:event_calendar_format:fail' => 'Beim Speichern Deiner Auswahl für das Anzeigeformat, das Event Calendar verwenden soll, ist ein Fehler aufgetreten.',
 ];

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.3.4 (iionly)
+--------------
+
+- Added plugin option to allow/disallow users selecting their preference in calendar listing format (as user setting) and added sidebar menu entry to select calendar listing format,
+- Added plugin option to allow/prevent the organizer field to be included when exporting an even with iCal (thanks to dploeger).
+
 2.3.3 (iionly)
 --------------
 
