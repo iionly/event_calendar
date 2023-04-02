@@ -23,7 +23,7 @@ if ($_SERVER['QUERY_STRING']) {
 	$link_bit .= "?" . $_SERVER['QUERY_STRING'];
 }
 
-$user_language = get_language();
+$user_language = get_current_language();
 $user_language = ($user_language == false) ? 'en' : $user_language;
 $first_day_of_week = event_calendar_get_first_day_of_week($user_language);
 

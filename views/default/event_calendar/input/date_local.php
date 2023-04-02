@@ -53,5 +53,5 @@ if (is_numeric($vars['value'])) {
 	$vars['value'] = date('Y-m-d', $vars['value']);
 }
 
-$attributes = elgg_format_attributes($vars);
+$attributes = _elgg_services()->html_formatter->formatAttributes($vars);
 echo "<input type=\"text\" $attributes />";

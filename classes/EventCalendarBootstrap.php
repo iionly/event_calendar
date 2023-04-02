@@ -19,9 +19,6 @@ class EventCalendarBootstrap extends DefaultPluginBootstrap {
 	}
 
 	public function init() {
-		// extend the account settings form
-		elgg_extend_view('forms/usersettings/save', 'core/settings/account/event_calendar', 110);
-
 		elgg_register_plugin_hook_handler('cron', 'fiveminute', 'event_calendar_handle_reminders_cron', 400);
 		elgg_register_plugin_hook_handler('entity:url', 'object', 'event_calendar_url');
 		elgg_register_plugin_hook_handler('prepare', 'notification:create:object:event_calendar', 'event_calendar_prepare_notification');
@@ -48,7 +45,6 @@ class EventCalendarBootstrap extends DefaultPluginBootstrap {
 		$group_calendar = elgg_get_plugin_setting('group_calendar', 'event_calendar');
 		if (!$group_calendar || $group_calendar != 'no') {
 			elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'event_calendar_owner_block_menu');
-			elgg_extend_view('groups/tool_latest', 'event_calendar/group_module');
 
 			elgg_register_widget_type('groups_event_calendar', elgg_echo("widgets:groups_event_calendar:name"), elgg_echo('widgets:groups_event_calendar:description'), ["groups"]);
 
@@ -66,10 +62,6 @@ class EventCalendarBootstrap extends DefaultPluginBootstrap {
 				]);
 			}
 		}
-
-		// add to the css
-		elgg_extend_view('css/elgg', 'event_calendar/css');
-		elgg_extend_view('css/elgg', 'fullcalendar/css');
 
 		// register title urls for widgets
 		elgg_register_plugin_hook_handler("entity:url", "object", "event_calendar_widget_urls");

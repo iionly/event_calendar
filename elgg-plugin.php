@@ -249,4 +249,16 @@ return [
 			'event_calendar/' => __DIR__ . '/graphics',
 		],
 	],
+	'view_extensions' => [
+		'css/elgg' => [
+			'event_calendar/css' => [],
+			'fullcalendar/css' => [],
+		],
+		'forms/usersettings/save' => [
+			'core/settings/account/event_calendar' => ['priority' => 110],
+		],
+		'groups/tool_latest' => [
+			'event_calendar/group_module' => [],
+		],
+	],
 ];

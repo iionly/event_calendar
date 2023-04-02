@@ -1333,7 +1333,7 @@ function event_calendar_generate_listing_params($page_type, $container_guid, $or
 				$start_ts = strtotime($original_start_date);
 				$start_ts -= date("w", $start_ts)*$day;
 				// First day Sunday or Monday (depending on user/site language)
-				$user_language = get_language();
+				$user_language = get_current_language();
 				$user_language = ($user_language == false) ? 'en' : $user_language;
 				$first_day_of_week = event_calendar_get_first_day_of_week($user_language);
 				if ($first_day_of_week == 1) {
@@ -1946,7 +1946,11 @@ function event_calendar_can_add($group_guid=0, $user_guid=0) {
 		$site_calendar = elgg_get_plugin_setting('site_calendar', 'event_calendar');
 		if (!$site_calendar || $site_calendar == 'admin') {
 			// only admins can post directly to the site-wide calendar
-			return elgg_is_admin_user($user_guid);
+			$user = get_entity($user_guid);
+			if (($user instanceof ElggUser) && $user->isAdmin()) {
+				return true;
+			}
+			return false;
 		} else if ($site_calendar == 'loggedin') {
 			// any logged-in user can post to the site calendar
 			return true;

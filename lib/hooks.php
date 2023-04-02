@@ -232,7 +232,7 @@ function event_calendar_invalidate_cache(\Elgg\Hook $hook) {
 	$plugin = $hook->getParam('plugin');
 	
 	if (isset($plugin) && ($plugin->getID() == "event_calendar")) {
-		elgg_invalidate_simplecache();
+		elgg_clear_caches();
 	}
 }
 
