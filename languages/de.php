@@ -32,8 +32,6 @@ return [
 	'event_calendar:group' => "Gruppen-Kalender",
 	'event_calendar:new' => "Event hinzufügen",
 	'event_calendar:submit' => "Speichern",
-	'event_calendar:widget_title' => "Event-Kalender",
-	'event_calendar:widget:description' => "Deine Events anzeigen.",
 	'event_calendar:num_display' => "Anzahl der anzuzeigenden Events.",
 	'event_calendar:when_label' => "Wann",
 	'event_calendar:delete_response' => "Das Event wurde gelöscht.",
@@ -44,6 +42,7 @@ return [
 	'event_calendar:add_to_my_calendar_response' => "Das Event wurde zu Deinem persönlichen Kalender hinzugefügt.",
 	'event_calendar:add_to_my_calendar_error' => "Dieses Event konnte nicht zu Deinem persönlichen Kalender hinzugefügt werden (vielleicht ist das Event bereits ausgebucht oder es findet zu einer Zeit statt, zu der bereits ein anderes Event in Deinem persönlichen Kalender eingetragen ist).",
 	'event_calendar:remove_from_my_calendar_response' => "Das Event wurde aus Deinem persönlichen Kalender entfernt.",
+	'event_calendar:remove_from_my_calendar_response:error' => "Fehler: das Löschen des Events aus DeDeinem persönlichen Kalender ist fehlgeschlagen.",
 	'event_calendar:add_to_the_calendar' => "Zum Kalender hinzufügen",
 	'event_calendar:remove_from_the_calendar' => "Aus dem Kalender entfernen",
 	'event_calendar:add_to_the_calendar_menu_text' => "Zu meinem Kalender hinzufügen",
@@ -163,6 +162,7 @@ Du kannst die Teilnahme-Anfrage hier bearbeiten:
 	'event_calendar:add_to_group:add_group_title' => "Dieses Event zum Gruppen-Kalender hinzufügen",
 	'event_calendar:add_to_group:add_group_button' => "Hinzufügen zum Gruppen-Kalender",
 	'event_calendar:add_to_group:success' => "Das Event wurde zum Gruppen-Kalender hinzugefügt.",
+	'event_calendar:add_to_group:error' => "Fehler: beim Hinzufügen des Events zum Gruppen-Kalender ist ein Fehler aufgetreten.",
 	'event_calendar:settings:add_to_group_calendar:title' => "Gruppen-Admins erlauben, jedes existierende Event zu einem Gruppen-Kalender hinzuzufügen?",
 
 	'event_calendar:no_group' => "Diese Gruppe konnte nicht gefunden werden.",
@@ -295,7 +295,6 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	/**
 	 * BBB support
 	*/
-
 	'event_calendar:bbb_server_url' => "Big Blue Button-Server-URL (muss mit einem Slash enden):",
 	'event_calendar:bbb_security_salt' => "Big Blue Button-Security-Salt:",
 	'event_calendar:conference_create_error' => "Fehler: die Erstellung einer Webkonferenz ist fehlgeschlagen.",
@@ -308,12 +307,23 @@ Du kannst Dir die Details des Events hier anzeigen lassen:
 	/**
 	 * Event calendar river
 	 **/
+	'river:object:event_calendar:update' => "%s aktualisierte das Event %s",
+	'river:object:event_calendar:create' => "%s fügte das Event %s hinzu",
+	'river:object:comment:event_calendar' => '%s kommentierte das Event %s',
 
-	'river:update:object:event_calendar' => "%s aktualisierte das Event %s",
-	'river:create:object:event_calendar' => "%s fügte das Event %s hinzu",
-	'river:comment:object:event_calendar' => '%s kommentierte das Event %s',
+	/**
+	 * Widgets
+	 **/
+	'event_calendar:widget_title' => "Event-Kalender",
+	'widgets:event_calendar:description' => "Deine Events anzeigen.",
+	'widgets:index_event_calendar:name' => "Event-Kalender",
+	'widgets:index_event_calendar:description' => "Deine Events anzeigen.",
+	'widgets:groups_event_calendar:name' => "Event-Kalender",
+	'widgets:groups_event_calendar:description' => "Deine Events anzeigen.",
 
-		// Notifications
+	/**
+	 * Notifications
+	 **/
 	'event_calendar:notify:subject' => 'Neues Event: %s',
 	'event_calendar:notify:body' => '%s hat ein neues Event hinzugefügt: %s
 

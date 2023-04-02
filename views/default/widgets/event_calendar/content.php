@@ -11,17 +11,15 @@
  *
  */
 
-//the number of events to display
-$num = (int) $vars['entity']->num_display;
-if (!$num) {
-	$num = 4;
-}
+$widget = elgg_extract('entity', $vars);
+
+$limit = (int) $widget->num_display ?: 4;
 
 // Get the events
 $one_day = time() - 60*60*24;
-$options = [
+$events = elgg_get_entities([
 	'type' => 'object',
-	'subtype' => 'event_calendar',
+	'subtype' => EventCalendar::SUBTYPE,
 	'relationship' => 'personal_event',
 	'relationship_guid' => elgg_get_page_owner_guid(),
 	'metadata_name_value_pairs' => [
@@ -34,10 +32,8 @@ $options = [
 		'direction' => 'ASC',
 		'as' => 'integer',
 	],
-	'limit' => $num,
-];
-
-$events = elgg_get_entities_from_relationship($options);
+	'limit' => $limit,
+]);
 
 // If there are any events to view, view them
 if (is_array($events) && sizeof($events) > 0) {
@@ -47,13 +43,12 @@ if (is_array($events) && sizeof($events) > 0) {
 	}
 	echo "</div>";
 
-	$event_url = "event_calendar/owner/" . elgg_get_page_owner_entity()->username;
-	$viewall_link = elgg_view('output/url', [
-		'href' => $event_url,
+	$more_link = elgg_view('output/url', [
+		'href' => "event_calendar/owner/" . elgg_get_page_owner_entity()->username,
 		'text' => elgg_echo('link:view:all'),
 		'is_trusted' => true,
 	]);
-	echo "<span class=\"elgg-widget-more\">$viewall_link</span>";
+	echo "<div class=\"elgg-widget-more\">$more_link</div>";
 } else {
-	echo elgg_echo('event_calendar:no_events_found');
+	echo '<p>' . elgg_echo('event_calendar:no_events_found') . '</p>';
 }

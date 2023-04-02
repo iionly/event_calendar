@@ -32,8 +32,6 @@ return [
 	'event_calendar:group' => "Group calendar",
 	'event_calendar:new' => "Add event",
 	'event_calendar:submit' => "Save",
-	'event_calendar:widget_title' => "Event calendar",
-	'event_calendar:widget:description' => "Displays your events.",
 	'event_calendar:num_display' => "Number of events to display.",
 	'event_calendar:when_label' => "When",
 	'event_calendar:delete_response' => "This event has been deleted.",
@@ -44,6 +42,7 @@ return [
 	'event_calendar:add_to_my_calendar_response' => "This event has been added to your personal calendar.",
 	'event_calendar:add_to_my_calendar_error' => "This event could not added to your personal calendar (perhaps the event is full or is scheduled at the same time as another event in your personal calendar).",
 	'event_calendar:remove_from_my_calendar_response' => "This event has been removed from your personal calendar.",
+	'event_calendar:remove_from_my_calendar_response:error' => "Error: failed to remove this event from your personal calendar.",
 	'event_calendar:add_to_the_calendar' => "Add to calendar",
 	'event_calendar:remove_from_the_calendar' => "Remove",
 	'event_calendar:add_to_the_calendar_menu_text' => "Add to mine",
@@ -163,6 +162,7 @@ You can manage calendar requests for this event here:
 	'event_calendar:add_to_group:add_group_title' => "Add this event to group",
 	'event_calendar:add_to_group:add_group_button' => "Add to group",
 	'event_calendar:add_to_group:success' => "Event added to group calendar.",
+	'event_calendar:add_to_group:error' => "Error: could not add this event to group calendar.",
 	'event_calendar:settings:add_to_group_calendar:title' => "Allow group admins to add any existing event to a group calendar?",
 
 	'event_calendar:no_group' => "There is no such group.",
@@ -295,7 +295,6 @@ You can visit the event page here:
 	/**
 	 * BBB support
 	*/
-
 	'event_calendar:bbb_server_url' => "Big Blue Button server URL (must end with slash):",
 	'event_calendar:bbb_security_salt' => "Big Blue Button security salt:",
 	'event_calendar:conference_create_error' => "Error: unable to create web conference.",
@@ -308,12 +307,23 @@ You can visit the event page here:
 	/**
 	 * Event calendar river
 	 **/
+	'river:object:event_calendar:update' => "%s updated the event %s",
+	'river:object:event_calendar:create' => "%s added the event %s",
+	'river:object:comment:event_calendar' => '%s commented on the event %s',
 
-	'river:update:object:event_calendar' => "%s updated the event %s",
-	'river:create:object:event_calendar' => "%s added the event %s",
-	'river:comment:object:event_calendar' => '%s commented on the event %s',
+	/**
+	 * Widgets
+	 **/
+	'event_calendar:widget_title' => "Event calendar",
+	'widgets:event_calendar:description' => "Displays your events.",
+	'widgets:index_event_calendar:name' => "Event calendar",
+	'widgets:index_event_calendar:description' => "Displays your events.",
+	'widgets:groups_event_calendar:name' => "Event calendar",
+	'widgets:groups_event_calendar:description' => "Displays your events.",
 
-	// Notifications
+	/**
+	 * Notifications
+	 **/
 	'event_calendar:notify:subject' => 'New event: %s',
 	'event_calendar:notify:body' => '%s has created a new event: %s
 

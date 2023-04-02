@@ -1,13 +1,15 @@
 <?php
 
-/**
- * Event calendar river view.
- */
-
-$item = $vars['item'];
-/* @var ElggRiverItem $item */
+$item = elgg_extract('item', $vars);
+if (!($item instanceof ElggRiverItem)) {
+	return;
+}
 
 $object = $item->getObjectEntity();
+if (!($object instanceof EventCalendar)) {
+	return;
+}
+
 $excerpt = strip_tags($object->description);
 $excerpt = elgg_get_excerpt($excerpt);
 

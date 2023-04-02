@@ -21,7 +21,8 @@ if($event_calendar_hide_access == 'yes') {
 	}
 } else {
 	$body .= '<div class="mbm"><label>'.elgg_echo('event_calendar:read_access').' '.'</label>';
-	$body .= elgg_view("input/access", [
+	$body .= elgg_view_field([
+		'#type' => 'access',
 		'name' => 'access_id',
 		'value' => $fd['access_id'],
 	]);

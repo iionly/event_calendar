@@ -12,6 +12,7 @@ define(function(require) {
 		$('#event-calendar-edit').on('submit', handleEditFormSubmit);
 		$('.event-calendar-edit-schedule-type').on('click', handleScheduleType);
 		$("[name='start_date']").datepicker().on('change', handleStartDateChange);
+		$("[name='end_date']").datepicker();
 		handleScheduleType();
 
 		var all_day_field = $('[name="all_day"][type="checkbox"]');

@@ -4,7 +4,7 @@
  *
  */
 
-$event_calendar_listing_format_allow_user_change = elgg_get_plugin_setting('listing_format_allow_user_change', 'event_calendar', 'yes');
+$event_calendar_listing_format_allow_user_change = elgg_get_plugin_setting('listing_format_allow_user_change', 'event_calendar');
 
 if ($event_calendar_listing_format_allow_user_change != 'yes') {
 	return;
@@ -17,7 +17,7 @@ if (!($user instanceof ElggUser)) {
 }
 
 if (!$user->event_calendar_format) {
-	$user->event_calendar_format = $event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar', 'month');
+	$user->event_calendar_format = $event_calendar_listing_format = elgg_get_plugin_setting('listing_format', 'event_calendar');
 }
 
 $listing_options = [

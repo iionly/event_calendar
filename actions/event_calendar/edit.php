@@ -11,13 +11,11 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
-
 // start a new sticky form session in case of failure
 elgg_make_sticky_form('event_calendar');
 
-$event_guid = get_input('event_guid', 0);
-$group_guid = get_input('group_guid', 0);
+$event_guid = (int) get_input('event_guid', 0);
+$group_guid = (int) get_input('group_guid', 0);
 $event = event_calendar_set_event_from_form($event_guid, $group_guid);
 
 if ($event) {
@@ -27,7 +25,7 @@ if ($event) {
 	if ($event_guid) {
 		$action = 'update';
 
-		system_message(elgg_echo('event_calendar:manage_event_response'));
+		$message = elgg_echo('event_calendar:manage_event_response');
 	} else {
 		$action = 'create';
 
@@ -36,7 +34,7 @@ if ($event) {
 			event_calendar_add_personal_event($event->guid, $user_guid);
 		}
 
-		system_message(elgg_echo('event_calendar:add_event_response'));
+		$message = elgg_echo('event_calendar:add_event_response');
 	}
 
 	elgg_create_river_item([
@@ -46,21 +44,21 @@ if ($event) {
 		'object_guid' => $event->guid,
 	]);
 
+	$forward = $event->getURL();
 	if ($event->schedule_type == 'poll') {
-		forward('event_poll/add/'.$event->guid);
+		$forward = 'event_poll/add/' . $event->guid;
 	}
 
-	forward($event->getURL());
+	return elgg_ok_response('', $message, $forward);
 } else {
 	// redisplay form with error message
-	register_error(elgg_echo('event_calendar:manage_event_error'));
+	$forward = 'event_calendar/add/';
 	if ($event_guid) {
-		forward('event_calendar/edit/'.$event_guid);
+		$forward = 'event_calendar/edit/' . $event_guid;
 	} else {
 		if ($group_guid) {
-			forward('event_calendar/add/'.$group_guid);
-		} else {
-			forward('event_calendar/add/');
+			$forward = 'event_calendar/add/' . $group_guid;
 		}
 	}
+	return elgg_error_response(elgg_echo('event_calendar:manage_event_error'), $forward);
 }

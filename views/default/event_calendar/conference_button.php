@@ -7,7 +7,6 @@
 $event = $vars['event'];
 
 if ($event) {
-	elgg_load_library('elgg:event_calendar');
 	$user_guid = elgg_get_logged_in_user_guid();
 	$termination_time = strtotime("1 day", $event->real_end_time);
 	if ($termination_time < time()) {

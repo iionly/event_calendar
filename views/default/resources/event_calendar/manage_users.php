@@ -6,7 +6,7 @@
 // TODO: make this an optional feature, toggled off
 elgg_require_js('event_calendar/event_calendar');
 
-$event_guid = elgg_extract('event_guid', $vars, '');
+$event_guid = elgg_extract('guid', $vars, '');
 
 $event = get_entity($event_guid);
 $limit = 10;
@@ -21,14 +21,14 @@ if ($event_calendar_add_users != 'yes') {
 
 elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), 'event_calendar/list');
 
-if (!elgg_instanceof($event, 'object', 'event_calendar')) {
+if (!($event instanceof EventCalendar)) {
 	$content = elgg_echo('event_calendar:error_nosuchevent');
 	$title = elgg_echo('event_calendar:generic_error_title');
 } else {
 	$title = elgg_echo('event_calendar:manage_users:title', [$event->title]);
 	$event_container = get_entity($event->container_guid);
 	if ($event_container->canEdit()) {
-		if (elgg_instanceof($event_container, 'group')) {
+		if ($event_container instanceof ElggGroup) {
 			elgg_set_page_owner_guid($event->container_guid);
 			elgg_push_breadcrumb($event_container->name, 'event_calendar/group/' . $event->container_guid);
 			if ($event_container->canEdit()) {
@@ -99,6 +99,6 @@ $params = [
 	'filter' => '',
 ];
 
-$body = elgg_view_layout("content", $params);
+$body = elgg_view_layout('default', $params);
 
 echo elgg_view_page($title, $body);

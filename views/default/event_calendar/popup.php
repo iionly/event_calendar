@@ -1,7 +1,5 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-
 $event_guid = get_input('guid', false);
 
 if (!$event_guid) {
@@ -10,33 +8,11 @@ if (!$event_guid) {
 
 $event = get_entity($event_guid);
 
-if (!elgg_instanceof($event, 'object', 'event_calendar')) {
+if (!($event instanceof EventCalendar)) {
 	return true;
 }
 
-$owner_link = elgg_view('output/url', [
-	'href' => "events/owner/" . $event->getOwnerEntity()->username,
-	'text' => $event->getOwnerEntity()->name,
-]);
-$author_text = elgg_echo('byline', [$owner_link]);
-$date = elgg_view_friendly_time($event->time_created);
-
 $owner_icon = elgg_view_entity_icon($event->getOwnerEntity(), 'tiny');
-
-$comments_count = $event->countComments();
-//only display if there are commments
-if ($comments_count != 0) {
-	$text = elgg_echo("comments") . " ($comments_count)";
-	$comments_link = elgg_view('output/url', [
-		'href' => $event->getURL() . '#comments',
-		'text' => $text,
-		'is_trusted' => true,
-	]);
-} else {
-	$comments_link = '';
-}
-
-$subtitle = "$author_text $date $comments_link";
 
 $info = '';
 $event_items = event_calendar_get_formatted_full_items($event);
@@ -44,20 +20,19 @@ $event_items = event_calendar_get_formatted_full_items($event);
 foreach($event_items as $item) {
 	$value = $item->value;
 	if (!empty($value)) {
-		$info .= '<div class="mts">';
-		$info .= '<label>' . $item->title.': </label>';
-		$info .= $item->value . '</div>';
+		$body = elgg_format_element('label', [], $item->title .": ");
+		$info .= elgg_format_element('div', ['class' => 'mts'], $body . $item->value);
 	}
 }
+
 if ($event->description) {
-	$info .= '<div class="mts">' . $event->description . '</div>';
+	$info .= elgg_format_element('div', ['class' => 'mts'], $event->description);
 }
 
 $params = [
 	'entity' => $event,
 	'title' => false,
 	'metadata' => '',
-	'subtitle' => $subtitle,
 ];
 $list_body = elgg_view('object/elements/summary', $params);
 

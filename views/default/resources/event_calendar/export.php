@@ -1,7 +1,5 @@
 <?php
 
-elgg_gatekeeper();
-
 $action_type = elgg_extract('action_type', $vars);
 
 $filter = get_input('filter', 'mine');
@@ -17,7 +15,7 @@ elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), "event_calendar/li
 if ($group_guid) {
 	$group = get_entity($group_guid);
 	// make sure group exists, has calendars enabled, and global group calendars are enabled
-	if (!elgg_instanceof($group, 'group') || $group->event_calendar_enable == 'no' || elgg_get_plugin_setting('group_calendar', 'event_calendar') == 'no') {
+	if (!($group instanceof ElggGroup) || $group->event_calendar_enable == 'no' || elgg_get_plugin_setting('group_calendar', 'event_calendar') == 'no') {
 		forward('', '404');
 	}
 
@@ -43,7 +41,7 @@ $content = elgg_view_form('event_calendar/' . $action_type, $form_vars, [
 	'region' => $region,
 ]);
 
-$layout = elgg_view_layout('content', [
+$layout = elgg_view_layout('default', [
 	'title' => $title,
 	'filter' => elgg_view('event_calendar/ical_tabs', [
 		'filter_type' => $action_type,

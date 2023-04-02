@@ -11,8 +11,6 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
-
 $listing_format = $vars['listing_format'];
 
 if ($vars['events']) {
@@ -48,18 +46,7 @@ if ($vars['events']) {
 if ($listing_format == 'paged' || $listing_format == 'full') {
 	echo $event_list;
 } else {
-?>
-	<div style="width:100%">
-		<div id="event_list" style="float:left;">
-			<?php
-			echo $event_list;
-			?>
-		</div>
-		<div style="float:right;">
-			<?php
-			echo elgg_view('event_calendar/calendar', $vars);
-			?>
-		</div>
-	</div>
-<?php
+	$output = elgg_format_element('div', ['id' => 'event_list', 'style' => 'float:left'], $event_list);
+	$output .= elgg_format_element('div', ['style' => 'float:right'], elgg_view('event_calendar/calendar', $vars));
+	echo elgg_format_element('div', ['style' => 'width:100%'], $output);
 }

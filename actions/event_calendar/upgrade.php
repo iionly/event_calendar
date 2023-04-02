@@ -10,8 +10,7 @@ require_once "{$plugins_path}event_calendar/version.php";
 $local_version = elgg_get_plugin_setting('version', 'event_calendar');
 
 if ($version <= $local_version) {
-	register_error(elgg_echo('event_calendar:upgrade:no_updates'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('event_calendar:upgrade:no_updates'), REFERER);
 }
 
 set_time_limit(0);
@@ -46,7 +45,4 @@ if ($handle = opendir($base_dir)) {
 
 elgg_set_plugin_setting('version', $version, 'event_calendar');
 
-elgg_delete_admin_notice('event_calendar_admin_notice_pending_upgrades');
-
-system_message(elgg_echo('event_calendar:upgrade:success'));
-forward(REFERER);
+return elgg_ok_response('', elgg_echo('event_calendar:upgrade:success'), REFERER);

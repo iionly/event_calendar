@@ -1,8 +1,6 @@
 <?php
 
-echo '<div class="mbl">';
-echo '<h3>' . elgg_echo('event_calendar:export:settings') . '</h3>';
-echo '</div>';
+echo elgg_format_element('div', ['class' => 'mlb'], elgg_format_element('h3', [], elgg_echo('event_calendar:export:settings')));
 
 // export which calendar
 $options_values = [];
@@ -102,7 +100,9 @@ echo elgg_view_field([
 	'style' => 'width: 120px',
 ]);
 
-echo elgg_view_field([
+$footer = elgg_view_field([
 	'#type' => 'submit',
 	'value' => elgg_echo('event_calendar:export'),
 ]);
+
+elgg_set_form_footer($footer);

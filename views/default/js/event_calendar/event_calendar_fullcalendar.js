@@ -1,6 +1,7 @@
 define(function(require) {
 	var elgg = require("elgg");
 	var $ = require("jquery");
+	var lightbox = require('elgg/lightbox');
 	require("event_calendar/fullcalendar");
 
 	var goToDateFlag = 0;
@@ -10,7 +11,7 @@ define(function(require) {
 			if (event.is_event_poll) {
 				window.location.href = event.url;
 			} else {
-				$.colorbox({'href':event.url});
+				lightbox.open({'href':event.url});
 			}
 			return false;
 		}
@@ -50,7 +51,7 @@ define(function(require) {
 		}
 	}
 
-	handleEventDrop = function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+	handleEventDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc) {
 		if (!event.is_event_poll && !confirm(elgg.echo('event_calendar:are_you_sure'))) {
 			revertFunc();
 		} else {
@@ -64,22 +65,35 @@ define(function(require) {
 			} else {
 				data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minuteDelta: minuteDelta};
 			}
-			elgg.action('event_calendar/modify_full_calendar',
-				{
-					data: data,
-					success: function (res) {
-						var success = res.success;
-						var msg = res.message;
-						if (!success) {
-							elgg.register_error(msg,2000);
-							revertFunc()
-						} else {
-							event.minutes = res.minutes;
-							event.iso_date = res.iso_date;
-						}
+			elgg.action('event_calendar/modify_full_calendar', {
+				data: data,
+				success: function (res) {
+					var success = res.success;
+					var msg = res.message;
+					if (!success) {
+						elgg.register_error(msg,2000);
+						revertFunc()
+					} else {
+						event.minutes = res.minutes;
+						event.iso_date = res.iso_date;
 					}
 				}
-			);
+			});
+		}
+	}
+
+	handleEventResizeStop = function(event, dayDelta, minutes, revertFunc) {
+		if (dayDelta != 0) {
+			revertFunc();
+		} else if (!event.is_event_poll && !confirm(elgg.echo('event_calendar:are_you_sure'))) {
+			revertFunc();
+		} else {
+			var data = {event_guid: event.guid, startTime: event.start.toISOString(), dayDelta: dayDelta, minutes: minutes};
+			elgg.action('event_calendar/modify_full_calendar', {
+				data: data,
+				success: function (res) {
+				}
+			});
 		}
 	}
 

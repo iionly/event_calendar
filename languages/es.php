@@ -28,8 +28,6 @@ return [
 	"event_calendar:group" => "Calendario de grupo",
 	"event_calendar:new" => "Añadir evento",
 	"event_calendar:submit" => "Guardar y continuar",
-	"event_calendar:widget_title" => "Calendario",
-	"event_calendar:widget:description" => "Mostrar tus eventos.",
 	"event_calendar:num_display" => "Número de eventos a mostrar",
 	"event_calendar:when_label" => "Cuándo",
 	"event_calendar:delete_response" => "El evento ha sido borrado.",
@@ -277,13 +275,19 @@ Usted puede visitar la página del evento aquí:
 
 	"event_calendar:poll_suffix" => "(encuesta)",
 	"event_calendar:resend_poll_invitation" => "¿Quieres advertir de los cambios en las opciones de encuesta a los invitados?",
-	"river:update:object:event_calendar" => "%s actualizado el evento %s",
-	"river:create:object:event_calendar" => "%s agregado el evento %s",
-	"river:comment:object:event_calendar" => "%s comentario sobre el evento %s",
+	"river:object:event_calendar:update" => "%s actualizado el evento %s",
+	"river:object:event_calendar:create" => "%s agregado el evento %s",
+	"river:object:comment:event_calendar" => "%s comentario sobre el evento %s",
 	"event_calendar:river:create" => "se ha creado un evento nuevo con el nombre:",
 	"event_calendar:notify:subject" => "Nuevo evento: %s",
 	"event_calendar:notify:body" => "%s ha creado el evento: %s
 %s
 %s",
 	"event_calendar:notify:summary" => "Nuevo evento: %s",
+	'event_calendar:widget_title' => "Calendario",
+	'widgets:event_calendar:description' => "Mostrar tus eventos.",
+	'widgets:index_event_calendar:name' => "Calendario",
+	'widgets:index_event_calendar:description' => "Mostrar tus eventos.",
+	'widgets:groups_event_calendar:name' => "Calendario",
+	'widgets:groups_event_calendar:description' => "Mostrar tus eventos.",
 ];

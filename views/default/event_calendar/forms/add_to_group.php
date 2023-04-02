@@ -27,7 +27,7 @@ if (elgg_is_admin_logged_in()) {
 
 $add_options = [];
 $remove_options = [];
-$remove_group = elgg_get_entities_from_relationship([
+$remove_group = elgg_get_entities([
 	'relationship' => 'display_on_group',
 	'relationship_guid' => $event_id,
 	'inverse_relationship' => false,

@@ -11,8 +11,6 @@
  *
  */
 
-elgg_load_library('elgg:event_calendar');
-
 if ($vars['events']) {
 	$options = [
 		'count' => $vars['count'],

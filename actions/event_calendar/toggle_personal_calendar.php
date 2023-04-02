@@ -1,9 +1,7 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-
-$event_guid = get_input('event_guid', 0);
-$user_guid = get_input('user_guid', elgg_get_logged_in_user_guid());
+$event_guid = (int) get_input('event_guid', 0);
+$user_guid = (int) get_input('user_guid', elgg_get_logged_in_user_guid());
 $other = get_input('other', '');
 
 if ($other) {
@@ -43,5 +41,4 @@ if (event_calendar_has_personal_event($event_guid, $user_guid)) {
 }
 
 echo json_encode($response);
-
 exit;

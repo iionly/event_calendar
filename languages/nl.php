@@ -30,8 +30,6 @@ return [
 	'event_calendar:group' => "Groep kalender",
 	'event_calendar:new' => "Evenement toevoegen",
 	'event_calendar:submit' => "Opslaan",
-	'event_calendar:widget_title' => "Evenementen kalender",
-	'event_calendar:widget:description' => "Laat je evenementen zien.",
 	'event_calendar:num_display' => "Aantal weer te geven evenementen.",
 	'event_calendar:when_label' => "Wanneer",
 	'event_calendar:delete_response' => "Dit evenement is verwijderd.",
@@ -290,7 +288,6 @@ Je kunt de evenementenpagina hier bezoeken:
 	/**
 	 * BBB support
 	*/
-
 	'event_calendar:bbb_server_url' => "Grote Blauwe Button server URL (moet eindigen met een slash):",
 	'event_calendar:bbb_security_salt' => "Grote Blauwe Button security salt:",
 	'event_calendar:conference_create_error' => "Fout: niet mogelijk om webconferentie te maken.",
@@ -303,12 +300,23 @@ Je kunt de evenementenpagina hier bezoeken:
 	/**
 	 * Event calendar river
 	 **/
+	'river:object:event_calendar:update' => "%s heeft het evenement %s geupdated",
+	'river:object:event_calendar:create' => "%s heeft het evenement %s toegevoegd",
+	'river:object:comment:event_calendar' => '%s heeft op het evenement %s gereageerd',
+	
+	/**
+	 * Widgets
+	 **/
+	'widgets:event_calendar:name' => "Evenementen kalender",
+	'widgets:event_calendar:description' => "Laat je evenementen zien.",
+	'widgets:index_event_calendar:name' => "Evenementen kalender",
+	'widgets:index_event_calendar:description' => "Laat je evenementen zien.",
+	'widgets:groups_event_calendar:name' => "Evenementen kalender",
+	'widgets:groups_event_calendar:description' => "Laat je evenementen zien.",
 
-	'river:update:object:event_calendar' => "%s heeft het evenement %s geupdated",
-	'river:create:object:event_calendar' => "%s heeft het evenement %s toegevoegd",
-	'river:comment:object:event_calendar' => '%s heeft op het evenement %s gereageerd',
-
-	// Notifications
+	/**
+	 * Notifications
+	 **/
 	'event_calendar:notify:subject' => 'Nieuw evenement: %s',
 	'event_calendar:notify:body' => '%s heeft een nieuw evenement gemaakt: %s
 
@@ -320,7 +328,6 @@ Je kunt de evenementenpagina hier bezoeken:
 	/**
 	 * Event calendar iCal
 	 **/
-
 	'event_calendar:settings:ical_import_export' => "Sta toe dat evenementen worden geimporteerd van of geëxporteerd naar iCal?",
 	'event_calendar:settings:set_organizer:title' => "Vul het organisator veld in wanneer je evenementen exporteert naar iCal?",
 	'event_calendar:timezone' => "Importeer met gebruik van welke tijdzone?",

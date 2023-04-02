@@ -1,8 +1,6 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-
-$event_guid = get_input('event_guid', 0);
+$event_guid = (int) get_input('event_guid', 0);
 $day_delta = get_input('dayDelta');
 $minute_delta = get_input('minuteDelta', '');
 $start_time = get_input('startTime', '');
@@ -23,5 +21,4 @@ if ($result) {
 }
 
 echo json_encode($response);
-
 exit;

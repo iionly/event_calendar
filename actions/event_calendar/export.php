@@ -1,10 +1,9 @@
 <?php
 
-elgg_load_library('elgg:event_calendar');
-elgg_load_library('event_calendar:ical');
+require_once(elgg_get_plugins_path() . 'event_calendar/vendors/iCalcreator/iCalcreator.php');
 
 $filter = get_input('filter', 'mine');
-$container_guid = get_input('container_guid', 0);
+$container_guid = (int) get_input('container_guid', 0);
 $region = get_input('region');
 $start_date = get_input('start_date', date('Y-n-j'));
 $end_date = get_input('end_date', date('Y-n-j'));
@@ -28,15 +27,14 @@ switch ($filter) {
 		// see if we're exporting just a single event
 		$events = false;
 		$event = get_entity($filter);
-		if (elgg_instanceof($event, 'object', 'event_calendar')) {
+		if ($event instanceof EventCalendar) {
 			$events = [['event' => $event]];
 		}
 		break;
 }
 
 if (!$events) {
-	register_error(elgg_echo('event_calendar:no_events_found'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('event_calendar:no_events_found'), REFERER);
 }
 
 $events = event_calendar_flatten_event_structure($events);
@@ -125,7 +123,7 @@ foreach($events as $event) {
 	}
 
 	$vevent->setProperty('description', $description);
-	if (elgg_get_plugin_setting('set_organizer', 'event_calendar', 'yes') == 'yes') {
+	if (elgg_get_plugin_setting('set_organizer', 'event_calendar') == 'yes') {
 		$vevent->setProperty('organizer', $event->getOwnerEntity()->email, ['CN' => $organiser]);
 	}
 	$vevent->setProperty( "X-PROP-REGION", $event->region );

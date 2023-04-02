@@ -39,8 +39,6 @@ return [
 	'event_calendar:new' => "Lisää tapahtuma",
 	'event_calendar:submit' => "Tallenna",
 	'event_calendar:cancel' => "Peruuta",
-	'event_calendar:widget_title' => "Tapahtumakalenteri",
-	'event_calendar:widget:description' => "Näyttää tapahtumasi.",
 	'event_calendar:num_display' => "Näytettävien kohteiden määrä",
 	'event_calendar:groupprofile' => "Tulevat tapahtumat",
 	'event_calendar:view_calendar' => "näytä kalenteri",
@@ -310,7 +308,6 @@ You can visit the event page here:
 	/**
 	 * BBB support
 	*/
-
 	'event_calendar:bbb_server_url' => "Big Blue Button server URL (must end with slash)",
 	'event_calendar:bbb_security_salt' => "Big Blue Button security salt",
 	'event_calendar:bbb_create_error' => "Error: unable to create BBB conference, message was: %s",
@@ -325,18 +322,29 @@ You can visit the event page here:
 	/**
 	 * Event calendar river
 	 **/
-
-	'river:update:object:event_calendar' => "%s päivitti tapahtuman %s",
-	'river:create:object:event_calendar' => "%s lisäsi tapahtuman %s",
-	'river:comment:object:event_calendar' => '%s kommentoi tapahtumaa %s',
+	'river:object:event_calendar:update' => "%s päivitti tapahtuman %s",
+	'river:object:event_calendar:create' => "%s lisäsi tapahtuman %s",
+	'river:object:comment:event_calendar' => '%s kommentoi tapahtumaa %s',
 	'event_calendar:river:created' => "%s lisäsi",
 	'event_calendar:river:updated' => "%s päivitti",
 	'event_calendar:river:annotated1' => "%s lisäsi",
 	'event_calendar:river:annotated2' => "kalenteriinsa.",
 	'event_calendar:river:create' => "tapahtuman",
 	'event_calendar:river:the_event' => "tapahtuman",
+	
+	/**
+	 * Widgets
+	 **/
+	'event_calendar:widget_title' => "Tapahtumakalenteri",
+	'widgets:event_calendar:description' => "Näyttää tapahtumasi.",
+	'widgets:index_event_calendar:name' => "Tapahtumakalenteri",
+	'widgets:index_event_calendar:description' => "Näyttää tapahtumasi.",
+	'widgets:groups_event_calendar:name' => "Tapahtumakalenteri",
+	'widgets:groups_event_calendar:description' => "Näyttää tapahtumasi.",
 
-	// Notifications
+	/**
+	 * Notifications
+	 **/
 	'event_calendar:notify:subject' => 'Uusi tapahtuma: %s',
 	'event_calendar:notify:body' => '%s lisäsi uuden tapahtuman: %s
 

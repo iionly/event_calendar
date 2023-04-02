@@ -1,6 +1,6 @@
 <?php
 
-$event = $vars['event'];
+$event = elgg_extract('event', $vars);
 $users = event_calendar_get_users_for_event($event->guid, 0);
 $guids = [];
 foreach($users as $user) {
@@ -8,20 +8,21 @@ foreach($users as $user) {
 }
 
 // TODO: if the event container is a group need to restrict user picker to the members of the group?
-$content = elgg_view_field([
+echo elgg_view_field([
 	'#type' => 'userpicker',
 	'values' => $guids,
 ]);
-$content .= elgg_view_field([
+echo elgg_view_field([
 	'#type' => 'hidden',
 	'name' => 'event_guid',
 	'value' => $event->guid,
 ]);
-$content .= elgg_view_field([
+
+$footer = elgg_view_field([
 	'#type' => 'submit',
 	'value' => elgg_echo('submit'),
 	'name' => 'submit_manage_subscribers',
 	'id' => 'submit-manage-subscribers',
 ]);
 
-echo $content;
+elgg_set_form_footer($footer);

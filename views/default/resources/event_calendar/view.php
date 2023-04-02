@@ -1,20 +1,24 @@
 <?php
 
-$event_guid = elgg_extract('event_guid', $vars, '');
+$event_guid = elgg_extract('guid', $vars, '');
 
 // add personal calendar button and links
 elgg_push_context('event_calendar:view');
 $event = get_entity($event_guid);
 
+if (elgg_get_plugin_setting('ical_import_export', 'event_calendar') == "yes") {
+	set_input('ical_calendar_title_menu', true);
+}
+
 elgg_push_breadcrumb(elgg_echo('item:object:event_calendar'), 'event_calendar/list');
 
-if (!elgg_instanceof($event, 'object', 'event_calendar')) {
+if (!($event instanceof EventCalendar)) {
 	$content = elgg_echo('event_calendar:error_nosuchevent');
 	$title = elgg_echo('event_calendar:generic_error_title');
 } else {
 	$title = htmlspecialchars($event->title);
 	$event_container = get_entity($event->container_guid);
-	if (elgg_instanceof($event_container, 'group')) {
+	if ($event_container instanceof ElggGroup) {
 		if ($event_container->canEdit()) {
 			event_calendar_handle_menu($event_guid);
 		}
@@ -44,10 +48,6 @@ if (!elgg_instanceof($event, 'object', 'event_calendar')) {
 
 	elgg_push_breadcrumb($event->title);
 	$content = elgg_view_entity($event, ['full_view' => true]);
-	//check to see if comment are on - TODO - add this feature to all events
-	if ($event->comments_on != 'Off') {
-		$content .= elgg_view_comments($event);
-	}
 }
 
 $params = [
@@ -57,6 +57,6 @@ $params = [
 	'sidebar' => elgg_view('event_calendar/sidebar', ['page' => 'full_view']),
 ];
 
-$body = elgg_view_layout("content", $params);
+$body = elgg_view_layout('default', $params);
 
 echo elgg_view_page($title, $body);

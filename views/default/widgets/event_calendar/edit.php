@@ -11,18 +11,11 @@
  *
  */
 
-if (!$vars['entity']->num_display) {
-	$num_display = 4;
-} else {
-	$num_display = $vars['entity']->num_display;
-}
+$widget = elgg_extract('entity', $vars);
 
-echo elgg_view_field([
-	'#type' => 'number',
-	'#label' => elgg_echo("event_calendar:num_display"),
-	'name' => 'params[num_display]',
-	'value' => $num_display,
-	'min' => '1',
-	'max' => '20',
-	'step' => '1',
+echo elgg_view('object/widget/edit/num_display', [
+	'entity' => $widget,
+	'label' => elgg_echo('event_calendar:num_display'),
+	'max' => 20,
+	'default' => 4,
 ]);

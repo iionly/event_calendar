@@ -1,8 +1,8 @@
-Event Calendar plugin for Elgg 2.3 and newer Elgg 2.X
+Event Calendar plugin for Elgg 3.0 and newer Elgg 3.X
 =====================================================
 
-Latest Version: 2.3.4  
-Released: 2022-07-03  
+Latest Version: 3.0.0  
+Released: 2023-02-04  
 Contact: iionly@gmx.de  
 License: GNU General Public License version 2  
 Copyright: (c) iionly, Juho Jaakola, Matt Beckett 2015, (C) Kevin Jardine (Radagast Solutions) 2008

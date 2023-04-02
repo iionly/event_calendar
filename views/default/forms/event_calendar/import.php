@@ -1,8 +1,6 @@
 <?php
 
-echo '<div class="mbl">';
-echo '<h3>' . elgg_echo('event_calendar:import:settings') . '</h3>';
-echo '</div>';
+echo elgg_format_element('div', ['class' => 'mlb'], elgg_format_element('h3', [], elgg_echo('event_calendar:import:settings')));
 
 // import into which calendar
 $options_values = [];
@@ -63,7 +61,9 @@ echo elgg_view_field([
 	'name' => 'access_id',
 ]);
 
-echo elgg_view_field([
+$footer = elgg_view_field([
 	'#type' => 'submit',
 	'value' => elgg_echo('event_calendar:import'),
 ]);
+
+elgg_set_form_footer($footer);
